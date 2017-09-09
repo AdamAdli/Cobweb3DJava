@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id="Cobweb3D" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="GRADLE" external.system.module.group="ca.cobweb" external.system.module.version="1.0-SNAPSHOT" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="kotlin-language" name="Kotlin">
+      <configuration version="3" platform="JVM 1.8" useProjectSettings="false">
+        <compilerSettings />
+        <compilerArguments>
+          <option name="noStdlib" value="true" />
+          <option name="noReflect" value="true" />
+          <option name="moduleName" value="Cobweb3D_main" />
+          <option name="jvmTarget" value="1.8" />
+          <option name="addCompilerBuiltIns" value="true" />
+          <option name="loadBuiltInsFromDependencies" value="true" />
+          <option name="languageVersion" value="1.1" />
+          <option name="apiVersion" value="1.1" />
+          <option name="pluginOptions">
+            <array />
+          </option>
+          <option name="pluginClasspaths">
+            <array />
+          </option>
+          <option name="version" value="true" />
+        </compilerArguments>
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager">
+    <output url="file://$MODULE_DIR$/../../out/production/classes" />
+    <output-test url="file://$MODULE_DIR$/../../out/test/classes" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../..">
+      <sourceFolder url="file://$MODULE_DIR$/../../src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/main/kotlin" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/test/kotlin" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/test/resources" type="java-test-resource" />
+      <excludeFolder url="file://$MODULE_DIR$/../../.gradle" />
+      <excludeFolder url="file://$MODULE_DIR$/../../build" />
+      <excludeFolder url="file://$MODULE_DIR$/../../out" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="CobwebUtil" scope="PROVIDED" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.jogamp.gluegen:gluegen-rt:2.3.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.jogamp.jogl:jogl-all:2.3.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jre7:1.1.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.1.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
+    <orderEntry type="module" module-name="CobwebUtil" scope="RUNTIME" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jogamp.gluegen:gluegen-rt:2.3.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jogamp.gluegen:gluegen-rt:2.3.1:natives-android-aarch64" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jogamp.gluegen:gluegen-rt:2.3.1:natives-android-armv6" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jogamp.gluegen:gluegen-rt:2.3.1:natives-linux-amd64" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jogamp.gluegen:gluegen-rt:2.3.1:natives-linux-armv6" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jogamp.gluegen:gluegen-rt:2.3.1:natives-linux-armv6hf" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jogamp.gluegen:gluegen-rt:2.3.1:natives-linux-i586" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jogamp.gluegen:gluegen-rt:2.3.1:natives-macosx-universal" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jogamp.gluegen:gluegen-rt:2.3.1:natives-solaris-amd64" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jogamp.gluegen:gluegen-rt:2.3.1:natives-solaris-i586" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jogamp.gluegen:gluegen-rt:2.3.1:natives-windows-amd64" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jogamp.gluegen:gluegen-rt:2.3.1:natives-windows-i586" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jogamp.jogl:jogl-all:2.3.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jogamp.jogl:jogl-all:2.3.1:natives-android-aarch64" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jogamp.jogl:jogl-all:2.3.1:natives-android-armv6" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jogamp.jogl:jogl-all:2.3.1:natives-linux-amd64" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jogamp.jogl:jogl-all:2.3.1:natives-linux-armv6" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jogamp.jogl:jogl-all:2.3.1:natives-linux-armv6hf" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jogamp.jogl:jogl-all:2.3.1:natives-linux-i586" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jogamp.jogl:jogl-all:2.3.1:natives-macosx-universal" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jogamp.jogl:jogl-all:2.3.1:natives-solaris-amd64" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jogamp.jogl:jogl-all:2.3.1:natives-solaris-i586" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jogamp.jogl:jogl-all:2.3.1:natives-windows-amd64" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jogamp.jogl:jogl-all:2.3.1:natives-windows-i586" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jre7:1.1.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.1.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
+    <orderEntry type="module" module-name="CobwebUtil" scope="TEST" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jogamp.gluegen:gluegen-rt:2.3.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jogamp.jogl:jogl-all:2.3.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: junit:junit:4.12" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jre7:1.1.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.1.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jogamp.gluegen:gluegen-rt:2.3.1:natives-android-aarch64" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jogamp.gluegen:gluegen-rt:2.3.1:natives-android-armv6" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jogamp.gluegen:gluegen-rt:2.3.1:natives-linux-amd64" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jogamp.gluegen:gluegen-rt:2.3.1:natives-linux-armv6" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jogamp.gluegen:gluegen-rt:2.3.1:natives-linux-armv6hf" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jogamp.gluegen:gluegen-rt:2.3.1:natives-linux-i586" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jogamp.gluegen:gluegen-rt:2.3.1:natives-macosx-universal" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jogamp.gluegen:gluegen-rt:2.3.1:natives-solaris-amd64" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jogamp.gluegen:gluegen-rt:2.3.1:natives-solaris-i586" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jogamp.gluegen:gluegen-rt:2.3.1:natives-windows-amd64" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jogamp.gluegen:gluegen-rt:2.3.1:natives-windows-i586" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jogamp.jogl:jogl-all:2.3.1:natives-android-aarch64" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jogamp.jogl:jogl-all:2.3.1:natives-android-armv6" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jogamp.jogl:jogl-all:2.3.1:natives-linux-amd64" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jogamp.jogl:jogl-all:2.3.1:natives-linux-armv6" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jogamp.jogl:jogl-all:2.3.1:natives-linux-armv6hf" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jogamp.jogl:jogl-all:2.3.1:natives-linux-i586" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jogamp.jogl:jogl-all:2.3.1:natives-macosx-universal" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jogamp.jogl:jogl-all:2.3.1:natives-solaris-amd64" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jogamp.jogl:jogl-all:2.3.1:natives-solaris-i586" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jogamp.jogl:jogl-all:2.3.1:natives-windows-amd64" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jogamp.jogl:jogl-all:2.3.1:natives-windows-i586" level="project" />
+  </component>
+</module>
