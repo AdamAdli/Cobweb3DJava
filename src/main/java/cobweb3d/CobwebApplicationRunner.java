@@ -1,5 +1,8 @@
 package cobweb3d;
 
+import cobweb3d.core.Simulation;
+import cobweb3d.rendering.SimulationRenderer;
+
 import java.io.File;
 
 /**
@@ -39,7 +42,7 @@ public class CobwebApplicationRunner {
 
         String inputFileName = "";
         String logFileName = "";
-        boolean autostart = false;
+        boolean autostart = true;
         int finalstep = 0;
         boolean visible = true;
 
@@ -89,8 +92,8 @@ public class CobwebApplicationRunner {
             System.exit(1);
         }
 
-        CobwebApplication cobwebApplication = new CobwebApplication();
-        //main(inputFileName, logFileName, autostart, finalstep, visible);
+        //CobwebApplication cobwebApplication = new CobwebApplication();
+        main(inputFileName, logFileName, autostart, finalstep, visible);
     }
 
     public static void main(String inputFileName, String logFileName, boolean autostart,
@@ -99,7 +102,49 @@ public class CobwebApplicationRunner {
             System.out.println("WARNING: log '" + logFileName + "' already exists, overwriting it!");
         }
 
+        // Create CobwebApplication and threads; not done earlier so that argument errors will result in quick exits.
+        boolean isDebug = BuildConfig.DEBUG;//java.lang.management.ManagementFactory.getRuntimeMXBean().getInputArguments().toString().indexOf("-agentlib:jdwp") > 0;
+        if (!isDebug) {
+          //  LoggingExceptionHandler handler = visible ? new SwingExceptionHandler() : new LoggingExceptionHandler();
+          //  Thread.setDefaultUncaughtExceptionHandler(handler);
+        }
         //   CobwebApplication cobwebApplication = new CobwebApplication();
+
+        // Set up inputFile
+
+        if (inputFileName.equals("")) {
+            if (!visible) {
+                System.err.println("Please specify an input file name when running with the -hide option");
+                return;
+            }
+
+            String tempdir = System.getProperty("java.io.tmpdir");
+            String sep = System.getProperty("file.separator");
+            if (!tempdir.endsWith(sep))
+                tempdir = tempdir + sep;
+
+            inputFileName = CobwebApplication.INITIAL_OR_NEW_INPUT_FILE_NAME;
+            File testFile = new File(inputFileName);
+            if (! (testFile.exists() && testFile.canWrite()))
+                inputFileName = tempdir + CobwebApplication.INITIAL_OR_NEW_INPUT_FILE_NAME;
+
+        }
+
+        final SimulationRunner simRunner;
+        if (visible) {
+            CobwebApplication CA = new CobwebApplication();
+            // TODO: CA.openFile(defaultconf);
+            simRunner = CA.simRunner;
+        } else {
+            Simulation simulation;
+            simulation = new Simulation();
+            // TODO: simulation.load(defaultconf);
+            simRunner = new SimulationRunnerBase(simulation);
+        }
+        simRunner.setAutoStopTime(finalstep);
+        if (autostart) {
+            simRunner.run();
+        }
 
         // Create CobwebApplication and threads; this is not done earlier so
         // that argument errors will result in quick exits.
@@ -183,7 +228,7 @@ public class CobwebApplicationRunner {
         } */
     }
 
-    public static final String Syntax = "cobweb2 [--help] [-hide] [-autorun finalstep] [-log LogFile.tsv] [[-open] SettingsFile.xml]";
+    public static final String Syntax = "cobweb3d [--help] [-hide] [-autorun finalstep] [-log LogFile.tsv] [[-open] SettingsFile.xml]";
 
 
 }

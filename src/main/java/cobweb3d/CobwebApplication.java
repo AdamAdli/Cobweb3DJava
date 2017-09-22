@@ -1,9 +1,9 @@
 package cobweb3d;
 
 
-import com.jogamp.opengl.*;
-import com.jogamp.opengl.awt.GLCanvas;
-import com.jogamp.opengl.glu.GLU;
+import cobweb3d.core.Simulation;
+import cobweb3d.rendering.ISimulationRenderer;
+import cobweb3d.rendering.SimulationRenderer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  * implements all necessary methods defined by the UIClient class, and makes use of the JFrame
  * class.
  */
-public class CobwebApplication extends JFrame implements GLEventListener {
+public class CobwebApplication extends JFrame {
 
     private static final String WINDOW_TITLE = "COBWEB 3D";
 
@@ -37,7 +37,11 @@ public class CobwebApplication extends JFrame implements GLEventListener {
     private static final String CURRENT_DATA_FILE_NAME =
             "current_data_(reserved)" + TEMPORARY_FILE_EXTENSION;
 
-    private final Logger logger = Logger.getLogger("COBWEB2");
+    private final Logger logger = Logger.getLogger("COBWEB3D");
+
+    public ThreadSimulationRunner simRunner = new ThreadSimulationRunner(new Simulation());
+
+    private ISimulationRenderer simulationRenderer;
 
     public CobwebApplication() {
         super(WINDOW_TITLE);
@@ -62,21 +66,10 @@ public class CobwebApplication extends JFrame implements GLEventListener {
         // Center window on screen
         setLocationRelativeTo(null);
 
-        initializeOpenGL();
+        simulationRenderer = new SimulationRenderer(simRunner);
+        getContentPane().add(simulationRenderer.getBackbuffer(), BorderLayout.CENTER);
         setVisible(true);
-
     }
-
-    private void initializeOpenGL() {
-        GLProfile glProfile = GLProfile.getDefault();
-        GLCapabilities glcapabilities = new GLCapabilities(glProfile);
-        final GLCanvas glcanvas = new GLCanvas(glcapabilities);
-        glcanvas.addGLEventListener(this);
-        getContentPane().add(glcanvas, BorderLayout.CENTER);
-    }
-
-    int w = 100;
-    int h = 100;
 
     public void quitApplication() {
         dispose();
@@ -110,51 +103,5 @@ public class CobwebApplication extends JFrame implements GLEventListener {
         jMenuBar.add(dataMenu);
         jMenuBar.add(helpMenu);
         return jMenuBar;
-    }
-
-    @Override
-    public void init(GLAutoDrawable glAutoDrawable) {
-
-    }
-
-    @Override
-    public void dispose(GLAutoDrawable glAutoDrawable) {
-
-    }
-
-    @Override
-    public void display(GLAutoDrawable glAutoDrawable) {
-        GL2 gl2 = glAutoDrawable.getGL().getGL2();
-        gl2.glClear(GL.GL_COLOR_BUFFER_BIT);
-
-        // draw a triangle filling the window
-        gl2.glLoadIdentity();
-        gl2.glBegin(GL.GL_TRIANGLES);
-        gl2.glColor3f(1, 0, 0);
-        gl2.glVertex2f(0, 0);
-        gl2.glColor3f(0, 1, 0);
-        gl2.glVertex2f(w, 0);
-        gl2.glColor3f(0, 0, 1);
-        gl2.glVertex2f(w / 2, h);
-        gl2.glEnd();
-    }
-
-    /**
-     * Called on window reshaped.
-     */
-    @Override
-    public void reshape(GLAutoDrawable glAutoDrawable, int x, int y, int width, int height) {
-        GL2 gl2 = glAutoDrawable.getGL().getGL2();
-        gl2.glMatrixMode(GL2.GL_PROJECTION);
-        gl2.glLoadIdentity();
-
-        // coordinate system origin at lower left with width and height same as the window
-        GLU glu = new GLU();
-        glu.gluOrtho2D(0.0f, width, 0.0f, height);
-
-        gl2.glMatrixMode(GL2.GL_MODELVIEW);
-        gl2.glLoadIdentity();
-
-        gl2.glViewport(0, 0, width, height);
     }
 }
