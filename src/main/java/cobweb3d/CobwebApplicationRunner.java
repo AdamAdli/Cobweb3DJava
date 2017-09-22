@@ -89,8 +89,8 @@ public class CobwebApplicationRunner {
             System.exit(1);
         }
 
-        CobwebApplication cobwebApplication = new CobwebApplication();
-        //main(inputFileName, logFileName, autostart, finalstep, visible);
+        //CobwebApplication cobwebApplication = new CobwebApplication();
+        main(inputFileName, logFileName, autostart, finalstep, visible);
     }
 
     public static void main(String inputFileName, String logFileName, boolean autostart,
@@ -99,6 +99,12 @@ public class CobwebApplicationRunner {
             System.out.println("WARNING: log '" + logFileName + "' already exists, overwriting it!");
         }
 
+        // Create CobwebApplication and threads; not done earlier so that argument errors will result in quick exits.
+        boolean isDebug = BuildConfig.DEBUG;//java.lang.management.ManagementFactory.getRuntimeMXBean().getInputArguments().toString().indexOf("-agentlib:jdwp") > 0;
+        if (!isDebug) {
+            LoggingExceptionHandler handler = visible ? new SwingExceptionHandler() : new LoggingExceptionHandler();
+            Thread.setDefaultUncaughtExceptionHandler(handler);
+        }
         //   CobwebApplication cobwebApplication = new CobwebApplication();
 
         // Create CobwebApplication and threads; this is not done earlier so
@@ -183,7 +189,7 @@ public class CobwebApplicationRunner {
         } */
     }
 
-    public static final String Syntax = "cobweb2 [--help] [-hide] [-autorun finalstep] [-log LogFile.tsv] [[-open] SettingsFile.xml]";
+    public static final String Syntax = "cobweb3d [--help] [-hide] [-autorun finalstep] [-log LogFile.tsv] [[-open] SettingsFile.xml]";
 
 
 }

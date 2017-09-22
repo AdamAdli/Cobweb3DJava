@@ -3,7 +3,11 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Cobweb3D.iml" filepath="$PROJECT_DIR$/.idea/modules/Cobweb3D.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/CobwebUtil.iml" filepath="$PROJECT_DIR$/.idea/modules/CobwebUtil.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Cobweb3D_main.iml" filepath="$PROJECT_DIR$/.idea/modules/Cobweb3D_main.iml" group="Cobweb3D" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Cobweb3D_test.iml" filepath="$PROJECT_DIR$/.idea/modules/Cobweb3D_test.iml" group="Cobweb3D" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/CobwebUtil/CobwebUtil.iml" filepath="$PROJECT_DIR$/.idea/modules/CobwebUtil/CobwebUtil.iml" group="CobwebUtil" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/CobwebUtil/CobwebUtil_main.iml" filepath="$PROJECT_DIR$/.idea/modules/CobwebUtil/CobwebUtil_main.iml" group="CobwebUtil" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/CobwebUtil/CobwebUtil_test.iml" filepath="$PROJECT_DIR$/.idea/modules/CobwebUtil/CobwebUtil_test.iml" group="CobwebUtil" />
     </modules>
   </component>
 </project>
