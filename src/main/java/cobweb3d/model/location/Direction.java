@@ -1,7 +1,6 @@
 package cobweb3d.model.location;
 
-import java.io.Serializable;
-import java.util.Objects;
+import cobwebutil.math.Vector3Int;
 
 
 public class Direction extends Vector3Int {

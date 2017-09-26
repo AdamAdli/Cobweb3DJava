@@ -1,5 +1,5 @@
 package cobweb3d;
 
 public class BuildConfig {
-    static boolean DEBUG = true;
+    public static boolean DEBUG = true;
 }

@@ -1,6 +1,6 @@
 package cobweb3d.model.location;
 
-import java.io.Serializable;
+import cobwebutil.math.Vector3Int;
 
 /**
  * Location on a 3D grid.
