@@ -10,6 +10,7 @@ import com.jogamp.opengl.*;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.glu.GLU;
 import com.jogamp.opengl.util.FPSAnimator;
+import org.joml.Vector3f;
 import sun.nio.cs.ext.MacHebrew;
 
 import javax.swing.*;
@@ -110,6 +111,8 @@ public class SimulationRenderer implements ISimulationRenderer, GLEventListener 
     int w = 100;
     int h = 100;
 
+    public Camera camera;
+
     /**
      * Called back by the animator to perform rendering.
      */
@@ -118,26 +121,10 @@ public class SimulationRenderer implements ISimulationRenderer, GLEventListener 
         GL2 gl2 = drawable.getGL().getGL2();
         gl2.glClear(GL_COLOR_BUFFER_BIT);
 
-        // draw a triangle filling the window
-       /* gl2.glLoadIdentity();
-        gl2.glBegin(GL.GL_TRIANGLES);
-        gl2.glColor3f(1, 0, 0);
-        gl2.glVertex2f(0, 0);
-        gl2.glColor3f(0, 1, 0);
-        gl2.glVertex2f(w, 0);
-        gl2.glColor3f(0, 0, 1);
-        gl2.glVertex2f(w / 2, h);
-        gl2.glEnd(); */
-
         GL2 gl = drawable.getGL().getGL2();  // Get the OpenGL 2 graphics context
         gl.glClearColor(0.93f, 0.93f, 0.93f, 1f);
         gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
         gl.glLoadIdentity();  // Reset the model-view matrix
-
-      //  float p = 5;
-      //  float r = 8.66025403784f;
-       /// float z = r/(float)(Math.sin(fovYr));//fovY*3.14/180));
-      //  float z2 = r/(float)(Math.sin(fovXr));//fovX*3.14/180));
 
         Vector3F gridCenter = new Vector3F(((float) simulation.environment.width) / 2f, ((float) simulation.environment.height) / 2f,
                 ((float) simulation.environment.depth) / 2f);
@@ -145,38 +132,17 @@ public class SimulationRenderer implements ISimulationRenderer, GLEventListener 
                 simulation.environment.depth).length() / 2;
         float optimalDistanceY = ((float)simulation.environment.height/2) / (float) Math.tan(fovYr / 2);
         float optimalDistanceX = ((float)simulation.environment.width/2) / (float) Math.tan(fovXr / 2);
-        //        float optimalDistanceX = (gridBoundingRadius * (0.5f + ((float)simulation.environment.width / (float)simulation.environment.height))) / (float) Math.tan(fovXr);
 
-        //float optimalDistanceY = (simulation.environment.height) / (float) Math.sin(fovYr);
-      //  float optimalDistanceX = (gridBoundingRadius * 2) / (float) Math.tan(fovXr);
-
-
-        /*float optimalDistanceY = gridBoundingRadius / (float) Math.sin(fovYr);
-        float optimalDistanceX = gridBoundingRadius / (float) Math.sin(fovXr);*/
-
-        System.out.println("Yd: " + optimalDistanceY + " | Xd: " + optimalDistanceX + " | fovY half : " + fovY + " | fovX half: " + (fovX));
-
-       // System.out.println("GridCenter: " + gridCenter.toString());
-       // System.out.println("gridBoundingRadius: " + gridBoundingRadius);
-       // float dis = (gridBoundingRadius * 2) / (float) Math.tan(fovXr % (3.14/4));
-      //  System.out.println("fovX: " + fovX + " | calcFovX: " + Math.toDegrees(fovXr % (3.14/4)));
-      //  System.out.println("dis: " + dis);
+  //      camera.target = new Vector3f(gridCenter.x, gridCenter.y, gridCenter.z);
+    //    camera.distanceFromTarget = Math.max(optimalDistanceY, optimalDistanceX);
+//        camera.position =
 
         glu.gluLookAt(gridCenter.x, gridCenter.y, -Math.max(optimalDistanceY, optimalDistanceX),
                 gridCenter.x, gridCenter.y, gridCenter.z,
                 0, 1, 0);
 
         // ----- Your OpenGL rendering code here (Render a white triangle for testing) -----
-        // gl.glTranslatef(5.0f, 5.0f, -20.0f);
-
         mGridRenderer.draw(simulation.environment, gl);
-        /*gl.glTranslatef(0.0f, 0.0f, -6.0f); // translate into the screen
-         gl.glBegin(GL_TRIANGLES); // draw using triangles
-        gl.glVertex3f(0.0f, 1.0f, 0.0f);
-        gl.glVertex3f(-1.0f, -1.0f, 0.0f);
-        gl.glVertex3f(1.0f, -1.0f, 0.0f);
-        gl.glEnd(); */
-
     }
 
     /**

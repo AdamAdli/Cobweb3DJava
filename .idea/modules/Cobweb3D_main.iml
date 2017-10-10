@@ -38,10 +38,11 @@
     <orderEntry type="module" module-name="CobwebUtil_main" />
     <orderEntry type="library" name="Gradle: org.jogamp.gluegen:gluegen-rt:2.3.2" level="project" />
     <orderEntry type="library" name="Gradle: org.jogamp.jogl:jogl-all:2.3.2" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jre7:1.1.1" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.joml:joml:1.9.4" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jogamp.gluegen:gluegen-rt:natives-android-aarch64:2.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jre7:1.1.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jogamp.gluegen:gluegen-rt:natives-android-armv6:2.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.1.1" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jogamp.gluegen:gluegen-rt:natives-linux-amd64:2.3.2" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jogamp.gluegen:gluegen-rt:natives-linux-armv6:2.3.2" level="project" />
