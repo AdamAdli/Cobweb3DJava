@@ -2,13 +2,18 @@ package cobweb3d;
 
 
 import cobweb3d.core.Simulation;
+import cobweb3d.core.SimulationConfig;
 import cobweb3d.rendering.ISimulationRenderer;
 import cobweb3d.rendering.SimulationRenderer;
+import cobweb3d.ui.AppContext;
+import cobweb3d.ui.view.FileMenu;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 /**
@@ -16,7 +21,7 @@ import java.util.logging.Logger;
  * implements all necessary methods defined by the UIClient class, and makes use of the JFrame
  * class.
  */
-public class CobwebApplication extends JFrame {
+public class CobwebApplication extends JFrame implements AppContext {
 
     private static final String WINDOW_TITLE = "COBWEB 3D";
 
@@ -76,6 +81,10 @@ public class CobwebApplication extends JFrame {
         System.exit(0);
     }
 
+    public void pauseUI() {
+        simRunner.stop();
+    }
+
     /**
      * Creates the main menu bar, which contains all options to allow the user to modify the
      * simulation, save the simulation, etc.
@@ -83,7 +92,7 @@ public class CobwebApplication extends JFrame {
      * @return The menu bar object.
      */
     private JMenuBar makeMenuBar() {
-        JMenu fileMenu = new JMenu("File");
+        JMenu fileMenu = new FileMenu(this);
 
         JMenu editMenu = new JMenu("Edit");
 
@@ -104,4 +113,80 @@ public class CobwebApplication extends JFrame {
         jMenuBar.add(helpMenu);
         return jMenuBar;
     }
+
+    /**
+     * Opens an existing xml file, selected by the user through a dialog box,
+     * which contains all the information for a simulation environment.
+     */
+    public void openFileDialog() {
+        pauseUI();
+        FileDialog theDialog = new FileDialog(CobwebApplication.this,
+                "Open a State File", FileDialog.LOAD);
+        theDialog.setFile("*.xml");
+        theDialog.setVisible(true);
+        String directory = theDialog.getDirectory();
+        String file = theDialog.getFile();
+
+        if (file != null && directory != null) {
+            File of = new File(directory + file);
+            if (of.exists()) {
+              //  SimulationConfigEditor editor = SimulationConfigEditor.show(this, directory + file, true, displaySettings);
+              //  if (editor.isOK()) {
+               //     openFile(editor.getConfig(), editor.isContinuation());
+               // }
+            } else {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "File \" " + directory + file + "\" could not be found!", "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+        }
+    }
+
+    /**
+     * Load simulation config.
+     * @param config simulation configuration
+     * @param continuation load this as a continuation of the current simulation?
+     */
+    public void openFile(SimulationConfig config, boolean continuation) {
+        // TODO more organized way to deal with loading simulation configurations
+        // TODO create new simRunner when starting new simulation, reuse when modifying
+        if (simRunner.isRunning())
+            simRunner.stop();
+
+        if (!continuation) {
+            simRunner.getSimulation().resetTime();
+            simRunner.setLog(null);
+        }
+
+        /*TODO : simRunner.getSimulation().load(config);
+        File file = new File(config.fileName);
+
+        if (file.exists()) {
+            try {
+                currentFile = file.getCanonicalPath();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+
+            if (file.isHidden() || !file.canWrite()) {
+                JOptionPane.showMessageDialog(this,
+                        "Caution:  The initial data file \"" + currentFile
+                                + "\" is NOT allowed to be modified.\n"
+                                + "\n                  Any modification of this data file will be neither implemented nor saved.");
+            }
+        }
+
+        updateDynamicUI();
+
+        setTitle(WINDOW_TITLE + "  - " + file.getName());
+
+        // simulatorUI null only when called from constructor.
+        // TODO: create UI in such a way as to avoid this check
+        if (simulatorUI != null) {
+            simulatorUI.update(true);
+        } */
+    }
+
+
 }
