@@ -24,7 +24,8 @@ apply plugin: 'application'
 /** App Id, Version, Entry point, Java Version */
 group 'ca.cobweb'
 version '1.0-SNAPSHOT'
-mainClassName = 'cobweb3d.CobwebApplicationRunner'
+// mainClassName = 'cobweb3d.CobwebApplicationRunner'
+mainClassName = 'cobweb3d.rendering.GLTest'
 sourceCompatibility = 1.8
 
 /** Library Dependencies */
