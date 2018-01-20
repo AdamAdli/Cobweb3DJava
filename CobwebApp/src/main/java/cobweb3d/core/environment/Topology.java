@@ -196,21 +196,41 @@ public class Topology {
     }
 
     protected Direction turnRight(Direction dir) {
-        if (dir.x == 0 && dir.z == 0) return getRandomXZDir();
-        else return new Direction(dir.z, 0, -dir.x);
+        if (dir.y != 0) {
+            return new Direction(-dir.y, -dir.x, 0);
+        } else {
+            if (dir.x == 0 && dir.z == 0) return getRandomXZDir();
+            else return new Direction(-dir.z, 0, dir.x);
+        }
     }
 
     protected Direction turnLeft(Direction dir) {
-        if (dir.x == 0 && dir.z == 0) return getRandomXZDir();
-        else return new Direction(-dir.z, 0, dir.x);
+        if (dir.y != 0) {
+            return new Direction(dir.y, dir.x, 0);
+        } else {
+            if (dir.x == 0 && dir.z == 0) return getRandomXZDir();
+            else return new Direction(-dir.z, 0, dir.x);
+        }
     }
 
     protected Direction turnUp(Direction dir) {
-        return Direction.yNeg; // TODO Fix these!
+        if (dir.y != 0) {
+            return new Direction(0, -dir.z, dir.y);
+        } else {
+            if (dir.x == 0) return new Direction(0, -dir.z, 0);
+            else if (dir.z == 0) return new Direction(0, -dir.x, 0);
+            else return Direction.yNeg;
+        }
     }
 
     protected Direction turnDown(Direction dir) {
-        return Direction.yPos;
+        if (dir.y != 0) {
+            return new Direction(0, dir.z, -dir.y);
+        } else {
+            if (dir.x == 0) return new Direction(0, dir.z, 0);
+            else if (dir.z == 0) return new Direction(0, dir.x, 0);
+            else return Direction.yPos;
+        }
     }
 
 

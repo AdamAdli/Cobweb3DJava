@@ -14,6 +14,8 @@ public class SimpleController implements Controller {
         random = new RandomNoGenerator();
     }
 
+    boolean aBoolean = false;
+
     @Override
     public void controlAgent(Agent agent, ControllerListener inputCallback) {
         if (agent instanceof BaseAgent) {
@@ -22,12 +24,10 @@ public class SimpleController implements Controller {
                 // Flag to reproduce!
             }
 
-            int action = random.nextIntRange(1, 7);
-            //      System.out.println(action);
-            //   theAgent.turnLeft();
-            //   theAgent.step();
+            int action = random.nextIntRange(1, 10);
+
             switch (action) {
-                case 1:
+                case 1: //xPos
                     theAgent.turnLeft();
                     break;
                 case 2:
@@ -42,6 +42,9 @@ public class SimpleController implements Controller {
                 case 5:
                 case 6:
                 case 7:
+                case 8:
+                case 9:
+                case 10:
                     theAgent.step();
                     break;
             }

@@ -39,9 +39,9 @@ public class Simulation implements SimulationInternals, SimulationInterface {
         simulationConfig = simConfig;
         environment.setParams(simConfig.envParams, simConfig.agentParams);
         BaseAgent baseAgent = new BaseAgent(this, 0);
-        baseAgent.init(environment, new LocationDirection(new Location(0, 0, 0), Direction.zPos), environment.agentParams[0], new SimpleController());
+        baseAgent.init(environment, new LocationDirection(new Location(3, 3, 3), Direction.zPos), environment.agentParams[0], new SimpleController());
         BaseAgent baseAgent2 = new BaseAgent(this, 0);
-        baseAgent2.init(environment, new LocationDirection(new Location(0, 4, 0), Direction.xPos), environment.agentParams[0], new SimpleController());
+        baseAgent2.init(environment, new LocationDirection(new Location(0, 4, 0), Direction.yNeg), environment.agentParams[0], new SimpleController());
         environment.setAgent(baseAgent.position, baseAgent);
         environment.setAgent(baseAgent2.position, baseAgent2);
         random = simConfig.randomSeed == 0 ? new RandomNoGenerator() : new RandomNoGenerator(simConfig.randomSeed);

@@ -19,6 +19,13 @@ public class BaseAgentParams implements ResizableParam {
     public int initialAgents = 20;
 
     /**
+     * Initial number of agents.
+     */
+    @ConfDisplayName("Color")
+    @ConfXMLTag("Color")
+    public String color = "";
+
+    /**
      * Initial energy amount.
      */
     @ConfDisplayName("Initial energy")

@@ -8,9 +8,9 @@
     <spawnNewAgents>true</spawnNewAgents>
 
     <Environment>
-        <Width>19</Width>
-        <Height>6</Height>
-        <Depth>24</Depth>
+        <Width>5</Width>
+        <Height>5</Height>
+        <Depth>5</Depth>
         <wrap>true</wrap>
         <randomStones>0</randomStones>
     </Environment>
@@ -19,6 +19,7 @@
         <AgentParams>
             <Agent id="1">
                 <Agents>20</Agents>
+                <Color>#FF4081</Color>
                 <InitEnergy>50</InitEnergy>
                 <StepEnergy>2</StepEnergy>
                 <BreedEnergy>30</BreedEnergy>

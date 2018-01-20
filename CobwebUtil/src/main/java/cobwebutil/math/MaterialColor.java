@@ -279,13 +279,15 @@ public enum MaterialColor {
     public javafx.scene.paint.Color asJFXColor() {
         if (jfxColorCache == null) jfxColorCache = new HashMap<>();
         if (jfxColorCache.containsKey(this)) return jfxColorCache.get(this);
-        return jfxColorCache.put(this, javafx.scene.paint.Color.valueOf(mStringColor));
+        jfxColorCache.put(this, javafx.scene.paint.Color.valueOf(mStringColor));
+        return jfxColorCache.get(this);
     }
 
     public java.awt.Color asAWTColor() {
         if (awtColorCache == null) jfxColorCache = new HashMap<>();
         else if (awtColorCache.containsKey(this)) return awtColorCache.get(this);
-        return awtColorCache.put(this, java.awt.Color.decode(mStringColor));
+        awtColorCache.put(this, java.awt.Color.decode(mStringColor));
+        return awtColorCache.get(this);
     }
 
     public String asString() {
