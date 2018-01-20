@@ -7,6 +7,7 @@ import cobweb3d.rendering.ISimulationRenderer;
 import cobweb3d.rendering.javafx.FXSimulationRenderer;
 import cobweb3d.ui.AppContext;
 import cobweb3d.ui.view.FileMenu;
+import javafx.application.Platform;
 
 import javax.swing.*;
 import java.awt.*;
@@ -70,12 +71,15 @@ public class CobwebApplication extends JFrame implements AppContext {
         // Center window on screen
         setLocationRelativeTo(null);
 
+        logger.info("Initializing simulation renderer: " + FXSimulationRenderer.class.getSimpleName());
         simulationRenderer = new FXSimulationRenderer(simRunner);
         getContentPane().add(simulationRenderer.getBackbuffer(), BorderLayout.CENTER);
         setVisible(true);
     }
 
     public void quitApplication() {
+        getContentPane().removeAll();
+        Platform.exit();
         dispose();
         System.exit(0);
     }

@@ -1,9 +1,9 @@
 package cobweb3d.impl.ai;
 
-import cobweb3d.core.agent.Agent;
+import cobweb3d.core.agent.BaseAgent;
 import cobweb3d.core.agent.Controller;
 import cobweb3d.core.agent.ControllerListener;
-import cobweb3d.impl.agent.BaseAgent;
+import cobweb3d.impl.agent.Agent;
 import util.RandomNoGenerator;
 
 public class SimpleController implements Controller {
@@ -14,12 +14,10 @@ public class SimpleController implements Controller {
         random = new RandomNoGenerator();
     }
 
-    boolean aBoolean = false;
-
     @Override
-    public void controlAgent(Agent agent, ControllerListener inputCallback) {
-        if (agent instanceof BaseAgent) {
-            BaseAgent theAgent = (BaseAgent) agent;
+    public void controlAgent(BaseAgent agent, ControllerListener inputCallback) {
+        if (agent instanceof Agent) {
+            Agent theAgent = (Agent) agent;
             if (random.nextFloat() > theAgent.params.asexualBreedChance.getValue()) {
                 // Flag to reproduce!
             }

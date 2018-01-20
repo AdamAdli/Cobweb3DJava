@@ -5,23 +5,23 @@ import cobweb3d.core.location.LocationDirection;
 
 public interface AgentListener extends ControllerListener {
 
-    void onContact(Agent bumper, Agent bumpee);
+    void onContact(BaseAgent bumper, BaseAgent bumpee);
 
-    void onStep(Agent agent, LocationDirection from, LocationDirection to);
+    void onStep(BaseAgent agent, LocationDirection from, LocationDirection to);
 
-    void onSpawn(Agent agent, Agent parent1, Agent parent2);
+    void onSpawn(BaseAgent agent, BaseAgent parent1, BaseAgent parent2);
 
-    void onSpawn(Agent agent, Agent parent);
+    void onSpawn(BaseAgent agent, BaseAgent parent);
 
-    void onSpawn(Agent agent);
+    void onSpawn(BaseAgent agent);
 
-    void onDeath(Agent agent);
+    void onDeath(BaseAgent agent);
 
-    void onConsumeFood(Agent agent, int foodType);
+    void onConsumeFood(BaseAgent agent, int foodType);
 
-    void onConsumeAgent(Agent agent, Agent food);
+    void onConsumeAgent(BaseAgent agent, BaseAgent food);
 
-    void onEnergyChange(Agent agent, int delta, Cause cause);
+    void onEnergyChange(BaseAgent agent, int delta, Cause cause);
 
-    void onUpdate(Agent agent);
+    void onUpdate(BaseAgent agent);
 }

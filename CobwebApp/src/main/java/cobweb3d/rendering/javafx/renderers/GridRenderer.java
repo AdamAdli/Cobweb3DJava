@@ -1,12 +1,13 @@
 package cobweb3d.rendering.javafx.renderers;
 
-import cobweb3d.core.environment.Environment;
+import cobweb3d.core.environment.BaseEnvironment;
 import cobweb3d.rendering.javafx.SimCamera;
+import cobwebutil.math.MaterialColor;
 import javafx.geometry.Point3D;
+import javafx.scene.AmbientLight;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.shape.Box;
-import javafx.scene.shape.DrawMode;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import org.joml.Vector3f;
@@ -18,19 +19,25 @@ public class GridRenderer extends Group {
     public int gridWidth = 0;
     public int gridHeight = 0;
     public int gridDepth = 0;
+    private float gridLineThickness = 0.1f;
 
-    public GridRenderer(Environment environment) {
+    public GridRenderer(BaseEnvironment environment) {
         generateGeometry(environment);
     }
 
-    public void generateGeometry(Environment environment) {
+    public void generateGeometry(BaseEnvironment environment) {
         if (environment == null || environment.environmentParams == null) return;
         gridWidth = environment.environmentParams.width;
         gridHeight = environment.environmentParams.height;
         gridDepth = environment.environmentParams.depth;
-
+        gridLineThickness = calculateGridLineThickness();
         List<Node> children = getChildren();
         children.clear();
+
+        AmbientLight light = new AmbientLight(MaterialColor.grey_500.asJFXColor());
+        light.getScope().add(this);
+        children.add(light);
+
         for (int x = 0; x < gridWidth + 1; x++) {
             for (int z = 0; z < gridDepth + 1; z++) {
                 if (x == 0 || x == gridWidth || z == 0 || z == gridDepth) {
@@ -72,10 +79,13 @@ public class GridRenderer extends Group {
         double angle = Math.acos(diff.normalize().dotProduct(yAxis));
         Rotate rotateAroundCenter = new Rotate(-Math.toDegrees(angle), axisOfRotation);
 
-        Box line = new Box(0.01f, height, 0.01f);
-        line.setDrawMode(DrawMode.LINE);
+        Box line = new Box(gridLineThickness, height, gridLineThickness);
         line.getTransforms().addAll(moveToMidpoint, rotateAroundCenter);
         return line;
+    }
+
+    private float calculateGridLineThickness() {
+        return Math.max(0.01f, 0.01f * (Math.max(Math.max((gridWidth / 25), (gridHeight / 25)), (gridDepth / 50))));
     }
 
     public void focusCamera(SimCamera camera) {

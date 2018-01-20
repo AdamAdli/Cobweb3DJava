@@ -14,7 +14,7 @@ public class StatsTracker {
 
     public long countAgentEnergy() {
         long totalEnergy = 0;
-		/*for(Agent a : simulation.theEnvironment.getAgents()){
+		/*for(BaseAgent a : simulation.theEnvironment.getAgents()){
 			ComplexAgent agent = (ComplexAgent) a;
 			totalEnergy += agent.getEnergy();
 		}*/
@@ -27,7 +27,7 @@ public class StatsTracker {
 
     public long countAgents(int agentType) {
         long count = 0;
-		/*for(Agent a : simulation.theEnvironment.getAgents()) {
+		/*for(BaseAgent a : simulation.theEnvironment.getAgents()) {
 			if (a.getType() == agentType)
 				count++;
 		} */
@@ -36,7 +36,7 @@ public class StatsTracker {
 
     public long countAgentEnergy(int agentType) {
         long totalEnergy = 0;
-	/*	for(Agent a : simulation.theEnvironment.getAgents()) {
+	/*	for(BaseAgent a : simulation.theEnvironment.getAgents()) {
 			ComplexAgent agent = (ComplexAgent) a;
 			if (agent.getType() == agentType)
 				totalEnergy += agent.getEnergy();
@@ -53,7 +53,7 @@ public class StatsTracker {
     }
 
     public long countFoodTiles() {
-        // Environment e = simulation.theEnvironment;
+        // BaseEnvironment e = simulation.theEnvironment;
         long foodCount = 0;
 		/* for (int x = 0; x < e.topology.width; ++x) {
 			for (int y = 0; y < e.topology.height; ++y) {
@@ -66,7 +66,7 @@ public class StatsTracker {
     }
 
     public int countFoodTiles(int foodType) {
-        // Environment e = simulation.theEnvironment;
+        // BaseEnvironment e = simulation.theEnvironment;
         int foodCount = 0;
 		/* for (int x = 0; x < e.topology.width; ++x) {
 			for (int y = 0; y < e.topology.height; ++y) {

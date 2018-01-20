@@ -1,9 +1,9 @@
 package cobweb3d.plugins;
 
-import cobweb3d.core.agent.Agent;
+import cobweb3d.core.agent.BaseAgent;
 
 public interface StateParameter {
     String getName();
 
-    double getValue(Agent agent);
+    double getValue(BaseAgent agent);
 }

@@ -6,6 +6,7 @@ import cobweb3d.rendering.ISimulationRenderer;
 import cobweb3d.rendering.javafx.renderers.AgentRenderer;
 import cobweb3d.rendering.javafx.renderers.GridRenderer;
 import cobwebutil.math.MaterialColor;
+import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.embed.swing.JFXPanel;
@@ -14,24 +15,24 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 
 import java.awt.*;
+import java.util.logging.Logger;
 
 public class FXSimulationRenderer implements ISimulationRenderer {
     private JFXPanel jfxPanel;
 
     private Simulation simulation;
+    private final Logger logger = Logger.getLogger("FXSimulationRenderer");
 
     private Parent mainLayout;
-
     private SimCamera camera;
-
     private SubScene renderScene;
-
     private Group rootGroup;
     private GridRenderer gridRenderer;
-    private final ChangeListener<Number> resizeListener = (observable, oldValue, newValue) ->
-            resizeRendering((int) renderScene.getParent().getScene().getWidth(),
-                    (int) renderScene.getParent().getScene().getHeight());
+    private final ChangeListener<Number> resizeListener = (observable, oldValue, newValue) -> resizeRendering((int) renderScene.getParent().getScene().getWidth(),
+            (int) renderScene.getParent().getScene().getHeight());
     private AgentRenderer agentRenderer;
+
+    AnimationTimer animationTimer;
 
     public FXSimulationRenderer(SimulationRunnerBase simulationRunner) {
         bindSimulation(simulationRunner.getSimulation());
@@ -46,6 +47,17 @@ public class FXSimulationRenderer implements ISimulationRenderer {
         layout.widthProperty().addListener(resizeListener);
         layout.heightProperty().addListener(resizeListener);
         jfxPanel.setScene(new Scene(layout, MaterialColor.grey_100.asJFXColor()));
+        logger.info("Initialized JavaFX");
+
+        animationTimer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if (rootGroup != null) {
+                    if (simulation != null && simulation.environment != null)
+                        agentRenderer.drawAgents(simulation.environment.getAgents());
+                }
+            }
+        };
     }
 
     private SubScene initRenderScene() {
@@ -64,15 +76,16 @@ public class FXSimulationRenderer implements ISimulationRenderer {
     public void bindSimulation(Simulation simulation) {
         this.simulation = simulation;
         if (jfxPanel == null) return;
+        animationTimer.stop();
         Platform.runLater(() -> {
             if (rootGroup != null) {
                 if (gridRenderer != null) {
                     gridRenderer.generateGeometry(simulation.environment);
                     gridRenderer.focusCamera(camera);
                 }
+                animationTimer.start();
             }
         });
-
     }
 
     @Override
@@ -82,21 +95,23 @@ public class FXSimulationRenderer implements ISimulationRenderer {
 
     @Override
     public void update(boolean synchronous) {
-        if (jfxPanel == null) return;
-        Platform.runLater(() -> {
+        //if (jfxPanel == null) return;
+        /*Platform.runLater(() -> {
             if (rootGroup != null) {
                 if (simulation != null && simulation.environment != null)
                     agentRenderer.drawAgents(simulation.environment.getAgents());
             }
-        });
+        });*/
     }
 
     @Override
     public void onStopped() {
+        animationTimer.stop();
     }
 
     @Override
     public void onStarted() {
+        animationTimer.start();
     }
 
     private void resizeRendering(int width, int height) {

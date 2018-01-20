@@ -1,32 +1,32 @@
 package cobweb3d.impl.agent;
 
 import cobweb3d.core.SimulationInternals;
-import cobweb3d.core.agent.Agent;
+import cobweb3d.core.agent.BaseAgent;
 import cobweb3d.core.agent.Controller;
-import cobweb3d.core.environment.Environment;
+import cobweb3d.core.environment.BaseEnvironment;
 import cobweb3d.core.location.Direction;
 import cobweb3d.core.location.Location;
 import cobweb3d.core.location.LocationDirection;
-import cobweb3d.impl.params.BaseAgentParams;
+import cobweb3d.impl.params.AgentParams;
 
-public class BaseAgent extends Agent {
-    public BaseAgentParams params;
+public class Agent extends BaseAgent {
+    public AgentParams params;
 
     protected transient SimulationInternals simulation;
-    protected transient Environment environment;
+    protected transient BaseEnvironment environment;
 
     private Controller controller;
 
     private long birthTick;
     private long lastAsexTime = 0;
 
-    public BaseAgent(SimulationInternals simulation, int type) {
+    public Agent(SimulationInternals simulation, int type) {
         super(type);
         this.simulation = simulation;
         birthTick = simulation.getTime();
     }
 
-    public void setParams(BaseAgentParams agentParams) {
+    public void setParams(AgentParams agentParams) {
         this.params = agentParams;
     }
 
@@ -35,7 +35,7 @@ public class BaseAgent extends Agent {
     }
 
     @Override
-    protected Agent createChildAsexual(LocationDirection location) {
+    protected BaseAgent createChildAsexual(LocationDirection location) {
         return null;
     }
 
@@ -62,7 +62,7 @@ public class BaseAgent extends Agent {
      * @param pos         spawn position
      * @param agentParams agent parameters
      */
-    public void init(Environment env, LocationDirection pos, BaseAgentParams agentParams, Controller controller) {
+    public void init(BaseEnvironment env, LocationDirection pos, AgentParams agentParams, Controller controller) {
         environment = env;
         setParams(agentParams);
         this.controller = controller;
@@ -77,7 +77,7 @@ public class BaseAgent extends Agent {
         if (pos.direction.equals(Direction.NONE))
             pos = new LocationDirection(pos, simulation.getTopology().getRandomDirection());
         move(pos);
-        simulation.addAgent(this);
+        simulation.registerAgent(this);
     }
 
     public void move(LocationDirection newPos) {
@@ -106,12 +106,14 @@ public class BaseAgent extends Agent {
 
     public void step() {
         LocationDirection destPos = environment.topology.getAdjacent(getPosition());
-        if (canStep(destPos)) {
-            onStepFreeTile(destPos);
-        } else if (environment.hasAgent(destPos)) {
-            onStepBump(environment.getAgent(destPos));
-        } else {
-            // Non-free tile rock, waste, etc.
+        if (!destPos.equals(getPosition())) {
+            if (canStep(destPos)) {
+                onStepFreeTile(destPos);
+            } else if (environment.hasAgent(destPos)) {
+                onStepAgentBump(environment.getAgent(destPos));
+            } else {
+                // Non-free tile rock, waste, etc.
+            }
         }
     }
 
@@ -119,11 +121,30 @@ public class BaseAgent extends Agent {
         move(destPos);
     }
 
-    private void onStepBump(Agent otherAgent) {
+    private void onStepAgentBump(BaseAgent otherAgent) {
+        simulation.getAgentListener().onContact(this, otherAgent);
+        changeEnergy(-params.stepAgentEnergy.getValue());
+        if (canEat(otherAgent)) eat(otherAgent);
+        if (!otherAgent.isAlive()) return;
 
+        // If agents are the same type, try to breed.
+        if (otherAgent instanceof Agent && otherAgent.getType() == getType()) {
+            // TODO:
+        }
     }
 
     private boolean canStep(Location dest) {
         return !environment.hasAgent(dest);
+    }
+
+    private boolean canEat(BaseAgent otherAgent) {
+        return true;
+    }
+
+    private void eat(BaseAgent otherAgent) {
+        int gain = otherAgent.getEnergy(); // TODO: later multiple by factor ?)
+        changeEnergy(gain);
+        simulation.getAgentListener().onConsumeAgent(this, otherAgent);
+        otherAgent.die();
     }
 }

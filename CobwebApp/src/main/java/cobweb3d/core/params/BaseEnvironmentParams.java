@@ -1,10 +1,10 @@
-package cobweb3d.impl.params;
+package cobweb3d.core.params;
 
 import io.ConfDisplayName;
 import io.ConfXMLTag;
 import io.ParameterSerializable;
 
-public class EnvironmentParams implements ParameterSerializable {
+public class BaseEnvironmentParams implements ParameterSerializable {
 
     private static final long serialVersionUID = 2L;
     /**

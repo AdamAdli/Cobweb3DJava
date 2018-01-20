@@ -76,7 +76,7 @@ class CobwebXmlHelper {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setIgnoringElementContentWhitespace(true);
         factory.setIgnoringComments(true);
-        factory.setValidating(true); // TODO: Error?
+        factory.setValidating(false); // TODO: Make this true when a DTD Schema is available.
 
         Document document;
         try {

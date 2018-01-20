@@ -1,7 +1,7 @@
 package cobweb3d.rendering.javafx.renderers;
 
-import cobweb3d.core.agent.Agent;
-import cobweb3d.impl.agent.BaseAgent;
+import cobweb3d.core.agent.BaseAgent;
+import cobweb3d.impl.agent.Agent;
 import cobweb3d.rendering.javafx.mesh.BaselessPyramidMesh;
 import cobweb3d.rendering.javafx.mesh.PyramidMesh;
 import cobwebutil.math.MaterialColor;
@@ -19,10 +19,11 @@ import org.joml.Vector3f;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class AgentRenderer extends Group {
-    private Map<Agent, PyramidMesh> meshCache;
+    private Map<BaseAgent, PyramidMesh> meshCache;
     private Map<Integer, Color> typeColorMap;
     private Map<Integer, Material> typeMaterialMap;
     private ToonRenderer toonRenderer;
@@ -43,24 +44,29 @@ public class AgentRenderer extends Group {
         outRenderer = new OutlineRenderer();
     }
 
-    public void drawAgents(Collection<Agent> agentList) {
+    public void drawAgents(Collection<BaseAgent> agentList) {
         PyramidMesh pyramidMesh;
         if (agentList != null) {
-            for (Agent agent : agentList) {
+            Iterator<BaseAgent> iter = agentList.iterator();
+            while (iter.hasNext()) {
+                BaseAgent agent = iter.next();
                 if (!agent.isAlive()) {
+                    getChildren().remove(meshCache.get(agent));
                     meshCache.remove(agent);
-                    return;
+                    toonRenderer.removeAgent(agent);
+                    outRenderer.removeAgent(agent);
+                    continue;
                 }
                 if (meshCache.containsKey(agent)) {
                     pyramidMesh = meshCache.get(agent);
                     pyramidMesh.getTransforms().clear();
                 } else {
                     pyramidMesh = new PyramidMesh(1, 1);
-                    if (agent instanceof BaseAgent) {
+                    if (agent instanceof Agent) {
                         if (!typeMaterialMap.containsKey(agent.getType())) {
                             PhongMaterial material = new PhongMaterial();
                             if (!typeColorMap.containsKey(agent.getType())) {
-                                String colorString = ((BaseAgent) agent).params.color;
+                                String colorString = ((Agent) agent).params.color;
                                 if (colorString != null) {
                                     Color color = Color.valueOf(colorString);
                                     typeColorMap.put(agent.getType(), color);
@@ -81,12 +87,15 @@ public class AgentRenderer extends Group {
                 outRenderer.drawAgent(agent);
                 toonRenderer.drawAgent(agent);
             }
+            //  for (BaseAgent agent : agentList) {
+
+            // }
         }
         // TODO: To track movement, render a trail and delay the removal of trail meshes?
     }
 
     private class ToonRenderer {
-        private Map<Agent, PyramidMesh> toonMeshCache;
+        private Map<BaseAgent, PyramidMesh> toonMeshCache;
         private PhongMaterial toonMaterial;
 
         public ToonRenderer() {
@@ -94,14 +103,14 @@ public class AgentRenderer extends Group {
             toonMaterial = new PhongMaterial(MaterialColor.black_1000.asJFXColor());
         }
 
-        public void drawAgent(Agent agent) {
+        public void drawAgent(BaseAgent agent) {
+            if (!agent.isAlive()) return;
             PyramidMesh toonMesh;
             if (toonMeshCache.containsKey(agent)) {
                 toonMesh = toonMeshCache.get(agent);
                 toonMesh.getTransforms().clear();
-
             } else {
-                toonMesh = new PyramidMesh(1, 1);
+                toonMesh = new PyramidMesh(1, 0.99f);
                 toonMeshCache.put(agent, toonMesh);
                 getChildren().add(toonMesh);
             }
@@ -112,10 +121,17 @@ public class AgentRenderer extends Group {
                     new Vector3f(agent.position.direction), PyramidMesh.UP);
             toonMesh.getTransforms().add(new Scale(1.05, 1.05, 1.05, 0.5, 0.5, 0.5));
         }
+
+        public void removeAgent(BaseAgent agent) {
+            if (!agent.isAlive()) {
+                getChildren().remove(toonMeshCache.get(agent));
+                toonMeshCache.remove(agent);
+            }
+        }
     }
 
     private class OutlineRenderer {
-        private Map<Agent, BaselessPyramidMesh> outlineMeshCache;
+        private Map<BaseAgent, BaselessPyramidMesh> outlineMeshCache;
         private PhongMaterial outlineMaterial;
 
         public OutlineRenderer() {
@@ -123,7 +139,9 @@ public class AgentRenderer extends Group {
             outlineMaterial = new PhongMaterial(MaterialColor.black_1000.asJFXColor());
         }
 
-        public void drawAgent(Agent agent) {
+        public void drawAgent(BaseAgent agent) {
+            if (!agent.isAlive()) return;
+
             BaselessPyramidMesh outlineMesh;
             if (outlineMeshCache.containsKey(agent)) {
                 outlineMesh = outlineMeshCache.get(agent);
@@ -139,6 +157,13 @@ public class AgentRenderer extends Group {
 
             TransformUtil.TransformNode(outlineMesh, new Vector3f(agent.position), 0.5f, 0.5f, 0.5f,
                     new Vector3f(agent.position.direction), PyramidMesh.UP);
+        }
+
+        public void removeAgent(BaseAgent agent) {
+            if (!agent.isAlive()) {
+                getChildren().remove(outlineMeshCache.get(agent));
+                outlineMeshCache.remove(agent);
+            }
         }
     }
 }

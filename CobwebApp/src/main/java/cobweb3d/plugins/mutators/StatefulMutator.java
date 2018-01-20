@@ -1,6 +1,6 @@
 package cobweb3d.plugins.mutators;
 
-import cobweb3d.core.agent.Agent;
+import cobweb3d.core.agent.BaseAgent;
 import cobweb3d.plugins.states.AgentState;
 
 /**
@@ -16,7 +16,7 @@ public interface StatefulMutator<T extends AgentState> extends AgentMutator {
      * @param agent agent to get state for
      * @return state object for agent, null if state not stored.
      */
-    T getAgentState(Agent agent);
+    T getAgentState(BaseAgent agent);
 
     /**
      * Does the mutator have a state for this agent?
@@ -24,7 +24,7 @@ public interface StatefulMutator<T extends AgentState> extends AgentMutator {
      * @param agent agent
      * @return agent state, null when no state
      */
-    boolean hasAgentState(Agent agent);
+    boolean hasAgentState(BaseAgent agent);
 
     /**
      * Returns the Class of the state object

@@ -1,6 +1,6 @@
 package cobweb3d.rendering.jogl.gl3;
 
-import cobweb3d.core.environment.Environment;
+import cobweb3d.core.environment.BaseEnvironment;
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
 import org.joml.Vector3i;
@@ -16,11 +16,11 @@ public class GridRenderer {
     private Vector3i[] mOuterLineVertexPositions;
     private Vector3i[] mInnerLineVertexPositions;
 
-    public GridRenderer(Environment environment) {
+    public GridRenderer(BaseEnvironment environment) {
         generateGeometry(environment);
     }
 
-    private void generateGeometry(Environment environment) {
+    private void generateGeometry(BaseEnvironment environment) {
         gridWidth = environment.environmentParams.width;
         gridHeight = environment.environmentParams.height;
         gridDepth = environment.environmentParams.depth;
@@ -76,7 +76,7 @@ public class GridRenderer {
         mInnerVertexList.toArray(mInnerLineVertexPositions = new Vector3i[mInnerVertexList.size()]);
     }
 
-    public void draw(Environment environment, GL2 gl) {
+    public void draw(BaseEnvironment environment, GL2 gl) {
         if (environment.environmentParams.width != gridWidth
                 || environment.environmentParams.height != gridHeight
                 || environment.environmentParams.depth != gridDepth)

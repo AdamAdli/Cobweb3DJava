@@ -5,16 +5,16 @@ import cobweb3d.core.Updatable;
 import cobweb3d.core.location.LocationDirection;
 
 /**
- * Basic properties of an Agent
+ * Basic properties of an BaseAgent
  */
-public abstract class Agent implements Updatable {
+public abstract class BaseAgent implements Updatable {
     public LocationDirection position;
     private Integer id;
     private int type;
     private boolean alive = true;
     private int energy;
 
-    public Agent(int type) {
+    public BaseAgent(int type) {
         this.type = type;
     }
 
@@ -23,7 +23,8 @@ public abstract class Agent implements Updatable {
     }
 
     public void setId(Integer id) {
-        if (this.id != null) throw new IllegalStateException("Agent id is already set for " + this.toString() + "!");
+        if (this.id != null)
+            throw new IllegalStateException("BaseAgent id is already set for " + this.toString() + "!");
         else this.id = id;
     }
 
@@ -53,7 +54,7 @@ public abstract class Agent implements Updatable {
     }
 
     /**
-     * @return the location this Agent occupies.
+     * @return the location this BaseAgent occupies.
      */
     public LocationDirection getPosition() {
         return position;
@@ -67,5 +68,5 @@ public abstract class Agent implements Updatable {
         return type;
     }
 
-    protected abstract Agent createChildAsexual(LocationDirection location);
+    protected abstract BaseAgent createChildAsexual(LocationDirection location);
 }

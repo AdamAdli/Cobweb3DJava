@@ -1,6 +1,6 @@
 package cobweb3d.plugins.mutators;
 
-import cobweb3d.core.agent.Agent;
+import cobweb3d.core.agent.BaseAgent;
 
 /**
  * Modifies agents when they are born.
@@ -10,33 +10,33 @@ import cobweb3d.core.agent.Agent;
 public interface SpawnMutator extends AgentMutator {
 
     /**
-     * Agent died.
+     * BaseAgent died.
      *
-     * @param agent Agent that died.
+     * @param agent BaseAgent that died.
      */
-    void onDeath(Agent agent);
+    void onDeath(BaseAgent agent);
 
     /**
-     * Agent spawned by user.
+     * BaseAgent spawned by user.
      *
-     * @param agent Agent spawned.
+     * @param agent BaseAgent spawned.
      */
-    void onSpawn(Agent agent);
+    void onSpawn(BaseAgent agent);
 
     /**
-     * Agent produced asexually
+     * BaseAgent produced asexually
      *
-     * @param agent  Agent produced.
+     * @param agent  BaseAgent produced.
      * @param parent Asexual parent.
      */
-    void onSpawn(Agent agent, Agent parent);
+    void onSpawn(BaseAgent agent, BaseAgent parent);
 
     /**
-     * Agent produced sexually.
+     * BaseAgent produced sexually.
      *
-     * @param agent   Agent produced.
+     * @param agent   BaseAgent produced.
      * @param parent1 First parent.
      * @param parent2 Second parent.
      */
-    void onSpawn(Agent agent, Agent parent1, Agent parent2);
+    void onSpawn(BaseAgent agent, BaseAgent parent1, BaseAgent parent2);
 }

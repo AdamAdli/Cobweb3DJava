@@ -1,8 +1,8 @@
 package cobweb3d.impl;
 
 import cobweb3d.core.params.AgentFoodCountable;
-import cobweb3d.impl.params.AgentParams;
-import cobweb3d.impl.params.EnvironmentParams;
+import cobweb3d.core.params.BaseAgentParams;
+import cobweb3d.core.params.BaseEnvironmentParams;
 import io.ConfDisplayName;
 import io.ConfXMLTag;
 import io.ParameterSerializable;
@@ -23,9 +23,9 @@ public class SimulationConfig implements ParameterSerializable, AgentFoodCountab
     @ConfXMLTag("randomSeed")
     public long randomSeed = 42;
     @ConfXMLTag("Environment")
-    public EnvironmentParams envParams = new EnvironmentParams();
+    public BaseEnvironmentParams envParams = new BaseEnvironmentParams();
     @ConfXMLTag("Agents")
-    public AgentParams agentParams = new AgentParams(this);
+    public BaseAgentParams agentParams = new BaseAgentParams(this);
     private int agentTypeCount = 4;
 
     /**
@@ -39,9 +39,9 @@ public class SimulationConfig implements ParameterSerializable, AgentFoodCountab
     }
 
     /**
-     * Number of Agent types.
+     * Number of BaseAgent types.
      */
-    @ConfDisplayName("Agent types")
+    @ConfDisplayName("BaseAgent types")
     @ConfXMLTag("AgentTypeCount")
     public void setAgentTypes(int count) {
         this.agentTypeCount = count;

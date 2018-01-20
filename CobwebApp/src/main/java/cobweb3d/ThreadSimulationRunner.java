@@ -9,7 +9,7 @@ import cobweb3d.impl.Simulation;
 public class ThreadSimulationRunner extends SimulationRunnerBase {
 
     private long frameSkip = 0;
-    private long delay = 250;
+    private long delay = 32;
     private Thread myThread;
     private Object myThreadMonitor = new Object();
 

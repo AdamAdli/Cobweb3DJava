@@ -2,24 +2,24 @@ package cobweb3d.core.environment;
 
 import cobweb3d.core.SimulationInternals;
 import cobweb3d.core.Updatable;
-import cobweb3d.core.agent.Agent;
+import cobweb3d.core.agent.BaseAgent;
 import cobweb3d.core.location.Direction;
 import cobweb3d.core.location.Location;
+import cobweb3d.core.params.BaseAgentParams;
+import cobweb3d.core.params.BaseEnvironmentParams;
 import cobweb3d.impl.params.AgentParams;
-import cobweb3d.impl.params.BaseAgentParams;
-import cobweb3d.impl.params.EnvironmentParams;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Hashtable;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 3D environment.
  */
-public class Environment implements Updatable {
-    public EnvironmentParams environmentParams;
-    public BaseAgentParams[] agentParams;
+public class BaseEnvironment implements Updatable {
+    public BaseEnvironmentParams environmentParams;
+    public AgentParams[] agentParams;
     public Topology topology;
     public int FLAG_AGENT = 0x01;
     public int FLAG_STONE = 0x02;
@@ -27,20 +27,25 @@ public class Environment implements Updatable {
     /**
      * The implementation uses a hash table to store agents, as we assume there are many more locations than agents.
      */
-    protected Map<Location, Agent> agentTable;
+    protected Map<Location, BaseAgent> agentTable;
     protected byte[][][] flagArray; // TODO
 
-    public Environment(SimulationInternals simulation) {
+    public BaseEnvironment(SimulationInternals simulation) {
         this.simulation = simulation;
-        this.agentTable = new Hashtable<>();
+        this.agentTable = new ConcurrentHashMap<>();
         flagArray = new byte[0][0][0];
     }
 
-    public synchronized void setParams(EnvironmentParams envParams, AgentParams agentParams) throws IllegalArgumentException {
+    public synchronized void setParams(BaseEnvironmentParams envParams, BaseAgentParams agentParams, boolean keepOldAgents) throws IllegalArgumentException {
         this.environmentParams = envParams;
         this.agentParams = agentParams.agentParams;
         this.topology = new Topology(simulation, environmentParams.width, environmentParams.height, envParams.depth, false);
         this.flagArray = new byte[topology.width][topology.height][topology.depth];
+
+        if (keepOldAgents) {
+            killOffgridAgents();
+            // TODO: Load old agents, set them in the flagArray.
+        } else agentTable.clear();
     }
 
     private byte getLocationBits(Location l) {
@@ -100,17 +105,17 @@ public class Environment implements Updatable {
     }
 
     public void clearAgents() {
-        for (Agent a : new ArrayList<>(getAgents())) {
+        for (BaseAgent a : new ArrayList<>(getAgents())) {
             a.die();
         }
         agentTable.clear();
     }
 
-    public Agent getAgent(Location l) {
+    public BaseAgent getAgent(Location l) {
         return agentTable.get(l);
     }
 
-    public synchronized Collection<Agent> getAgents() {
+    public Collection<BaseAgent> getAgents() {
         return agentTable.values();
     }
 
@@ -118,18 +123,18 @@ public class Environment implements Updatable {
         return agentTable.size();
     }
 
-    public final void setAgent(Location l, Agent a) {
+    public final void setAgent(Location l, BaseAgent a) {
         if (a != null) agentTable.put(l, a);
         else agentTable.remove(l);
     }
 
     public synchronized void removeAgent(Location l) {
-        Agent a = getAgent(l);
+        BaseAgent a = getAgent(l);
         if (a != null) a.die();
     }
 
     protected void killOffgridAgents() {
-        for (Agent a : new ArrayList<>(getAgents())) {
+        for (BaseAgent a : new ArrayList<>(getAgents())) {
             Location l = a.getPosition();
             if (l.x >= topology.width || l.x < 0 || l.y >= topology.height || l.y < 0 || l.z >= topology.depth || l.z < 0) {
                 a.die();

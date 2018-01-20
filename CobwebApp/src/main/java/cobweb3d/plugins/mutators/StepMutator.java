@@ -1,6 +1,6 @@
 package cobweb3d.plugins.mutators;
 
-import cobweb3d.core.agent.Agent;
+import cobweb3d.core.agent.BaseAgent;
 import cobweb3d.core.location.Location;
 
 /**
@@ -9,11 +9,11 @@ import cobweb3d.core.location.Location;
 public interface StepMutator extends AgentMutator {
 
     /**
-     * Agent moved.
+     * BaseAgent moved.
      *
-     * @param agent Agent in question.
+     * @param agent BaseAgent in question.
      * @param from  Old Location. Null if agent is being placed in the environment
      * @param to    New location. Null if agent is being removed from the environment
      */
-    void onStep(Agent agent, Location from, Location to);
+    void onStep(BaseAgent agent, Location from, Location to);
 }

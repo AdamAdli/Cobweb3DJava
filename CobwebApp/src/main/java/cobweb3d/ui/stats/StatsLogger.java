@@ -21,8 +21,8 @@ public class StatsLogger implements UpdatableUI {
 
 
     /**
-     * Write to Log file: FoodCount, AgentCount, Average Agent Energy and Agent
-     * Energy at the most recent ticks ( by tick and by Agent/Food preference)
+     * Write to Log file: FoodCount, AgentCount, Average BaseAgent Energy and BaseAgent
+     * Energy at the most recent ticks ( by tick and by BaseAgent/Food preference)
      */
     private void writeLogEntry() {
         if (logStream == null) {
@@ -37,7 +37,7 @@ public class StatsLogger implements UpdatableUI {
             long agentEnergy = statsTracker.countAgentEnergy(i);
             /*
              * System.out
-             * .println("************* Near Agent Count *************");
+             * .println("************* Near BaseAgent Count *************");
              */
 
             logStream.print(statsTracker.getTime());
@@ -66,16 +66,16 @@ public class StatsLogger implements UpdatableUI {
                 logStream.print('\t');
             }
         }
-        // print the TOTAL of FoodCount, AgentCount, Average Agent Energy
-        // and Agent Energy at a certain tick
+        // print the TOTAL of FoodCount, AgentCount, Average BaseAgent Energy
+        // and BaseAgent Energy at a certain tick
         /*
          * System.out
-         * .println("************* Before Agent Count Call *************");
+         * .println("************* Before BaseAgent Count Call *************");
          */
         long agentCountAll = statsTracker.getAgentCount();
         /*
          * System.out
-         * .println("************* After Agent Count Call *************");
+         * .println("************* After BaseAgent Count Call *************");
          */
         long agentEnergyAll = statsTracker.countAgentEnergy();
         logStream.print(statsTracker.getTime());

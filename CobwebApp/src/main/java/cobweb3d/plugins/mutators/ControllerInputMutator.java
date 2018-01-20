@@ -1,6 +1,6 @@
 package cobweb3d.plugins.mutators;
 
-import cobweb3d.core.agent.Agent;
+import cobweb3d.core.agent.BaseAgent;
 import cobweb3d.core.agent.ControllerInput;
 
 public interface ControllerInputMutator extends AgentMutator {
@@ -8,8 +8,8 @@ public interface ControllerInputMutator extends AgentMutator {
     /**
      * Controller has controlled an agent.
      *
-     * @param agent  Agent in question.
+     * @param agent  BaseAgent in question.
      * @param cInput controller input state
      */
-    void onControl(Agent agent, ControllerInput cInput);
+    void onControl(BaseAgent agent, ControllerInput cInput);
 }

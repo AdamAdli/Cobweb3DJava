@@ -10,7 +10,7 @@
     <Environment>
         <Width>5</Width>
         <Height>5</Height>
-        <Depth>5</Depth>
+        <Depth>10</Depth>
         <wrap>true</wrap>
         <randomStones>0</randomStones>
     </Environment>
@@ -18,7 +18,7 @@
     <Agents>
         <AgentParams>
             <Agent id="1">
-                <Agents>20</Agents>
+                <Agents>10</Agents>
                 <Color>#FF4081</Color>
                 <InitEnergy>50</InitEnergy>
                 <StepEnergy>2</StepEnergy>
