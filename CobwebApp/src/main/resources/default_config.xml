@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<COBWEB3Config cobweb-version="2.2014-11-29-pd-377-ga9fbd01-modified (master) 2015-02-02-14:46"
+               config-version="2015-01-14">
+    <AgentTypeCount>1</AgentTypeCount>
+    <randomSeed>0</randomSeed>
+    <keepOldArray>false</keepOldArray>
+    <keepOldAgents>false</keepOldAgents>
+    <spawnNewAgents>true</spawnNewAgents>
+
+    <Environment>
+        <Width>19</Width>
+        <Height>6</Height>
+        <Depth>24</Depth>
+        <wrap>true</wrap>
+        <randomStones>0</randomStones>
+    </Environment>
+
+    <Agents>
+        <AgentParams>
+            <Agent id="1">
+                <Agents>20</Agents>
+                <InitEnergy>50</InitEnergy>
+                <StepEnergy>2</StepEnergy>
+                <BreedEnergy>30</BreedEnergy>
+                <StepRockEnergy>2</StepRockEnergy>
+                <StepAgentEnergy>4</StepAgentEnergy>
+                <!--<TurnRightEnergy>1</TurnRightEnergy>
+                <TurnLeftEnergy>1</TurnLeftEnergy>-->
+                <sexualBreedChance>1.0</sexualBreedChance>
+                <asexualBreedChance>1.0</asexualBreedChance>
+                <agingMode>false</agingMode>
+                <agingLimit>0</agingLimit>
+            </Agent>
+        </AgentParams>
+    </Agents>
+</COBWEB3Config>

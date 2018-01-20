@@ -1,0 +1,80 @@
+/** Kotlin initialization */
+buildscript {
+    ext.kotlin_version = '1.1.1'
+    repositories {
+        jcenter()
+        mavenCentral() //maven { url 'http://dl.bintray.com/kotlin/kotlin-eap' }
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+apply plugin: 'kotlin'
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+/** Java/Application initialization */
+apply plugin: 'java'
+apply plugin: 'application'
+
+/** App Id, Version, Entry point, Java Version */
+group 'ca.cobweb'
+version '1.0-SNAPSHOT'
+mainClassName = 'cobweb3d.CobwebApplicationRunner'
+//mainClassName = 'cobweb3d.rendering.javafx.test.InlineModelViewer'
+sourceCompatibility = 1.8
+
+/** Library Dependencies */
+project.ext.joglVersion = "2.3.2"
+project.ext.jomlVersion = "1.9.4"
+
+repositories {
+    jcenter()
+    //maven { url 'http://dl.bintray.com/kotlin/kotlin-eap' }
+    mavenCentral()
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    compile project(':CobwebUtil')
+
+    compile "org.jogamp.gluegen:gluegen-rt:${joglVersion}"
+    compile "org.jogamp.jogl:jogl-all:${joglVersion}"
+    runtime "org.jogamp.gluegen:gluegen-rt:${joglVersion}:natives-android-aarch64"
+    runtime "org.jogamp.gluegen:gluegen-rt:${joglVersion}:natives-android-armv6"
+    runtime "org.jogamp.gluegen:gluegen-rt:${joglVersion}:natives-linux-amd64"
+    runtime "org.jogamp.gluegen:gluegen-rt:${joglVersion}:natives-linux-armv6"
+    runtime "org.jogamp.gluegen:gluegen-rt:${joglVersion}:natives-linux-armv6hf"
+    runtime "org.jogamp.gluegen:gluegen-rt:${joglVersion}:natives-linux-i586"
+    runtime "org.jogamp.gluegen:gluegen-rt:${joglVersion}:natives-macosx-universal"
+    runtime "org.jogamp.gluegen:gluegen-rt:${joglVersion}:natives-solaris-amd64"
+    runtime "org.jogamp.gluegen:gluegen-rt:${joglVersion}:natives-solaris-i586"
+    runtime "org.jogamp.gluegen:gluegen-rt:${joglVersion}:natives-windows-amd64"
+    runtime "org.jogamp.gluegen:gluegen-rt:${joglVersion}:natives-windows-i586"
+
+    runtime "org.jogamp.jogl:jogl-all:${joglVersion}:natives-android-aarch64"
+    runtime "org.jogamp.jogl:jogl-all:${joglVersion}:natives-android-armv6"
+    runtime "org.jogamp.jogl:jogl-all:${joglVersion}:natives-linux-amd64"
+    runtime "org.jogamp.jogl:jogl-all:${joglVersion}:natives-linux-armv6"
+    runtime "org.jogamp.jogl:jogl-all:${joglVersion}:natives-linux-armv6hf"
+    runtime "org.jogamp.jogl:jogl-all:${joglVersion}:natives-linux-i586"
+    runtime "org.jogamp.jogl:jogl-all:${joglVersion}:natives-macosx-universal"
+    runtime "org.jogamp.jogl:jogl-all:${joglVersion}:natives-solaris-amd64"
+    runtime "org.jogamp.jogl:jogl-all:${joglVersion}:natives-solaris-i586"
+    runtime "org.jogamp.jogl:jogl-all:${joglVersion}:natives-windows-amd64"
+    runtime "org.jogamp.jogl:jogl-all:${joglVersion}:natives-windows-i586"
+
+    // Math Library
+    compile "org.joml:joml:${jomlVersion}"
+
+    compile 'org.fxyz3d:fxyz3d:0.1.1'
+}

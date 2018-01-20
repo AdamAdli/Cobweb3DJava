@@ -1,0 +1,60 @@
+package cobweb3d.impl.ai;
+
+import cobweb3d.core.agent.Agent;
+import cobweb3d.core.agent.Controller;
+import cobweb3d.core.agent.ControllerListener;
+import cobweb3d.impl.agent.BaseAgent;
+import util.RandomNoGenerator;
+
+public class SimpleController implements Controller {
+
+    RandomNoGenerator random;
+
+    public SimpleController() {
+        random = new RandomNoGenerator();
+    }
+
+    @Override
+    public void controlAgent(Agent agent, ControllerListener inputCallback) {
+        if (agent instanceof BaseAgent) {
+            BaseAgent theAgent = (BaseAgent) agent;
+            if (random.nextFloat() > theAgent.params.asexualBreedChance.getValue()) {
+                // Flag to reproduce!
+            }
+
+            int action = random.nextIntRange(1, 7);
+            //      System.out.println(action);
+            //   theAgent.turnLeft();
+            //   theAgent.step();
+            switch (action) {
+                case 1:
+                    theAgent.turnLeft();
+                    break;
+                case 2:
+                    theAgent.turnRight();
+                    break;
+                case 3:
+                    theAgent.turnUp();
+                    break;
+                case 4:
+                    theAgent.turnDown();
+                    break;
+                case 5:
+                case 6:
+                case 7:
+                    theAgent.step();
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public Controller createChildAsexual() {
+        return null;
+    }
+
+    @Override
+    public Controller createChildSexual(Controller parent2) {
+        return null;
+    }
+}
