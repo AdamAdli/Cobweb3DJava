@@ -2,9 +2,12 @@ package cobweb3d.io;
 
 import cobweb3d.impl.SimulationConfig;
 import io.ParameterSerializer;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import java.io.InputStream;
+import java.io.OutputStream;
 
 
 public class Cobweb3Serializer {
@@ -31,6 +34,7 @@ public class Cobweb3Serializer {
      * @see javax.xml.parsers.DocumentBuilder
      */
     public static SimulationConfig loadFile(InputStream file) throws IllegalArgumentException {
+        if (file == null) return null;
         Node root = CobwebXmlHelper.openDocument(file);
         SimulationConfig simConfig = new SimulationConfig();
         ParameterSerializer parameterSerializer = new ParameterSerializer(null);
@@ -42,5 +46,20 @@ public class Cobweb3Serializer {
         // TODO: conf.setAgentTypes(conf.getAgentTypes());
 
         return simConfig;
+    }
+
+
+    /**
+     * Writes the information stored in this tree to an XML file, conforming to the rules of our spec.
+     */
+    public void saveConfig(SimulationConfig conf, OutputStream stream) {
+        Element root = CobwebXmlHelper.createDocument("COBWEB2Config", "config");
+        Document d = root.getOwnerDocument();
+        ParameterSerializer parameterSerializer = new ParameterSerializer(null);
+        root.setAttribute("config-version", "2018-01-01");
+
+        parameterSerializer.save(conf, root, d);
+
+        CobwebXmlHelper.writeDocument(stream, d);
     }
 }

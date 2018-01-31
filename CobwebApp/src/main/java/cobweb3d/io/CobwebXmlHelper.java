@@ -4,7 +4,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
-import util.Versionator;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -36,7 +35,7 @@ class CobwebXmlHelper {
             throw new RuntimeException(ex);
         }
         Element root = d.createElementNS("http://cobweb.ca/schema/cobweb2/" + rootSchema, rootName);
-        root.setAttribute("cobweb-version", Versionator.getVersion());
+        // TODO: root.setAttribute("cobweb-version", Versionator.getVersion());
         d.appendChild(root);
 
         return root;

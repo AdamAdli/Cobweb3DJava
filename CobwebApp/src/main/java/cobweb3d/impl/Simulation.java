@@ -92,6 +92,9 @@ public class Simulation implements SimulationInternals, SimulationInterface {
     }
 
     public void loadNewAgents() {
+        mAgents.clear(); // TODO: clear renderer..
+        mNextAgentId = 0;
+        environment.clearAgents();
         for (int i = 0; i < environment.agentParams.length; i++) {
             for (int j = 0; j < environment.agentParams[i].initialAgents; j++) {
                 Location location;

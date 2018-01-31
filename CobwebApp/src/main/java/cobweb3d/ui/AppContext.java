@@ -4,7 +4,8 @@ import cobweb3d.impl.SimulationConfig;
 
 public interface AppContext {
 
-    void openFileDialog();
+    void showOpenFileDialog();
+    // void showSaveFileDialog();
 
     void openFile(SimulationConfig config, boolean continuation);
 
