@@ -73,6 +73,22 @@ public class FXSimulationRenderer implements ISimulationRenderer {
     }
 
     @Override
+    public void refreshSimulation() {
+        if (jfxPanel == null) return;
+        animationTimer.stop(); // TODO: Should contol the animationTimer?
+        Platform.runLater(() -> {
+            if (rootGroup != null) {
+                if (gridRenderer != null) {
+                    gridRenderer.generateGeometry(simulation.environment);
+                    gridRenderer.focusCamera(camera);
+                }
+                if (agentRenderer != null) agentRenderer.clearCache();
+                animationTimer.start();
+            }
+        });
+    }
+
+    @Override
     public void bindSimulation(Simulation simulation) {
         this.simulation = simulation;
         if (jfxPanel == null) return;

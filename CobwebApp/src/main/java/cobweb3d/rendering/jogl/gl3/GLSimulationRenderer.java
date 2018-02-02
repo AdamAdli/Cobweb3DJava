@@ -39,6 +39,11 @@ public class GLSimulationRenderer implements ISimulationRenderer, GLEventListene
         simulationRunner.addUIComponent(this);
     }
 
+    @Override
+    public void refreshSimulation() {
+        // TODO: Stub.
+    }
+
     public void bindSimulation(Simulation simulation) {
         this.simulation = simulation;
         this.mGridRenderer = new GridRenderer(simulation.environment);

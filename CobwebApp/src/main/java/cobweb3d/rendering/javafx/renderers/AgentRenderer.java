@@ -91,7 +91,15 @@ public class AgentRenderer extends Group {
 
             // }
         }
-        // TODO: To track movement, render a trail and delay the removal of trail meshes?
+        // TODO: To track movement, render a trail and delay the removal of trail meshes.
+    }
+
+    public void clearCache() {
+        meshCache.clear();
+        typeColorMap.clear();
+        typeMaterialMap.clear();
+        outRenderer.clearCache();
+        toonRenderer.clearCache();
     }
 
     private class ToonRenderer {
@@ -127,6 +135,10 @@ public class AgentRenderer extends Group {
                 getChildren().remove(toonMeshCache.get(agent));
                 toonMeshCache.remove(agent);
             }
+        }
+
+        public void clearCache() {
+            toonMeshCache.clear();
         }
     }
 
@@ -164,6 +176,10 @@ public class AgentRenderer extends Group {
                 getChildren().remove(outlineMeshCache.get(agent));
                 outlineMeshCache.remove(agent);
             }
+        }
+
+        public void clearCache() {
+            outlineMeshCache.clear();
         }
     }
 }

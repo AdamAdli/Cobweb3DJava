@@ -6,6 +6,7 @@ buildscript {
         mavenCentral() //maven { url 'http://dl.bintray.com/kotlin/kotlin-eap' }
     }
     dependencies {
+        // classpath 'me.tatarka:gradle-retrolambda:3.7.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -17,6 +18,13 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 
+/*apply plugin: 'me.tatarka.retrolambda'
+retrolambda {
+    javaVersion JavaVersion.VERSION_1_7
+    //jvmArgs '-arg1', '-arg2'
+    defaultMethods true
+    incremental true
+}*/
 /** Java/Application initialization */
 apply plugin: 'java'
 apply plugin: 'application'
@@ -26,8 +34,10 @@ group 'ca.cobweb'
 version '1.0-SNAPSHOT'
 
 mainClassName = 'cobweb3d.CobwebApplicationRunner'
-applicationDefaultJvmArgs = ["-Dsun.java2d.opengl=True"]
-
+//applicationDefaultJvmArgs = ["-Dsun.java2d.opengl=True"]
+applicationDefaultJvmArgs = ["-Dprism.verbose=true", "-Dcom.sun.javafx.experimental.embedded.3d=true"//,
+                             //"-Dprism.order=es2,es1,sw", "-Dprism.vsync=true",
+                             , "-Dprism.forceGPU=true"]
 sourceCompatibility = 1.8
 
 /** Library Dependencies */

@@ -54,7 +54,6 @@ public class CobwebApplication extends JFrame implements AppContext {
 
     public CobwebApplication() {
         super(WINDOW_TITLE);
-        setLayout(new BorderLayout());
 
         logger.info("Welcome to Cobweb 3D");
         logger.info("JVM Memory: " + Runtime.getRuntime().maxMemory() / 1024 + "KB");
@@ -69,14 +68,13 @@ public class CobwebApplication extends JFrame implements AppContext {
 
         setLayout(new BorderLayout());
         setSize(580, 650);
-
         setJMenuBar(makeMenuBar());
-        // Center window on screen
+        //add(makeMenuBar(), BorderLayout.AFTER_LINE_ENDS);
         setLocationRelativeTo(null);
-
         logger.info("Initializing simulation renderer: " + FXSimulationRenderer.class.getSimpleName());
         simulationRenderer = new FXSimulationRenderer(simRunner);
-        getContentPane().add(simulationRenderer.getBackbuffer(), BorderLayout.CENTER);
+        add(simulationRenderer.getBackbuffer(), BorderLayout.CENTER);
+
         setVisible(true);
     }
 
@@ -184,7 +182,7 @@ public class CobwebApplication extends JFrame implements AppContext {
         validate();
     }
 
-    @Override
+  //  @Override
     public void showOpenFileDialog() {
 
     }
@@ -227,7 +225,7 @@ public class CobwebApplication extends JFrame implements AppContext {
                 playButton.setText("Play");
             }
         });
-        jMenuBar.add(playButton);
+      //  jMenuBar.add(playButton);
         return jMenuBar;
     }
 }

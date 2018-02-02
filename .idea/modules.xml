@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Cobweb3D.iml" filepath="$PROJECT_DIR$/.idea/modules/Cobweb3D.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/CobwebApp.iml" filepath="$PROJECT_DIR$/.idea/modules/CobwebApp.iml" group="CobwebApp" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/CobwebApp/CobwebApp.iml" filepath="$PROJECT_DIR$/.idea/modules/CobwebApp/CobwebApp.iml" group="CobwebApp" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/CobwebApp/CobwebApp_main.iml" filepath="$PROJECT_DIR$/.idea/modules/CobwebApp/CobwebApp_main.iml" group="CobwebApp" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/CobwebApp/CobwebApp_test.iml" filepath="$PROJECT_DIR$/.idea/modules/CobwebApp/CobwebApp_test.iml" group="CobwebApp" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/CobwebUtil/CobwebUtil.iml" filepath="$PROJECT_DIR$/.idea/modules/CobwebUtil/CobwebUtil.iml" group="CobwebUtil" />
