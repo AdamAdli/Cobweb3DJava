@@ -87,9 +87,6 @@ public class AgentRenderer extends Group {
                 outRenderer.drawAgent(agent);
                 toonRenderer.drawAgent(agent);
             }
-            //  for (BaseAgent agent : agentList) {
-
-            // }
         }
         // TODO: To track movement, render a trail and delay the removal of trail meshes.
     }

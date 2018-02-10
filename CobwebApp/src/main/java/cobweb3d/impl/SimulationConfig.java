@@ -1,18 +1,22 @@
 package cobweb3d.impl;
 
-import cobweb3d.core.params.AgentFoodCountable;
-import cobweb3d.core.params.BaseAgentParams;
-import cobweb3d.core.params.BaseEnvironmentParams;
+import cobweb3d.core.params.*;
+import cobweb3d.impl.ai.SimpleController;
+import cobweb3d.impl.ai.SimpleControllerParams;
+import cobweb3d.plugins.reproduction.ReproductionParams;
 import io.ConfDisplayName;
+import io.ConfSaveInstanceClass;
 import io.ConfXMLTag;
 import io.ParameterSerializable;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Used to organize, modify, and access simulation parameters.
  */
-public class SimulationConfig implements ParameterSerializable, AgentFoodCountable {
+public class SimulationConfig implements ParameterSerializable, AgentFoodCountable, SimulationParams {
 
     private static final long serialVersionUID = 2L;
     public String fileName = "default simulation";
@@ -27,6 +31,9 @@ public class SimulationConfig implements ParameterSerializable, AgentFoodCountab
     @ConfXMLTag("Agents")
     public BaseAgentParams agentParams = new BaseAgentParams(this);
     private int agentTypeCount = 4;
+    @ConfSaveInstanceClass
+    @ConfXMLTag("ControllerConfig")
+    public ControllerParams controllerParams = new SimpleControllerParams(this);
 
     /**
      * Creates the default Cobweb simulation parameters.
@@ -48,8 +55,26 @@ public class SimulationConfig implements ParameterSerializable, AgentFoodCountab
         agentCountChanged();
     }
 
+    @ConfXMLTag("Reproduction")
+    public ReproductionParams reproductionParams = new ReproductionParams(this);
+    private String controllerName = SimpleController.class.getName();
+
     private void agentCountChanged() {
-        // Stub.
+        for (Field f : this.getClass().getFields()) {
+            if (ResizableParam.class.isAssignableFrom(f.getType())) {
+                ResizableParam param;
+                try {
+                    param = (ResizableParam) f.get(this);
+                    param.resize(this);
+                } catch (IllegalAccessException ex) {
+                    throw new RuntimeException("Something broke in agentCountChanged()", ex);
+                }
+            }
+        }
+    }
+
+    public String getControllerName() {
+        return controllerName;
     }
 
     public boolean isContinuation() {
@@ -75,5 +100,34 @@ public class SimulationConfig implements ParameterSerializable, AgentFoodCountab
             }
         }
         return null;
+    }
+
+    /**
+     * Class name of the controller object.
+     */
+    @ConfDisplayName("Controller type")
+    @ConfXMLTag("ControllerName")
+    public void setControllerName(String name) {
+        controllerName = name;
+        try {
+            controllerParams = (ControllerParams) Class.forName(controllerName + "Params")
+                    .getConstructor(SimulationParams.class)
+                    .newInstance((SimulationParams) this);
+        } catch (Exception ex) {
+            try {
+                controllerParams = (ControllerParams) Class.forName(controllerName + ".Params")
+                        .getConstructor(SimulationParams.class)
+                        .newInstance((SimulationParams) this);
+            } catch (Exception x) {
+                throw new RuntimeException("Could not set up controller", ex);
+            }
+        }
+    }
+
+    @Override
+    public List<String> getPluginParameters() {
+        List<String> result = new ArrayList<String>();
+        // TODO: Add AI plugin state keys.
+        return result;
     }
 }

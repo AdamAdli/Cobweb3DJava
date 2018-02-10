@@ -284,7 +284,7 @@ public enum MaterialColor {
     }
 
     public java.awt.Color asAWTColor() {
-        if (awtColorCache == null) jfxColorCache = new HashMap<>();
+        if (awtColorCache == null) awtColorCache = new HashMap<>();
         else if (awtColorCache.containsKey(this)) return awtColorCache.get(this);
         awtColorCache.put(this, java.awt.Color.decode(mStringColor));
         return awtColorCache.get(this);

@@ -5,7 +5,6 @@ import cobweb3d.core.params.ResizableParam;
 import io.CloneHelper;
 import io.ConfDisplayName;
 import io.ConfXMLTag;
-import util.MutatableFloat;
 import util.MutatableInt;
 
 public class AgentParams implements ResizableParam {
@@ -40,13 +39,6 @@ public class AgentParams implements ResizableParam {
     public MutatableInt stepEnergy = new MutatableInt(1);
 
     /**
-     * Amount of energy used to breed.
-     */
-    @ConfDisplayName("Breed energy")
-    @ConfXMLTag("BreedEnergy")
-    public MutatableInt breedEnergy = new MutatableInt(60);
-
-    /**
      * Energy lost bumping into a rock/wall.
      */
     @ConfDisplayName("Rock bump energy")
@@ -59,20 +51,6 @@ public class AgentParams implements ResizableParam {
     @ConfDisplayName("BaseAgent bump energy")
     @ConfXMLTag("StepAgentEnergy")
     public MutatableInt stepAgentEnergy = new MutatableInt(2);
-
-    /**
-     * Chance that bumping into another agent will result in sexual breeding.
-     */
-    @ConfDisplayName("Sexual breed chance")
-    @ConfXMLTag("sexualBreedChance")
-    public MutatableFloat sexualBreedChance = new MutatableFloat(1);
-
-    /**
-     * Chance an agent breeds asexually at a time step.
-     */
-    @ConfDisplayName("Asexual breed chance")
-    @ConfXMLTag("asexualBreedChance")
-    public MutatableFloat asexualBreedChance = new MutatableFloat(0);
 
     /**
      * Enable aging mode.

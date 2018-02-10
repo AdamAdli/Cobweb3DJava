@@ -1,5 +1,6 @@
 package cobweb3d.core.params;
 
+import cobweb3d.core.agent.BaseAgent;
 import io.ConfList;
 import io.ConfXMLTag;
 import io.ParameterSerializable;
@@ -49,5 +50,21 @@ public abstract class PerAgentParams<T extends ParameterSerializable> implements
     @Override
     public T[] getPerTypeParams() {
         return agentParams;
+    }
+
+    public T getAgentParams(BaseAgent agent) {
+        int type = agent.getType();
+        if (type >= 0 && type <= agentParams.length) return agentParams[type];
+        else return null;
+    }
+
+    /**
+     * Wrapper for getAgentParams(BaseAgent agent).
+     *
+     * @param agent
+     * @return
+     */
+    public T of(BaseAgent agent) {
+        return getAgentParams(agent);
     }
 }

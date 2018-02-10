@@ -51,6 +51,9 @@ repositories {
     maven {
         url "https://oss.sonatype.org/content/repositories/snapshots/"
     }
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 dependencies {
@@ -58,6 +61,7 @@ dependencies {
     // testCompile group: 'junit', name: 'junit', version: '4.12'
 
     implementation project(':CobwebUtil')
+    implementation name: 'material-ui-swing'
 
     implementation "org.jogamp.gluegen:gluegen-rt:${joglVersion}"
     implementation "org.jogamp.jogl:jogl-all:${joglVersion}"

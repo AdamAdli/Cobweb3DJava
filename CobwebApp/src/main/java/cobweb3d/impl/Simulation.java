@@ -4,21 +4,20 @@ import cobweb3d.core.SimulationInternals;
 import cobweb3d.core.agent.AgentListener;
 import cobweb3d.core.agent.AgentSimilarityCalculator;
 import cobweb3d.core.agent.BaseAgent;
-import cobweb3d.core.agent.ControllerInput;
-import cobweb3d.core.entity.Cause;
 import cobweb3d.core.environment.BaseEnvironment;
 import cobweb3d.core.environment.Topology;
 import cobweb3d.core.location.Location;
 import cobweb3d.core.location.LocationDirection;
 import cobweb3d.impl.agent.Agent;
-import cobweb3d.impl.ai.SimpleController;
+import cobweb3d.plugins.MutatorListener;
 import cobweb3d.plugins.StateParameter;
+import cobweb3d.plugins.StatePlugin;
+import cobweb3d.plugins.reproduction.ReproductionMutator;
+import cobweb3d.plugins.states.AgentState;
 import cobweb3d.ui.SimulationInterface;
 import util.RandomNoGenerator;
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Simulation implements SimulationInternals, SimulationInterface {
 
@@ -27,19 +26,15 @@ public class Simulation implements SimulationInternals, SimulationInterface {
     private RandomNoGenerator random;
     private long time = 0;
     private int mNextAgentId = 0;
-    private List<BaseAgent> mAgents;
+    public MutatorListener mutatorListener = new MutatorListener();
+    private volatile List<BaseAgent> mAgents;
 
     public Simulation() {
         environment = new BaseEnvironment(this);
         mAgents = new LinkedList<>();
     }
 
-    public void load(SimulationConfig simConfig) {
-        random = simConfig.randomSeed == 0 ? new RandomNoGenerator() : new RandomNoGenerator(simConfig.randomSeed);
-        simulationConfig = simConfig;
-        environment.setParams(simConfig.envParams, simConfig.agentParams, false);
-        loadNewAgents();
-    }
+    private ReproductionMutator reproductionMutator;
 
     @Override
     public long getTime() {
@@ -60,30 +55,14 @@ public class Simulation implements SimulationInternals, SimulationInterface {
         return environment != null ? environment.topology : null;
     }
 
-    @Override
-    public void step() {
-        environment.update();
-        synchronized (environment) {
-            for (BaseAgent agent : new LinkedList<>(mAgents)) {
-                agent.update();
-
-                if (!agent.isAlive()) mAgents.remove(agent);
-            }
-        }
-        time++;
-    }
+    private Map<String, StateParameter> aiStateMap = new LinkedHashMap<String, StateParameter>();
 
     public synchronized Agent addAgent(Location location, int agentType) {
         if (environment.isOccupied(location)) return null;
         else return spawnAgent(location, agentType);
     }
 
-    public Agent spawnAgent(Location location, int agentType) {
-        Agent agent = (Agent) newAgent(agentType);
-        agent.init(environment, new LocationDirection(location, getTopology().getRandomDirection()),
-                environment.agentParams[agentType], new SimpleController());
-        return agent;
-    }
+    private List<StatePlugin> aiStatePlugins = new LinkedList<StatePlugin>();
 
     @Override
     public void registerAgent(BaseAgent agent) {
@@ -116,9 +95,51 @@ public class Simulation implements SimulationInternals, SimulationInterface {
         return new Agent(this, type);
     }
 
+    public void load(SimulationConfig simConfig) {
+        random = simConfig.randomSeed == 0 ? new RandomNoGenerator() : new RandomNoGenerator(simConfig.randomSeed);
+        simulationConfig = simConfig;
+        environment.setParams(simConfig.envParams, simConfig.agentParams, false);
+        loadNewAgents();
+        mNextAgentId = 0;
+        // TODO: ? time = 0;
+        reproductionMutator = new ReproductionMutator();
+        mutatorListener.addMutator(reproductionMutator);
+
+        reproductionMutator.setParams(this, simConfig.reproductionParams, simConfig.getAgentTypes());
+    }
+
+    @Override
+    public void step() {
+        environment.update();
+        synchronized (environment) {
+            for (BaseAgent agent : new LinkedList<>(mAgents)) {
+                agent.update();
+                mutatorListener.onUpdate(agent);
+                if (!agent.isAlive()) mAgents.remove(agent);
+            }
+        }
+        time++;
+    }
+
+    public Agent spawnAgent(Location location, int agentType) {
+        Agent agent = (Agent) newAgent(agentType);
+        agent.init(environment, new LocationDirection(location, getTopology().getRandomDirection()),
+                environment.agentParams[agentType], simulationConfig.controllerParams.createController(this, agentType));
+        return agent;
+    }
+
     @Override
     public StateParameter getStateParameter(String name) {
-        return null;
+        return aiStateMap.get(name);
+    }
+
+    private void setupAIStatePlugins() {
+        aiStateMap.clear();
+        for (StatePlugin plugin : aiStatePlugins) {
+            for (StateParameter param : plugin.getParameters()) {
+                aiStateMap.put(param.getName(), param);
+            }
+        }
     }
 
     @Override
@@ -127,67 +148,27 @@ public class Simulation implements SimulationInternals, SimulationInterface {
     }
 
     @Override
-    public AgentListener getAgentListener() {
-        return new AgentListener() {
-            @Override
-            public void onContact(BaseAgent bumper, BaseAgent bumpee) {
-
-            }
-
-            @Override
-            public void onStep(BaseAgent agent, LocationDirection from, LocationDirection to) {
-
-            }
-
-            @Override
-            public void onSpawn(BaseAgent agent, BaseAgent parent1, BaseAgent parent2) {
-
-            }
-
-            @Override
-            public void onSpawn(BaseAgent agent, BaseAgent parent) {
-
-            }
-
-            @Override
-            public void onSpawn(BaseAgent agent) {
-
-            }
-
-            @Override
-            public void onDeath(BaseAgent agent) {
-
-            }
-
-            @Override
-            public void onConsumeFood(BaseAgent agent, int foodType) {
-
-            }
-
-            @Override
-            public void onConsumeAgent(BaseAgent agent, BaseAgent food) {
-
-            }
-
-            @Override
-            public void onEnergyChange(BaseAgent agent, int delta, Cause cause) {
-
-            }
-
-            @Override
-            public void onUpdate(BaseAgent agent) {
-
-            }
-
-            @Override
-            public void beforeControl(BaseAgent agent, ControllerInput cInput) {
-
-            }
-        };
+    public Set<String> getStatePluginKeys() {
+        return aiStateMap.keySet();
     }
 
     @Override
-    public Collection<String> getStatePluginKeys() {
-        return null;
+    public AgentListener getAgentListener() {
+        return mutatorListener;
+    }
+
+    /**
+     * Checks whether given AgentState can be used in the current simulation configuration
+     *
+     * @param type  specific Class of AgentState
+     * @param value value of AgentState
+     * @return true if AgentState supported in current configuration
+     */
+    public <T extends AgentState> boolean supportsState(Class<T> type, T value) {
+        return mutatorListener.supportsState(type, value);
+    }
+
+    public List<BaseAgent> getAgents() {
+        return mAgents;
     }
 }

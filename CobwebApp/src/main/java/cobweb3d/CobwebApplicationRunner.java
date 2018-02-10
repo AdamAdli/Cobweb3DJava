@@ -4,7 +4,6 @@ import cobweb3d.impl.Simulation;
 import cobweb3d.io.Cobweb3Serializer;
 import util.ResourceRetriever;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -135,6 +134,12 @@ public class CobwebApplicationRunner {
 
         final SimulationRunner simRunner;
         if (visible) {
+            /* TODO: Experimental
+            try {
+                UIManager.setLookAndFeel(new MaterialLookAndFeel());
+            } catch (UnsupportedLookAndFeelException ex) {
+
+            }*/
             CobwebApplication CA = new CobwebApplication();
             // TODO: CA.openFile(defaultconf);
             try {

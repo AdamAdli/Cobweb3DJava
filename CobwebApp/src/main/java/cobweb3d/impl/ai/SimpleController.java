@@ -18,9 +18,6 @@ public class SimpleController implements Controller {
     public void controlAgent(BaseAgent agent, ControllerListener inputCallback) {
         if (agent instanceof Agent) {
             Agent theAgent = (Agent) agent;
-            if (random.nextFloat() > theAgent.params.asexualBreedChance.getValue()) {
-                // Flag to reproduce!
-            }
 
             int action = random.nextIntRange(1, 10);
 
@@ -51,11 +48,11 @@ public class SimpleController implements Controller {
 
     @Override
     public Controller createChildAsexual() {
-        return null;
+        return new SimpleController();
     }
 
     @Override
     public Controller createChildSexual(Controller parent2) {
-        return null;
+        return new SimpleController();
     }
 }

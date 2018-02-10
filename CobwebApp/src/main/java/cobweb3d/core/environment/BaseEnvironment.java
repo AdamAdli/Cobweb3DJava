@@ -101,7 +101,13 @@ public class BaseEnvironment implements Updatable {
 
     public boolean hasAgent(Location l) {
         if (l == null) return false;
-        return agentTable != null && agentTable.containsKey(l);
+        if (agentTable != null && agentTable.containsKey(l)) {
+            BaseAgent agent = agentTable.get(l);
+            if (!agent.isAlive()) {
+                agentTable.remove(l);
+                return false;
+            } else return true;
+        } else return false;
     }
 
     public void clearAgents() {

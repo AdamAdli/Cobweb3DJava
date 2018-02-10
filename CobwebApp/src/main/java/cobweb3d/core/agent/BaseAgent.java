@@ -2,6 +2,7 @@ package cobweb3d.core.agent;
 
 
 import cobweb3d.core.Updatable;
+import cobweb3d.core.entity.Cause;
 import cobweb3d.core.location.LocationDirection;
 
 /**
@@ -47,9 +48,18 @@ public abstract class BaseAgent implements Updatable {
      * Changes the agent's energy level.
      *
      * @param delta Energy change delta, positive means agent gains energy, negative means it loses
-     * @param cause Why the energy changed.
      */
     public void changeEnergy(int delta) {
+        changeEnergy(delta, null);
+    }
+
+    /**
+     * Changes the agent's energy level.
+     *
+     * @param delta Energy change delta, positive means agent gains energy, negative means it loses
+     * @param cause Why the energy changed.
+     */
+    public void changeEnergy(int delta, Cause cause) {
         energy += delta;
     }
 
@@ -68,5 +78,7 @@ public abstract class BaseAgent implements Updatable {
         return type;
     }
 
-    protected abstract BaseAgent createChildAsexual(LocationDirection location);
+    public abstract BaseAgent createChildAsexual(LocationDirection location);
+
+    public abstract BaseAgent createChildSexual(LocationDirection location, BaseAgent otherParent);
 }

@@ -3,8 +3,8 @@ package cobweb3d.rendering.javafx;
 import cobweb3d.SimulationRunnerBase;
 import cobweb3d.impl.Simulation;
 import cobweb3d.rendering.ISimulationRenderer;
-import cobweb3d.rendering.javafx.renderers.AgentRenderer;
 import cobweb3d.rendering.javafx.renderers.GridRenderer;
+import cobweb3d.rendering.javafx.renderers.UncachedAgentRenderer;
 import cobwebutil.math.MaterialColor;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
@@ -30,7 +30,7 @@ public class FXSimulationRenderer implements ISimulationRenderer {
     private GridRenderer gridRenderer;
     private final ChangeListener<Number> resizeListener = (observable, oldValue, newValue) -> resizeRendering((int) renderScene.getParent().getScene().getWidth(),
             (int) renderScene.getParent().getScene().getHeight());
-    private AgentRenderer agentRenderer;
+    private UncachedAgentRenderer agentRenderer;
 
     AnimationTimer animationTimer;
 
@@ -53,8 +53,12 @@ public class FXSimulationRenderer implements ISimulationRenderer {
             @Override
             public void handle(long now) {
                 if (rootGroup != null) {
+                    // TODO: FIX FUNCTIONALITY! POOR PERFORMANCE WITH THIS FIX.
+                    rootGroup.getChildren().remove(agentRenderer);
+                    agentRenderer = new UncachedAgentRenderer();
+                    rootGroup.getChildren().add(agentRenderer);
                     if (simulation != null && simulation.environment != null)
-                        agentRenderer.drawAgents(simulation.environment.getAgents());
+                        agentRenderer.drawAgents(simulation.getAgents());
                 }
             }
         };
@@ -62,7 +66,7 @@ public class FXSimulationRenderer implements ISimulationRenderer {
 
     private SubScene initRenderScene() {
         gridRenderer = new GridRenderer(simulation.environment);
-        agentRenderer = new AgentRenderer();
+        agentRenderer = new UncachedAgentRenderer();
         rootGroup = new Group(gridRenderer, agentRenderer);
         camera = new SimCamera();
 
@@ -110,19 +114,13 @@ public class FXSimulationRenderer implements ISimulationRenderer {
     }
 
     @Override
-    public void update(boolean synchronous) {
-        //if (jfxPanel == null) return;
-        /*Platform.runLater(() -> {
-            if (rootGroup != null) {
-                if (simulation != null && simulation.environment != null)
-                    agentRenderer.drawAgents(simulation.environment.getAgents());
-            }
-        });*/
+    synchronized public void update(boolean synchronous) {
+        if (jfxPanel == null) return;
     }
 
     @Override
     public void onStopped() {
-        animationTimer.stop();
+        // TODO: Test animationTimer.stop();
     }
 
     @Override

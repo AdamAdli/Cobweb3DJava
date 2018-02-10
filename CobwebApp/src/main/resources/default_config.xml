@@ -2,15 +2,16 @@
 <COBWEB3Config cobweb-version="2.2014-11-29-pd-377-ga9fbd01-modified (master) 2015-02-02-14:46"
                config-version="2015-01-14">
     <AgentTypeCount>1</AgentTypeCount>
+    <ControllerName>cobweb3d.impl.ai.SimpleController</ControllerName>
     <randomSeed>0</randomSeed>
     <keepOldArray>false</keepOldArray>
     <keepOldAgents>false</keepOldAgents>
     <spawnNewAgents>true</spawnNewAgents>
 
     <Environment>
-        <Width>5</Width>
-        <Height>5</Height>
-        <Depth>10</Depth>
+        <Width>3</Width>
+        <Height>3</Height>
+        <Depth>2</Depth>
         <wrap>true</wrap>
         <randomStones>0</randomStones>
     </Environment>
@@ -18,20 +19,38 @@
     <Agents>
         <AgentParams>
             <Agent id="1">
-                <Agents>10</Agents>
+                <Agents>1</Agents>
                 <Color>#FF4081</Color>
                 <InitEnergy>50</InitEnergy>
-                <StepEnergy>2</StepEnergy>
-                <BreedEnergy>30</BreedEnergy>
+                <StepEnergy>0</StepEnergy>
                 <StepRockEnergy>2</StepRockEnergy>
                 <StepAgentEnergy>4</StepAgentEnergy>
                 <!--<TurnRightEnergy>1</TurnRightEnergy>
                 <TurnLeftEnergy>1</TurnLeftEnergy>-->
-                <sexualBreedChance>1.0</sexualBreedChance>
-                <asexualBreedChance>1.0</asexualBreedChance>
                 <agingMode>false</agingMode>
                 <agingLimit>0</agingLimit>
             </Agent>
         </AgentParams>
     </Agents>
+    <Reproduction>
+        <AgentParams>
+            <Agent id="1">
+                <BreedEnergy>5</BreedEnergy>
+                <sexualBreedChance>0.0</sexualBreedChance>
+                <asexualBreedChance>0.0</asexualBreedChance>
+            </Agent>
+        </AgentParams>
+    </Reproduction>
+    <ControllerConfig class="cobweb3d.impl.ai.SimpleControllerParams">
+        <AgentParams>
+            <Agent id="1">
+            </Agent>
+            <Agent id="2">
+            </Agent>
+            <Agent id="3">
+            </Agent>
+            <Agent id="4">
+            </Agent>
+        </AgentParams>
+    </ControllerConfig>
 </COBWEB3Config>
