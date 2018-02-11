@@ -16,7 +16,7 @@ public class FileMenu extends JMenu {
     private Action openSimulationAction = new AbstractAction("Open") {
         @Override
         public void actionPerformed(ActionEvent e) {
-            appContext.showOpenFileDialog();
+            //appContext.showOpenFileDialog();
         }
 
         private static final long serialVersionUID = 1L;
@@ -24,7 +24,7 @@ public class FileMenu extends JMenu {
     private Action saveSimulationAction = new AbstractAction("Save") {
         @Override
         public void actionPerformed(ActionEvent e) {
-            appContext.showOpenFileDialog();
+//            appContext.showOpenFileDialog();
         }
 
         private static final long serialVersionUID = 1L;
@@ -32,7 +32,7 @@ public class FileMenu extends JMenu {
     private Action setLogAction = new AbstractAction("Log") {
         @Override
         public void actionPerformed(ActionEvent e) {
-            appContext.showOpenFileDialog();
+            //appContext.showOpenFileDialog();
         }
 
         private static final long serialVersionUID = 1L;

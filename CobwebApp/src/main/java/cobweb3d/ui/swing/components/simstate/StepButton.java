@@ -1,9 +1,11 @@
-package cobweb3d.ui.swing.components;
+package cobweb3d.ui.swing.components.simstate;
 
 
 import cobweb3d.SimulationRunner;
+import cobwebutil.math.MaterialColor;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionListener;
 
 /**
@@ -17,9 +19,15 @@ public class StepButton extends JButton implements ActionListener {
     private SimulationRunner scheduler;
 
     public StepButton(SimulationRunner scheduler) {
-        super("Step");
+        this();
         setScheduler(scheduler);
+    }
+
+    public StepButton() {
+        super("Step");
         addActionListener(this);
+        setBackground(MaterialColor.yellow_300.asAWTColor());
+        setPreferredSize(new Dimension(64, getPreferredSize().height));
     }
 
     public void setScheduler(SimulationRunner scheduler) {
@@ -28,6 +36,6 @@ public class StepButton extends JButton implements ActionListener {
 
     @Override
     public void actionPerformed(java.awt.event.ActionEvent e) {
-        scheduler.step();
+        if (scheduler != null) scheduler.step();
     }
 }

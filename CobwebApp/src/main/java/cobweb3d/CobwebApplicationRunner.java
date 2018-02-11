@@ -2,8 +2,11 @@ package cobweb3d;
 
 import cobweb3d.impl.Simulation;
 import cobweb3d.io.Cobweb3Serializer;
+import cobweb3d.ui.application.CobwebApplication;
+import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 import util.ResourceRetriever;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -134,12 +137,12 @@ public class CobwebApplicationRunner {
 
         final SimulationRunner simRunner;
         if (visible) {
-            /* TODO: Experimental
+            // TODO: Experimental
             try {
-                UIManager.setLookAndFeel(new MaterialLookAndFeel());
+                UIManager.setLookAndFeel(new WindowsLookAndFeel());
             } catch (UnsupportedLookAndFeelException ex) {
 
-            }*/
+            }
             CobwebApplication CA = new CobwebApplication();
             // TODO: CA.openFile(defaultconf);
             try {

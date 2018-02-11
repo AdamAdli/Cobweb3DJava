@@ -1,4 +1,4 @@
-package cobweb3d.ui.swing.components;
+package cobweb3d.ui.swing.components.simstate;
 
 import cobweb3d.SimulationRunner;
 import cobwebutil.math.MaterialColor;
@@ -12,19 +12,22 @@ public class PauseButton extends JButton implements java.awt.event.ActionListene
     private boolean myRunning = false;
 
     public PauseButton(SimulationRunner scheduler) {
+        this();
+        setScheduler(scheduler);
+    }
+
+    public PauseButton() {
         super("Start");
-        this.scheduler = scheduler;
         addActionListener(this);
         setBackground(MaterialColor.green_300.asAWTColor());
-        setPreferredSize(new Dimension(63, 26));
+        setPreferredSize(new Dimension(64, getPreferredSize().height));
     }
 
     @Override
     public void actionPerformed(java.awt.event.ActionEvent e) {
-        if (scheduler.isRunning()) {
-            scheduler.stop();
-        } else {
-            scheduler.run();
+        if (scheduler != null) {
+            if (scheduler.isRunning()) scheduler.stop();
+            else scheduler.run();
         }
         repaint();
     }
@@ -36,7 +39,7 @@ public class PauseButton extends JButton implements java.awt.event.ActionListene
 
     @Override
     public void paintComponent(Graphics g) {
-        boolean running = scheduler.isRunning();
+        boolean running = scheduler != null && scheduler.isRunning();
         if (running != myRunning) {
             myRunning = running;
             if (myRunning) {
@@ -49,5 +52,4 @@ public class PauseButton extends JButton implements java.awt.event.ActionListene
         }
         super.paintComponent(g);
     }
-
 }

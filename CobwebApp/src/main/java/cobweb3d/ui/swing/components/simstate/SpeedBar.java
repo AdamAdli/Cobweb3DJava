@@ -1,6 +1,7 @@
-package cobweb3d.ui.swing.components;
+package cobweb3d.ui.swing.components.simstate;
 
 import cobweb3d.ThreadSimulationRunner;
+import cobwebutil.math.MaterialColor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,17 +11,25 @@ public class SpeedBar extends JScrollBar implements
         java.awt.event.AdjustmentListener {
     public static final long serialVersionUID = 0xD5E78F1D65B18165L;
     private static final int SCROLLBAR_TICKS = 11;
-    private final ThreadSimulationRunner scheduler;
-    private final Dimension d = new Dimension(70, 18);
+    private ThreadSimulationRunner scheduler;
     private final Color original;
 
     public SpeedBar(ThreadSimulationRunner scheduler) {
-        this.scheduler = scheduler;
-        setOrientation(Scrollbar.HORIZONTAL);
+        this();
+        setScheduler(scheduler);
+    }
+
+    public SpeedBar() {
+        setOrientation(Adjustable.HORIZONTAL);
         addAdjustmentListener(this);
-        this.setValues(SCROLLBAR_TICKS - 1, 0, 0, SCROLLBAR_TICKS);
-        this.setPreferredSize(d);
+        setValues(SCROLLBAR_TICKS - 1, 0, 0, SCROLLBAR_TICKS);
+        setPreferredSize(new Dimension(70, getPreferredSize().height));
+        setMaximumSize(new Dimension(70, getPreferredSize().height));
         original = this.getBackground();
+    }
+
+    public void setScheduler(ThreadSimulationRunner scheduler) {
+        this.scheduler = scheduler;
     }
 
     @Override
@@ -31,10 +40,10 @@ public class SpeedBar extends JScrollBar implements
             delay = 1 << (d1 - 1);
         }
         if (delay == 0) {
-            this.setBackground(Color.yellow);
+            this.setBackground(MaterialColor.green_300.asAWTColor());
         } else {
             this.setBackground(original);
         }
-        scheduler.setDelay(delay);
+        if (scheduler != null) scheduler.setDelay(delay);
     }
 }

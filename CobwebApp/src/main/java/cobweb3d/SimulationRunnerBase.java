@@ -5,9 +5,9 @@ import cobweb3d.ui.UpdatableUI;
 import cobweb3d.ui.stats.StatsLogger;
 
 import java.io.Writer;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Set;
 
 public class SimulationRunnerBase implements SimulationRunner {
 
@@ -18,7 +18,7 @@ public class SimulationRunnerBase implements SimulationRunner {
     private long tickAutoStop = 0;
 
     private StatsLogger statsLogger = null;
-    private List<UpdatableUI> uiComponents = new ArrayList<UpdatableUI>();
+    private Set<UpdatableUI> uiComponents = new HashSet<>();
 
     public SimulationRunnerBase(Simulation simulation) {
         this.simulation = simulation;
