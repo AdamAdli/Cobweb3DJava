@@ -24,7 +24,6 @@ public class Agent extends BaseAgent {
     private Controller controller;
 
     private long birthTick;
-    private long lastAsexTime = 0;
 
     public Agent(SimulationInternals simulation, int type) {
         super(type);
@@ -87,13 +86,6 @@ public class Agent extends BaseAgent {
         child.init(environment, location, this, otherParent);
         return child;
     }
-
-   /* public boolean tryReproduceAsex() {
-        if ((simulation.getTime() - lastAsexTime) < 0) return false;
-        else {
-            createChildAsexual()
-        }
-    } */
 
     @Override
     public void update() {
@@ -215,9 +207,7 @@ public class Agent extends BaseAgent {
     private void onStepAgentBump(BaseAgent otherAgent) {
         simulation.getAgentListener().onContact(this, otherAgent);
         changeEnergy(-params.stepAgentEnergy.getValue(), new BumpAgentCause());
-        if (canEat(otherAgent)) eat(otherAgent);
         if (!otherAgent.isAlive()) return;
-
         // If agents are the same type, try to reproduction.
         if (otherAgent instanceof Agent && otherAgent.getType() == getType()) {
             // TODO:
@@ -226,17 +216,6 @@ public class Agent extends BaseAgent {
 
     private boolean canStep(Location dest) {
         return !environment.hasAgent(dest);
-    }
-
-    private boolean canEat(BaseAgent otherAgent) {
-        return true;
-    }
-
-    private void eat(BaseAgent otherAgent) {
-        int gain = otherAgent.getEnergy(); // TODO: later multiple by factor ?)
-        changeEnergy(gain);
-        simulation.getAgentListener().onConsumeAgent(this, otherAgent);
-        otherAgent.die();
     }
 
     public static class MovementCause implements Cause {

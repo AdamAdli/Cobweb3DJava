@@ -33,15 +33,6 @@ public class ReproductionAgentParams implements ParameterSerializable {
     @ConfXMLTag("sexualPregnancyPeriod")
     public MutatableInt sexualPregnancyPeriod = new MutatableInt(5);
 
-
-    /*
-    /**
-     * Agent types this agent can transmit the disease to.
-     *
-    @ConfDisplayName("Reproduce with to")
-    @ConfXMLTag("transmitTo")
-    @ConfList(indexName = "Agent", startAtOne = true)
-    public boolean[] transmitTo = new boolean[0];*/
     /**
      * Time between asexual breeding and producing child agent.
      */

@@ -12,6 +12,7 @@ import cobweb3d.impl.agent.Agent;
 import cobweb3d.plugins.MutatorListener;
 import cobweb3d.plugins.StateParameter;
 import cobweb3d.plugins.StatePlugin;
+import cobweb3d.plugins.food.ConsumptionMutator;
 import cobweb3d.plugins.reproduction.ReproductionMutator;
 import cobweb3d.plugins.states.AgentState;
 import cobweb3d.ui.SimulationInterface;
@@ -35,6 +36,7 @@ public class Simulation implements SimulationInternals, SimulationInterface {
     }
 
     private ReproductionMutator reproductionMutator;
+    private ConsumptionMutator consumptionMutator;
 
     @Override
     public long getTime() {
@@ -103,6 +105,7 @@ public class Simulation implements SimulationInternals, SimulationInterface {
             mAgents.clear();
             mNextAgentId = 0;
             reproductionMutator = null;
+            consumptionMutator = null;
         }
 
         if (simConfig.spawnNewAgents) loadNewAgents();
@@ -113,8 +116,13 @@ public class Simulation implements SimulationInternals, SimulationInterface {
             reproductionMutator = new ReproductionMutator();
             mutatorListener.addMutator(reproductionMutator);
         }
+        if (consumptionMutator == null) {
+            consumptionMutator = new ConsumptionMutator();
+            mutatorListener.addMutator(consumptionMutator);
+        }
 
         reproductionMutator.setParams(this, simConfig.reproductionParams, simConfig.getAgentTypes());
+        consumptionMutator.setParams(this, simConfig.consumptionParams, simConfig.getAgentTypes());
     }
 
     @Override
