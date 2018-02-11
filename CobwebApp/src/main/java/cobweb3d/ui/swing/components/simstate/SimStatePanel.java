@@ -47,12 +47,7 @@ public class SimStatePanel extends JToolBar implements UpdatableUI {
         tickField.setMaximumSize(new Dimension(128, 20));
         tickField.getDocument().addDocumentListener((SimpleDocumentListener)
                 () -> simRunner.setAutoStopTime(Integer.parseInt(tickField.getText())));
-        tickField.addFocusListener(new SimpleFocusAdapter() {
-            @Override
-            public void update() {
-                tickField.repaint();
-            }
-        });
+        tickField.addFocusListener(new SimpleFocusAdapter(tickField::repaint));
     }
 
     public void setScheduler(SimulationRunner simulationRunner) {

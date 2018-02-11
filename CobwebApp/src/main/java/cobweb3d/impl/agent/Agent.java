@@ -45,10 +45,6 @@ public class Agent extends BaseAgent {
         setParams(environment.agentParams[destAgent.getType()]);
     }
 
-    public long getAge() {
-        return simulation.getTime() - birthTick;
-    }
-
     public <T extends AgentState> void setState(Class<T> type, T value) {
         extraState.put(type, value);
     }
@@ -63,6 +59,18 @@ public class Agent extends BaseAgent {
         @SuppressWarnings("unchecked")
         T removed = (T) extraState.remove(type);
         return removed;
+    }
+
+    public long getAge() {
+        return simulation.getTime() - birthTick;
+    }
+
+    @Override
+    public void die() {
+        super.die();
+        changeEnergy(Math.min(0, -getEnergy()), new DeathCause());
+        simulation.getAgentListener().onDeath(this);
+        move(null);
     }
 
     @Override

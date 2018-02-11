@@ -6,11 +6,23 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 
 public class Cobweb3Serializer {
+
+    public static SimulationConfig loadConfig(String filePath) throws IOException {
+        try (FileInputStream stream = new FileInputStream(filePath)) {
+            SimulationConfig config = loadConfig(stream);
+            config.fileName = filePath;
+            return config;
+        } catch (IOException ex) {
+            throw ex;
+        }
+    }
 
     public static SimulationConfig loadConfig(InputStream file) {
         return loadFile(file);
@@ -43,8 +55,8 @@ public class Cobweb3Serializer {
         parameterSerializer.load(simConfig, root);
 
         // Correct any missing/extra parameters after the loading
-        // TODO: conf.setAgentTypes(conf.getAgentTypes());
-
+        simConfig.setAgentTypes(simConfig.getAgentTypes());
+        simConfig.fileName = ":STREAM:" + file.toString() + ":";
         return simConfig;
     }
 

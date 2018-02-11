@@ -47,7 +47,7 @@ public class CobwebApplicationRunner {
 
         String inputFileName = "";
         String logFileName = "";
-        boolean autostart = true;
+        boolean autostart = false;
         int finalstep = 0;
         boolean visible = true;
 
@@ -146,7 +146,7 @@ public class CobwebApplicationRunner {
             CobwebApplication CA = new CobwebApplication();
             // TODO: CA.openFile(defaultconf);
             try {
-                CA.openFile(Cobweb3Serializer.loadConfig(ResourceRetriever.getResourceAsStream("default_config.xml")), false);
+                CA.openFile(Cobweb3Serializer.loadConfig(ResourceRetriever.getResource("default_config.xml").getFile()), false);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

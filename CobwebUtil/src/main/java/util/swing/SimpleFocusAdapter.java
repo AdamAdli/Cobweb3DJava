@@ -3,20 +3,28 @@ package util.swing;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
-public abstract class SimpleFocusAdapter extends FocusAdapter {
+public class SimpleFocusAdapter extends FocusAdapter {
 
-    /**
-     * Called when the focus is changed in any way.
-     */
-    public abstract void update();
+    private UpdateStrategy updateMethod;
+
+    public SimpleFocusAdapter(UpdateStrategy updateMethod) {
+        this.updateMethod = updateMethod;
+    }
 
     @Override
     public void focusGained(FocusEvent e) {
-        update();
+        if (updateMethod != null) updateMethod.update();
     }
 
     @Override
     public void focusLost(FocusEvent e) {
-        update();
+        if (updateMethod != null) updateMethod.update();
+    }
+
+    public interface UpdateStrategy {
+        /**
+         * Called when the focus is changed in any way.
+         */
+        void update();
     }
 }

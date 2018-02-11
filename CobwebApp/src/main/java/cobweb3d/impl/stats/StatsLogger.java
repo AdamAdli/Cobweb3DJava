@@ -1,4 +1,4 @@
-package cobweb3d.ui.stats;
+package cobweb3d.impl.stats;
 
 import cobweb3d.impl.Simulation;
 import cobweb3d.ui.UpdatableUI;
@@ -9,7 +9,6 @@ import java.text.DecimalFormat;
 
 
 public class StatsLogger implements UpdatableUI {
-
     private final StatsTracker statsTracker;
     private PrintWriter logStream;
 
@@ -18,7 +17,6 @@ public class StatsLogger implements UpdatableUI {
         logStream = new PrintWriter(w, false);
         writeLogTitles();
     }
-
 
     /**
      * Write to Log file: FoodCount, AgentCount, Average BaseAgent Energy and BaseAgent
@@ -42,8 +40,6 @@ public class StatsLogger implements UpdatableUI {
 
             logStream.print(statsTracker.getTime());
             logStream.print('\t');
-            logStream.print(statsTracker.countFoodTiles(i));
-            logStream.print('\t');
             logStream.print(agentCount);
             logStream.print('\t');
             // Format Average agentEnergy to 3 decimal places
@@ -54,12 +50,6 @@ public class StatsLogger implements UpdatableUI {
             logStream.print('\t');
             logStream.print(agentEnergy);
             logStream.print('\t');
-
-		/*	CoopCheaterCount pdStats = statsTracker.numAgentsStrat(i);
-			logStream.print(pdStats.cheaters);
-			logStream.print('\t');
-			logStream.print(pdStats.cooperators);
-			logStream.print('\t'); */
 
             for (String s : statsTracker.pluginStatsAgent(i)) {
                 logStream.print(s);
@@ -80,21 +70,12 @@ public class StatsLogger implements UpdatableUI {
         long agentEnergyAll = statsTracker.countAgentEnergy();
         logStream.print(statsTracker.getTime());
         logStream.print('\t');
-        logStream.print(statsTracker.countFoodTiles());
-        logStream.print('\t');
         logStream.print(agentCountAll);
         logStream.print('\t');
         logStream.print(z.format(((float) agentEnergyAll) / agentCountAll));
         logStream.print('\t');
         logStream.print(agentEnergyAll);
         logStream.print('\t');
-
-
-		/*CoopCheaterCount pdStats = statsTracker.numAgentsStrat();
-		logStream.print(pdStats.cheaters);
-		logStream.print('\t');
-		logStream.print(pdStats.cooperators);
-		logStream.print('\t'); */
 
         for (String s : statsTracker.pluginStatsTotal()) {
             logStream.print(s);
@@ -110,12 +91,9 @@ public class StatsLogger implements UpdatableUI {
             for (int i = 1; i <= statsTracker.getAgentTypeCount(); i++) {
 
                 logStream.print("Tick\t");
-                logStream.print("FoodCount " + i + "\t");
                 logStream.print("AgentCount " + i + "\t");
                 logStream.print("AveAgentEnergy " + i + "\t");
                 logStream.print("AgentEnergy " + i + "\t");
-                logStream.print("Cheat " + i + "\t");
-                logStream.print("Coop " + i + "\t");
                 for (String s : statsTracker.pluginStatsHeaderAgent()) {
                     logStream.print(s);
                     logStream.print(" " + i);
@@ -124,12 +102,9 @@ public class StatsLogger implements UpdatableUI {
             }
             // One final round of output for total
             logStream.print("Tick\t");
-            logStream.print("FoodCount T\t");
             logStream.print("AgentCount T\t");
             logStream.print("AveAgentEnergy T\t");
             logStream.print("AgentEnergy T\t");
-            logStream.print("Num. Cheat T\t");
-            logStream.print("Num. Coop T\t");
             for (String s : statsTracker.pluginStatsHeaderTotal()) {
                 logStream.print(s);
                 logStream.print(" T");

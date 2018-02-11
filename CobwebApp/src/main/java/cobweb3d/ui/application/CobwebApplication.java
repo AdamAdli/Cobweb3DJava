@@ -4,20 +4,14 @@ package cobweb3d.ui.application;
 import cobweb3d.ThreadSimulationRunner;
 import cobweb3d.impl.Simulation;
 import cobweb3d.impl.SimulationConfig;
-import cobweb3d.io.Cobweb3Serializer;
 import cobweb3d.rendering.ISimulationRenderer;
 import cobweb3d.rendering.javafx.FXSimulationRenderer;
-import cobweb3d.ui.exceptions.UserInputException;
 import cobweb3d.ui.swing.components.simstate.SimStatePanel;
-import cobweb3d.ui.util.FileDialogUtil;
+import cobweb3d.ui.swing.config.SimulationConfigEditor;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
 
 /**
  * This class consists of methods to allow the user to use the Cobweb simulation tool.  It
@@ -28,85 +22,20 @@ public class CobwebApplication extends CobwebApplicationSwing {
 
     SimStatePanel simStatePanel;
     private ISimulationRenderer simulationRenderer;
-    private Action openSimulationAct = new AbstractAction("Open") {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            pauseUI();
-            try {
-                File file = FileDialogUtil.openFile(CobwebApplication.this, "Open Simulation Configuration", "*.xml");
-                if (file != null) openFile(Cobweb3Serializer.loadConfig(new FileInputStream(file)), false);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-                JOptionPane.showMessageDialog(CobwebApplication.this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    };
-    private Action saveSimulationAct = new AbstractAction("Save") {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            pauseUI();
-            String path = FileDialogUtil.saveFile(CobwebApplication.this, "Save Simulation Configuration", "*.xml");
-            if (path != null && !path.isEmpty()) saveSimulation(path);
-        }
-    };
-    private Action setLog = new AbstractAction("Log") {
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            pauseUI();
-            String path = FileDialogUtil.saveFile(CobwebApplication.this, "Choose a file to save log to", "*");
-            if (path != null && !path.isEmpty()) {
-                try {
-                    simRunner.setLog(new FileWriter(path, false));
-                } catch (IOException ex) {
-                    throw new UserInputException("Can't create log file!", ex);
-                }
-            }
-        }
-    };
-    private Action modifySimulation = new AbstractAction("Modify Simulation") {
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            pauseUI();
-            openCurrentData();
-        }
-    };
-    private Action modifySimulationFile = new AbstractAction("Modify Simulation File") {
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            pauseUI();
-            openCurrentFile();
-        }
-    };
 
     public CobwebApplication() {
         super(new ThreadSimulationRunner(new Simulation()));
-
         setLayout(new BorderLayout());
         setJMenuBar(makeMenuBar());
 
         simStatePanel = new SimStatePanel(simRunner);
+        simStatePanel.setBackground(Color.WHITE);
         add(simStatePanel, BorderLayout.NORTH);
-
 
         logInfo("Initializing simulation renderer: " + FXSimulationRenderer.class.getSimpleName());
         simulationRenderer = new FXSimulationRenderer(simRunner);
         add(simulationRenderer.getBackbuffer(), BorderLayout.CENTER);
-    }
-
-    public void pauseUI() {
-        simRunner.stop();
-    }
-
-    private void updateDynamicUI() {
-        // TODO:
-
-        validate();
+        setVisible(true);
     }
 
     /**
@@ -118,10 +47,21 @@ public class CobwebApplication extends CobwebApplicationSwing {
     private JMenuBar makeMenuBar() {
         JMenu fileMenu = new JMenu("File");
         fileMenu.add(new JMenuItem(openSimulationAct));
-        fileMenu.add(new JMenuItem(saveSimulationAct));
+        //fileMenu.add(new JSeparator());
+        fileMenu.add(new JMenuItem(createNewDataAct));
+        fileMenu.add(new JMenuItem(modifySimulationFileAct));
+        fileMenu.add(new JMenuItem(retrieveDefaultDataAct));
+        fileMenu.add(new JMenuItem(modifySimulationAct));
         fileMenu.add(new JSeparator());
-        // fileMenu.add(new JMenuItem(setLogAction));
-        // fileMenu.add(new JMenuItem(quitAction));
+        fileMenu.add(new JMenuItem(loadPopulationAct));
+        fileMenu.add(new JMenuItem(savePopulationAct));
+        fileMenu.add(new JSeparator());
+        fileMenu.add(new JMenuItem(saveSimulationAct));
+        fileMenu.add(new JMenuItem(setLogAct));
+        fileMenu.add(new JMenuItem(reportData));
+        fileMenu.add(new JSeparator());
+        fileMenu.add(new JMenuItem(quitAct));
+
         JMenu editMenu = new JMenu("Edit");
 
         JMenu projectMenu = new JMenu("Project");
@@ -131,6 +71,8 @@ public class CobwebApplication extends CobwebApplicationSwing {
         JMenu dataMenu = new JMenu("Data");
 
         JMenu helpMenu = new JMenu("Help");
+        helpMenu.add(new JMenuItem(openAboutAct));
+        helpMenu.add(new JMenuItem(openCreditsAct));
 
         JMenuBar jMenuBar = new JMenuBar();
         jMenuBar.add(fileMenu);
@@ -145,6 +87,13 @@ public class CobwebApplication extends CobwebApplicationSwing {
         // simStatePanel.setPreferredSize(new Dimension(200, 20));
         // jMenuBar.add(simStatePanel);
         return jMenuBar;
+    }
+
+    @Override
+    public void updateDynamicUI() {
+        // TODO:
+
+        super.updateDynamicUI();
     }
 
     /**
@@ -172,10 +121,8 @@ public class CobwebApplication extends CobwebApplicationSwing {
     @Override
     protected void openCurrentData() {
         super.openCurrentData();
-        /* TODO: SimulationConfigEditor editor = SimulationConfigEditor.show(this, currentData, true, displaySettings);
-        if (editor.isOK()) {
-            openFile(editor.getConfig(), editor.isContinuation());
-        }*/
+        SimulationConfigEditor editor = SimulationConfigEditor.show(this, CURRENT_DATA_FILE_NAME, true);
+        if (editor.isOK()) openFile(editor.getConfig(), editor.isContinuation());
     }
 
     /**
@@ -187,9 +134,7 @@ public class CobwebApplication extends CobwebApplicationSwing {
     @Override
     protected void openCurrentFile() {
         super.openCurrentData();
-        /* TODO: SimulationConfigEditor editor = SimulationConfigEditor.show(this, currentFile, true, displaySettings);
-        if (editor.isOK()) {
-            openFile(editor.getConfig(), editor.isContinuation());
-        }*/
+        SimulationConfigEditor editor = SimulationConfigEditor.show(this, currentFile, true);
+        if (editor.isOK()) openFile(editor.getConfig(), editor.isContinuation());
     }
 }

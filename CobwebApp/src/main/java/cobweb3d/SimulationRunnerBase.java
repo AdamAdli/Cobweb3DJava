@@ -1,8 +1,8 @@
 package cobweb3d;
 
 import cobweb3d.impl.Simulation;
+import cobweb3d.impl.stats.StatsLogger;
 import cobweb3d.ui.UpdatableUI;
-import cobweb3d.ui.stats.StatsLogger;
 
 import java.io.Writer;
 import java.util.HashSet;
@@ -42,11 +42,11 @@ public class SimulationRunnerBase implements SimulationRunner {
         running = true;
         notifyStarted();
 
-		/* System.out.println(String.format(
+        System.out.println(String.format(
 				"Running '%1$s' for %2$d steps. Log: %3$s",
 				simulation.simulationConfig.fileName,
 				getAutoStopTime(),
-				statsLogger == null ? "No": "Yes")); */
+                statsLogger == null ? "No" : "Yes"));
 
         long increment = getAutoStopTime() / 100;
         if (increment > 1000)
@@ -107,23 +107,6 @@ public class SimulationRunnerBase implements SimulationRunner {
         }
     }
 
-	/* /**
-	 * Writes simulation report to writer.
-	 * @param writer where to write report.
-	 * @see AgentReporter
-
-	public void report(Writer writer) {
-		if (simulation != null) {
-			try {
-				AgentReporter.report(writer, simulation);
-				writer.flush();
-				writer.close();
-			} catch (IOException ex) {
-				throw new UserInputException("Cannot save report file", ex);
-			}
-		}
-	} */
-
     /**
      * Sets log Writer for the simulation.
      * null to disable.
@@ -142,6 +125,25 @@ public class SimulationRunnerBase implements SimulationRunner {
             addUIComponent(statsLogger);
         }
     }
+
+    /* TODO
+    /**
+	 * Writes simulation report to writer.
+	 * @param writer where to write report.
+	 * @see AgentReporter
+
+	public void report(Writer writer) {
+		if (simulation != null) {
+			try {
+				AgentReporter.report(writer, simulation);
+				writer.flush();
+				writer.close();
+			} catch (IOException ex) {
+				throw new UserInputException("Cannot save report file", ex);
+			}
+		}
+	}
+    */
 
     protected void updateUI(boolean synchronous) {
         for (UpdatableUI client : new LinkedList<UpdatableUI>(uiComponents)) {

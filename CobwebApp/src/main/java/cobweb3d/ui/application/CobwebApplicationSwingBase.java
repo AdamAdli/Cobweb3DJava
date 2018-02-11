@@ -44,7 +44,6 @@ public abstract class CobwebApplicationSwingBase extends JFrame implements AppCo
 
         setSize(580, 650);
         setLocationRelativeTo(null);
-        setVisible(true);
     }
 
     @Override

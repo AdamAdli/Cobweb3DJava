@@ -6,14 +6,17 @@ import cobweb3d.impl.SimulationConfig;
 import cobweb3d.io.Cobweb3Serializer;
 import cobweb3d.ui.UpdatableUI;
 import cobweb3d.ui.exceptions.UserInputException;
+import cobweb3d.ui.swing.config.SimulationConfigEditor;
+import cobweb3d.ui.swing.dialogs.AboutDialog;
+import cobweb3d.ui.swing.dialogs.CreditsDialog;
+import cobweb3d.ui.util.FileDialogUtil;
 import org.jetbrains.annotations.NotNull;
+import util.FileUtils;
+import util.swing.SimpleAction;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 
 public abstract class CobwebApplicationSwing extends CobwebApplicationSwingBase {
     public ThreadSimulationRunner simRunner;
@@ -62,11 +65,24 @@ public abstract class CobwebApplicationSwing extends CobwebApplicationSwingBase 
         super.add(popup);
     }
 
-    private void updateDynamicUI() {
-        // TODO:
-        // if (simStatePanel != null) simStatePanel.simulationChanged();
-        validate();
-    }
+    //================================================================================
+    // Default Swing Actions
+    //================================================================================
+    Action openSimulationAct = new SimpleAction("Open", e -> {
+        pauseUI();
+        try {
+            File file = FileDialogUtil.openFile(CobwebApplicationSwing.this, "Open Simulation Configuration", "*.xml");
+            if (file != null) openFile(Cobweb3Serializer.loadConfig(new FileInputStream(file)), false);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(CobwebApplicationSwing.this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    });
+    Action saveSimulationAct = new SimpleAction("Save", e -> {
+        pauseUI();
+        String path = FileDialogUtil.saveFile(CobwebApplicationSwing.this, "Save Simulation Configuration", "*.xml");
+        if (path != null && !path.isEmpty()) saveSimulation(path);
+    });
 
     /**
      * Load simulation config.
@@ -135,5 +151,186 @@ public abstract class CobwebApplicationSwing extends CobwebApplicationSwingBase 
         if (CURRENT_DATA_FILE_NAME.equals(currentFile)) {
             throw new UserInputException("File not currently saved, use \"Modify Current Data\" instead");
         }
+    }
+
+    Action modifySimulationAct = new SimpleAction("Modify Simulation", e -> {
+        pauseUI();
+        openCurrentData();
+    });
+    Action modifySimulationFileAct = new SimpleAction("Modify Simulation File", e -> {
+        pauseUI();
+        openCurrentFile();
+    });
+    Action createNewDataAct = new SimpleAction("Create New Data", e -> {
+        pauseUI();
+        createNewData();
+    });
+    Action retrieveDefaultDataAct = new SimpleAction("Retrieve Default Data", e -> {
+        pauseUI();
+        retrieveDefaultData();
+    });
+    Action setLogAct = new SimpleAction("Log", e -> {
+        pauseUI();
+        String path = FileDialogUtil.saveFile(CobwebApplicationSwing.this, "Output Simulation Log", "*.log");
+        if (path != null && !path.isEmpty()) startSimulationLog(path);
+    });
+    Action reportData = new SimpleAction("Report", e -> {
+        pauseUI();
+        String path = FileDialogUtil.saveFile(CobwebApplicationSwing.this, "Output Simulation Report", "*.log");
+        if (path != null && !path.isEmpty()) startSimulationReport(path);
+    });
+    Action quitAct = new SimpleAction("Quit", e -> quitApplication());
+    Action savePopulationAct = new SimpleAction("Save Sample Population", e -> {
+        // Open dialog to choose population size to be saved
+        /* TODO
+        HashMap<String, Object> result = openSaveSamplePopOptionsDialog();
+        if (result != null){
+            String option = (String)result.get("option");
+            int amount = ((Integer)result.get("amount")).intValue();
+
+            if (option != null && amount != -1) {
+                // Open file dialog box
+                FileDialog theDialog = new FileDialog(CobwebApplication.this,
+                        "Choose a file to save state to", FileDialog.SAVE);
+                theDialog.setFile("*.xml");
+                theDialog.setVisible(true);
+                if (theDialog.getFile() != null) {
+                    int saveNum;
+
+                    int agentCount = simRunner.getSimulation().theEnvironment.getAgentCount();
+                    if (option.equals("percentage")) {
+                        saveNum = agentCount * amount / 100;
+                    } else {
+                        saveNum = amount;
+                    }
+                    if (saveNum > agentCount)
+                        saveNum = agentCount;
+
+                    //Save population in the specified file.
+                    PopulationSampler.savePopulation(simRunner.getSimulation(), theDialog.getDirectory() + theDialog.getFile(), saveNum);
+                }
+            }
+        }*/
+    });
+    Action loadPopulationAct = new SimpleAction("Load Sample Population", e -> {
+        // Open dialog to choose population size to be saved
+        /* TODO
+        HashMap<String, Object> result = openSaveSamplePopOptionsDialog();
+                    ReplaceMergeCancel option = openInsertSamplePopReplaceDialog();
+
+        if (option != ReplaceMergeCancel.CANCEL){
+            //Select the XML file
+            FileDialog theDialog = new FileDialog(CobwebApplication.this,
+                    "Choose a file to load", FileDialog.LOAD);
+            theDialog.setFile("*.xml");
+            theDialog.setVisible(true);
+            if (theDialog.getFile() != null) {
+                String fileName = theDialog.getDirectory() + theDialog.getFile();
+                //Load the XML file
+                Set<String> incompatibilities = PopulationSampler.checkPopulationCompatible(simRunner.getSimulation(), fileName);
+                if (!incompatibilities.isEmpty()) {
+                    if (!askIgnoreIncompatibleDialog(incompatibilities))
+                        return;
+                }
+
+                PopulationSampler.insertPopulation(simRunner.getSimulation(), fileName, option == ReplaceMergeCancel.REPLACE);
+                simulatorUI.update(true);
+            }
+         }*/
+    });
+    //=====================================
+    // Help Swing Actions
+    //==============================
+    Action openCreditsAct = new SimpleAction("Credits", e -> CreditsDialog.show());
+    Action openAboutAct = new SimpleAction("About", e -> AboutDialog.show());
+
+    public void updateDynamicUI() {
+        // TODO:
+        // if (simStatePanel != null) simStatePanel.simulationChanged();
+        validate();
+    }
+
+    public void pauseUI() {
+        if (simRunner != null) simRunner.stop();
+    }
+
+    /**
+     * Opens an initial simulation settings file using the simulation settings
+     * window.  The user can modify the simulation settings and save the
+     * settings to a new file.  The method is invoked when the user selects
+     * "Create New Data" located under "File" in the main tool bar.
+     */
+    private void createNewData() {
+        SimulationConfigEditor editor = SimulationConfigEditor.show(this, INITIAL_OR_NEW_INPUT_FILE_NAME, false);
+        if (editor.isOK()) openFile(editor.getConfig(), editor.isContinuation());
+    }
+
+    /**
+     * Loads the default files simulation settings for the current simulation.
+     * Uses the default file if available.  If not, then it will create a temporary
+     * default data file to use.
+     * <p>
+     * <p> Used when the user selects "File" -> "Retrieve Default Data"
+     */
+    private void retrieveDefaultData() {
+        // Two fashions for retrieving default data:
+        // The first fashion for retrieving default data -- using the file default_data_(reserved).xml if one is
+        // provided.
+        String defaultData = DEFAULT_DATA_FILE_NAME + CONFIG_FILE_EXTENSION;
+
+        File df = new File(defaultData);
+        boolean isTheFirstFashion = false;
+        if (df.exists()) {
+            if (df.canWrite()) {
+                df.setReadOnly();
+            }
+            isTheFirstFashion = true;
+        }
+
+        String tempDefaultData = DEFAULT_DATA_FILE_NAME + TEMPORARY_FILE_EXTENSION;
+        File tdf = new File(tempDefaultData);
+        tdf.deleteOnExit();
+
+        if (isTheFirstFashion) {
+            try {
+                FileUtils.copyFile(defaultData, tempDefaultData);
+            } catch (IOException ex) {
+                isTheFirstFashion = false;
+            }
+        }
+
+        if (!isTheFirstFashion) {
+            if (tdf.exists()) {
+                tdf.delete(); // delete the potential default_data file created by last time pressing
+                // "Retrieve Default Data" menu.
+            }
+        }
+
+        SimulationConfigEditor editor = SimulationConfigEditor.show(this, tempDefaultData, false);
+        if (editor.isOK()) openFile(editor.getConfig(), editor.isContinuation());
+    }
+
+    /**
+     * Allows the user to select the log file to write to.
+     */
+    protected void startSimulationLog(String path) {
+        try {
+            simRunner.setLog(new FileWriter(path, false));
+        } catch (IOException ex) {
+            throw new UserInputException("Can't create log file!", ex);
+        }
+    }
+
+    /**
+     * Opens a dialog box for the user to select the file he/she would like
+     * to report to.
+     */
+    private void startSimulationReport(String path) {
+        /* TODO
+        try {
+            simRunner.report(new FileWriter(path, false));
+        } catch (IOException ex) {
+            throw new UserInputException("Can't create report file!", ex);
+        }*/
     }
 }
