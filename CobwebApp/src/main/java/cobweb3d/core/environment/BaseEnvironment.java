@@ -7,6 +7,7 @@ import cobweb3d.core.location.Direction;
 import cobweb3d.core.location.Location;
 import cobweb3d.core.params.BaseAgentParams;
 import cobweb3d.core.params.BaseEnvironmentParams;
+import cobweb3d.impl.agent.Agent;
 import cobweb3d.impl.params.AgentParams;
 
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class BaseEnvironment implements Updatable {
 
         if (keepOldAgents) {
             killOffgridAgents();
+            loadOldAgents();
             // TODO: Load old agents, set them in the flagArray.
         } else agentTable.clear();
     }
@@ -144,6 +146,26 @@ public class BaseEnvironment implements Updatable {
             Location l = a.getPosition();
             if (l.x >= topology.width || l.x < 0 || l.y >= topology.height || l.y < 0 || l.z >= topology.depth || l.z < 0) {
                 a.die();
+            }
+        }
+    }
+
+    /**
+     * Searches through each location to find every old agent.  Each agent that is found
+     * is added to the scheduler if the scheduler is new.  Agents that are off the new
+     * environment are removed from the environment.
+     */
+    private void loadOldAgents() {
+        // Add in-bounds old agents to the new scheduler and update new
+        // constants
+        // TODO: a way to keep old parameters for old agents?
+        for (int x = 0; x < topology.width; ++x) {
+            for (int y = 0; y < topology.height; ++y) {
+                for (int z = 0; z < topology.depth; ++z) {
+                    Location currentPos = new Location(x, y, z);
+                    BaseAgent agent = getAgent(currentPos);
+                    if (agent instanceof Agent) ((Agent) agent).setParams(agentParams[agent.getType()]);
+                }
             }
         }
     }

@@ -36,6 +36,19 @@ public class SimulationConfig implements ParameterSerializable, AgentFoodCountab
     public ControllerParams controllerParams = new SimpleControllerParams(this);
 
     /**
+     * Spawns new agents.
+     */
+    @ConfDisplayName("Spawn new agents")
+    @ConfXMLTag("spawnNewAgents")
+    public boolean spawnNewAgents = true;
+    /**
+     * Keeps existing agents.
+     */
+    @ConfDisplayName("Keep old agents")
+    @ConfXMLTag("keepOldAgents")
+    public boolean keepOldAgents = false;
+
+    /**
      * Creates the default Cobweb simulation parameters.
      */
     public SimulationConfig() {
@@ -78,7 +91,7 @@ public class SimulationConfig implements ParameterSerializable, AgentFoodCountab
     }
 
     public boolean isContinuation() {
-        return false;
+        return keepOldAgents;
     }
 
     public <T> T getParam(Class<T> pt) {

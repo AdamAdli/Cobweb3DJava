@@ -2,7 +2,7 @@ package cobweb3d.rendering.javafx.renderers;
 
 import cobweb3d.core.environment.BaseEnvironment;
 import cobweb3d.rendering.javafx.SimCamera;
-import cobwebutil.math.MaterialColor;
+import cobwebutil.MaterialColor;
 import javafx.geometry.Point3D;
 import javafx.scene.AmbientLight;
 import javafx.scene.Group;

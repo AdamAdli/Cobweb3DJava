@@ -5,6 +5,8 @@ import cobweb3d.io.Cobweb3Serializer;
 import cobweb3d.plugins.reproduction.ui.ReproductionConfigPage;
 import cobweb3d.ui.application.CobwebApplication;
 import cobweb3d.ui.exceptions.UserInputException;
+import cobweb3d.ui.swing.config.pages.AgentConfigPage;
+import cobweb3d.ui.swing.config.pages.EnvironmentConfigPage;
 import cobweb3d.ui.util.TypeColorEnumeration;
 import io.ChoiceCatalog;
 
@@ -155,6 +157,17 @@ public class SimulationConfigEditor implements ConfigRefresher {
 
     private void setupConfigPages() {
         tabbedPane.removeAll();
+
+        try {
+            EnvironmentConfigPage environmentConfigPage = new EnvironmentConfigPage(simConfig, modifyExisting, this);
+            tabbedPane.add("Environment", environmentConfigPage.getPanel());
+        } catch (NoSuchFieldException | NoSuchMethodException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        AgentConfigPage agentPage = new AgentConfigPage(simConfig.agentParams.agentParams);
+        tabbedPane.addTab("Agents", agentPage.getPanel());
+
         ReproductionConfigPage reproductionConfigPage = new ReproductionConfigPage(simConfig.reproductionParams,
                 new ChoiceCatalog(),
                 new TypeColorEnumeration(simConfig.agentParams.getPerTypeParams()));
@@ -217,4 +230,6 @@ public class SimulationConfigEditor implements ConfigRefresher {
             }
         }
     }
+
+
 }

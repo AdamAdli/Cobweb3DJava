@@ -4,7 +4,7 @@ import cobweb3d.core.agent.BaseAgent;
 import cobweb3d.impl.agent.Agent;
 import cobweb3d.rendering.javafx.mesh.BaselessPyramidMesh;
 import cobweb3d.rendering.javafx.mesh.PyramidMesh;
-import cobwebutil.math.MaterialColor;
+import cobwebutil.MaterialColor;
 import cobwebutil.math.TransformUtil;
 import javafx.scene.AmbientLight;
 import javafx.scene.Group;

@@ -1,7 +1,8 @@
-package cobwebutil.math;
+package cobwebutil;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * All Material Design Colors
@@ -292,5 +293,9 @@ public enum MaterialColor {
 
     public String asString() {
         return mStringColor;
+    }
+
+    public static MaterialColor rand() {
+        return values()[new Random().nextInt(values().length)];
     }
 }

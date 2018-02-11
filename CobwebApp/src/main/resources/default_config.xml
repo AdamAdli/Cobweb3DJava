@@ -4,7 +4,6 @@
     <AgentTypeCount>1</AgentTypeCount>
     <ControllerName>cobweb3d.impl.ai.SimpleController</ControllerName>
     <randomSeed>0</randomSeed>
-    <keepOldArray>false</keepOldArray>
     <keepOldAgents>false</keepOldAgents>
     <spawnNewAgents>true</spawnNewAgents>
 

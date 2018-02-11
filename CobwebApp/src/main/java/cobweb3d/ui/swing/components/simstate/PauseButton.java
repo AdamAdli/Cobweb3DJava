@@ -1,7 +1,7 @@
 package cobweb3d.ui.swing.components.simstate;
 
 import cobweb3d.SimulationRunner;
-import cobwebutil.math.MaterialColor;
+import cobwebutil.MaterialColor;
 
 import javax.swing.*;
 import java.awt.*;

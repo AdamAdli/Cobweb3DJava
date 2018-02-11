@@ -54,7 +54,7 @@ public abstract class PerAgentParams<T extends ParameterSerializable> implements
 
     public T getAgentParams(BaseAgent agent) {
         int type = agent.getType();
-        if (type >= 0 && type <= agentParams.length) return agentParams[type];
+        if (type >= 0 && type < agentParams.length) return agentParams[type];
         else return null;
     }
 

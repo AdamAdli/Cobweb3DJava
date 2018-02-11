@@ -5,7 +5,7 @@ import cobweb3d.impl.Simulation;
 import cobweb3d.rendering.ISimulationRenderer;
 import cobweb3d.rendering.javafx.renderers.GridRenderer;
 import cobweb3d.rendering.javafx.renderers.UncachedAgentRenderer;
-import cobwebutil.math.MaterialColor;
+import cobwebutil.MaterialColor;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;

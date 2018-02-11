@@ -71,9 +71,6 @@ public class Simulation implements SimulationInternals, SimulationInterface {
     }
 
     public void loadNewAgents() {
-        mAgents.clear(); // TODO: clear renderer..
-        mNextAgentId = 0;
-        environment.clearAgents();
         for (int i = 0; i < environment.agentParams.length; i++) {
             for (int j = 0; j < environment.agentParams[i].initialAgents; j++) {
                 Location location;
@@ -98,12 +95,24 @@ public class Simulation implements SimulationInternals, SimulationInterface {
     public void load(SimulationConfig simConfig) {
         random = simConfig.randomSeed == 0 ? new RandomNoGenerator() : new RandomNoGenerator(simConfig.randomSeed);
         simulationConfig = simConfig;
-        environment.setParams(simConfig.envParams, simConfig.agentParams, false);
-        loadNewAgents();
-        mNextAgentId = 0;
+        environment.setParams(simConfig.envParams, simConfig.agentParams, simulationConfig.keepOldAgents);
+
+        if (!simConfig.isContinuation()) {
+            aiStatePlugins.clear();
+            mutatorListener.clearMutators();
+            mAgents.clear();
+            mNextAgentId = 0;
+            reproductionMutator = null;
+        }
+
+        if (simConfig.spawnNewAgents) loadNewAgents();
+
         // TODO: ? time = 0;
-        reproductionMutator = new ReproductionMutator();
-        mutatorListener.addMutator(reproductionMutator);
+        mutatorListener.clearMutators(); //TODO: IMPORTANT!
+        if (reproductionMutator == null) {
+            reproductionMutator = new ReproductionMutator();
+            mutatorListener.addMutator(reproductionMutator);
+        }
 
         reproductionMutator.setParams(this, simConfig.reproductionParams, simConfig.getAgentTypes());
     }

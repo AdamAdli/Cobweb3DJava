@@ -1,6 +1,7 @@
 package cobweb3d.ui.util;
 
 import cobweb3d.impl.params.AgentParams;
+import cobwebutil.MaterialColor;
 import util.ArrayUtilities;
 import util.swing.ColorLookup;
 
@@ -11,9 +12,14 @@ public class TypeColorEnumeration implements ColorLookup {
     private Color[] colors = new Color[1];
 
     public TypeColorEnumeration(AgentParams[] agentParams) {
-        ArrayUtilities.resizeArray(colors, agentParams.length);
+        colors = ArrayUtilities.resizeArray(colors, agentParams.length);
         for (int i = 0; i < agentParams.length; i++) {
-            colors[i] = Color.decode(agentParams[i].color);
+            try {
+                colors[i] = Color.decode(agentParams[i].color);
+            } catch (Exception ex) {
+                colors[i] = MaterialColor.rand().asAWTColor();
+                agentParams[i].color = String.format("#%02x%02x%02x", colors[i].getRed(), colors[i].getGreen(), colors[i].getBlue());
+            }
         }
     }
 
