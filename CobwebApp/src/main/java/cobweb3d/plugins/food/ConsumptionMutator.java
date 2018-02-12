@@ -1,5 +1,6 @@
 package cobweb3d.plugins.food;
 
+import cobweb3d.core.SimulationInternals;
 import cobweb3d.core.SimulationTimeSpace;
 import cobweb3d.core.agent.BaseAgent;
 import cobweb3d.impl.agent.Agent;
@@ -67,9 +68,10 @@ public class ConsumptionMutator implements ContactMutator, LoggingMutator {
     private void eat(BaseAgent eater, BaseAgent food) {
         int gain = food.getEnergy(); // TODO: later multiple by factor ?)
         eater.changeEnergy((int) (gain * params.of(eater).energyMultipler[food.getType()]), new Agent.EatAgentCause());
-        // TODO: figure out a way for plugins to broadcast events for other plugins to listen to.
-        // simulation.getAgentListener().onConsumeAgent(this, otherAgent);
         food.die();
+        // TODO: figure out a way for plugins to broadcast events for other plugins to listen to.
+        if (simulation instanceof SimulationInternals)
+            ((SimulationInternals) simulation).getAgentListener().onConsumeAgent(eater, food);
     }
 
     @Override

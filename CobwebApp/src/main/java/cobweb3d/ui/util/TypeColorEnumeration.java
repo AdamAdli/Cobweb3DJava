@@ -26,6 +26,7 @@ public class TypeColorEnumeration implements ColorLookup {
     @Override
     public Color getColor(int index, int num) {
         // generates any number of colors, num bound is ignored.
+        if (colors.length == 0) return Color.WHITE;
         Color c = colors[index % colors.length];
         while (index >= colors.length) {
             index -= colors.length;

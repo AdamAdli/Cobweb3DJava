@@ -2,8 +2,10 @@ package cobweb3d.ui.swing.config;
 
 import cobweb3d.impl.SimulationConfig;
 import cobweb3d.io.Cobweb3Serializer;
+import cobweb3d.plugins.exchange.ui.ExchangeConfigPage;
 import cobweb3d.plugins.food.ui.ConsumptionConfigPage;
 import cobweb3d.plugins.reproduction.ui.ReproductionConfigPage;
+import cobweb3d.plugins.transform.ui.TransformationConfigPage;
 import cobweb3d.ui.application.CobwebApplication;
 import cobweb3d.ui.exceptions.UserInputException;
 import cobweb3d.ui.swing.config.pages.AgentConfigPage;
@@ -178,6 +180,15 @@ public class SimulationConfigEditor implements ConfigRefresher {
                 new ChoiceCatalog(),
                 new TypeColorEnumeration(simConfig.agentParams.getPerTypeParams()));
         tabbedPane.add("Consumption", consumptionConfigPage.getPanel());
+
+        ExchangeConfigPage exchangeConfigPage = new ExchangeConfigPage(simConfig.exchangeParams,
+                new TypeColorEnumeration(simConfig.agentParams.getPerTypeParams()), this);
+        tabbedPane.add("Exchange", exchangeConfigPage.getPanel());
+
+        TransformationConfigPage transformationConfigPage = new TransformationConfigPage(simConfig.transformationParams,
+                new ChoiceCatalog(),
+                new TypeColorEnumeration(simConfig.agentParams.getPerTypeParams()));
+        tabbedPane.add("Transformation", transformationConfigPage.getPanel());
     }
 
     private void validateSettings() {

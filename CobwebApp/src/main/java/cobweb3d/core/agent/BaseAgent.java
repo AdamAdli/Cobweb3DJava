@@ -78,6 +78,10 @@ public abstract class BaseAgent implements Updatable {
         return type;
     }
 
+    public void transformType(int type) {
+        this.type = type;
+    }
+
     public abstract BaseAgent createChildAsexual(LocationDirection location);
 
     public abstract BaseAgent createChildSexual(LocationDirection location, BaseAgent otherParent);

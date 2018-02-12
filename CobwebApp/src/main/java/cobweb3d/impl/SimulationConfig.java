@@ -3,8 +3,10 @@ package cobweb3d.impl;
 import cobweb3d.core.params.*;
 import cobweb3d.impl.ai.SimpleController;
 import cobweb3d.impl.ai.SimpleControllerParams;
+import cobweb3d.plugins.exchange.ExchangeParams;
 import cobweb3d.plugins.food.ConsumptionParams;
 import cobweb3d.plugins.reproduction.ReproductionParams;
+import cobweb3d.plugins.transform.TransformationParams;
 import io.ConfDisplayName;
 import io.ConfSaveInstanceClass;
 import io.ConfXMLTag;
@@ -73,6 +75,11 @@ public class SimulationConfig implements ParameterSerializable, AgentFoodCountab
     public ReproductionParams reproductionParams = new ReproductionParams(this);
     @ConfXMLTag("Consumption")
     public ConsumptionParams consumptionParams = new ConsumptionParams(this);
+    @ConfXMLTag("Exchange")
+    public ExchangeParams exchangeParams = new ExchangeParams(this);
+    @ConfXMLTag("Transformation")
+    public TransformationParams transformationParams = new TransformationParams(this);
+
 
     private String controllerName = SimpleController.class.getName();
 

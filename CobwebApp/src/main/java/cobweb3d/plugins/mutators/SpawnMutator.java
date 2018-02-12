@@ -14,14 +14,16 @@ public interface SpawnMutator extends AgentMutator {
      *
      * @param agent BaseAgent that died.
      */
-    void onDeath(BaseAgent agent);
+    default void onDeath(BaseAgent agent) {
+    }
 
     /**
      * BaseAgent spawned by user.
      *
      * @param agent BaseAgent spawned.
      */
-    void onSpawn(BaseAgent agent);
+    default void onSpawn(BaseAgent agent) {
+    }
 
     /**
      * BaseAgent produced asexually
@@ -29,7 +31,9 @@ public interface SpawnMutator extends AgentMutator {
      * @param agent  BaseAgent produced.
      * @param parent Asexual parent.
      */
-    void onSpawn(BaseAgent agent, BaseAgent parent);
+    default void onSpawn(BaseAgent agent, BaseAgent parent) {
+        onSpawn(agent);
+    }
 
     /**
      * BaseAgent produced sexually.
@@ -38,5 +42,7 @@ public interface SpawnMutator extends AgentMutator {
      * @param parent1 First parent.
      * @param parent2 Second parent.
      */
-    void onSpawn(BaseAgent agent, BaseAgent parent1, BaseAgent parent2);
+    default void onSpawn(BaseAgent agent, BaseAgent parent1, BaseAgent parent2) {
+        onSpawn(agent);
+    }
 }

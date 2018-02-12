@@ -16,11 +16,10 @@ public abstract class CobwebApplicationSwingBase extends JFrame implements AppCo
 
     public static final String CONFIG_FILE_EXTENSION = ".xml";
     public static final String TEMPORARY_FILE_EXTENSION = ".cwtemp";
-    public static final String INITIAL_OR_NEW_INPUT_FILE_NAME =
-            "initial_or_new_input_(reserved)" + CONFIG_FILE_EXTENSION;
-    public static final String DEFAULT_DATA_FILE_NAME = "default_data_(reserved)";
-    public static final String CURRENT_DATA_FILE_NAME =
-            "current_data_(reserved)" + TEMPORARY_FILE_EXTENSION;
+
+    public static final String INITIAL_OR_NEW_INPUT_FILE_NAME = "initial_or_new_input_(reserved)" + CONFIG_FILE_EXTENSION;
+    public static final String DEFAULT_DATA_FILE_NAME = "default_config";
+    public static final String CURRENT_DATA_FILE_NAME = "current_data_(reserved)" + TEMPORARY_FILE_EXTENSION;
 
     public final Logger logger = Logger.getLogger("COBWEB3D");
 
@@ -64,10 +63,13 @@ public abstract class CobwebApplicationSwingBase extends JFrame implements AppCo
                 throw new RuntimeException(ex);
             }
             if (file.isHidden() || !file.canWrite()) {
+                /*
+                TODO: FIGURE OUT.
                 JOptionPane.showMessageDialog(this,
-                        "Caution:  The initial data file \"" + currentFile
+                              "Caution:  The initial data file \"" + currentFile
                                 + "\" is NOT allowed to be modified.\n"
                                 + "\n                  Any modification of this data file will be neither implemented nor saved.");
+                 */
             }
         }
         setTitle(WINDOW_TITLE + " - " + file.getName());

@@ -30,7 +30,7 @@ public class ConfigTableModel extends AbstractTableModel {
     private static final long serialVersionUID = -8556152150949927964L;
 
     private final String prefix;
-    public ChoiceCatalog choiceCatalog = null;
+    public ChoiceCatalog choiceCatalog = new ChoiceCatalog();
     private ParameterSerializable[] data;
     private List<PropertyAccessor> fields = new ArrayList<>();
     private int columns;
@@ -47,7 +47,7 @@ public class ConfigTableModel extends AbstractTableModel {
         this.prefix = prefix;
         columns = data.length;
 
-        bindObject(data[0]);
+        if (data.length > 0) bindObject(data[0]);
     }
 
     public ConfigTableModel(ParameterSerializable data, String prefix) {

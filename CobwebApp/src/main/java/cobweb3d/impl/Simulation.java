@@ -12,9 +12,11 @@ import cobweb3d.impl.agent.Agent;
 import cobweb3d.plugins.MutatorListener;
 import cobweb3d.plugins.StateParameter;
 import cobweb3d.plugins.StatePlugin;
+import cobweb3d.plugins.exchange.ExchangeMutator;
 import cobweb3d.plugins.food.ConsumptionMutator;
 import cobweb3d.plugins.reproduction.ReproductionMutator;
 import cobweb3d.plugins.states.AgentState;
+import cobweb3d.plugins.transform.TransformationMutator;
 import cobweb3d.ui.SimulationInterface;
 import util.RandomNoGenerator;
 
@@ -37,6 +39,8 @@ public class Simulation implements SimulationInternals, SimulationInterface {
 
     private ReproductionMutator reproductionMutator;
     private ConsumptionMutator consumptionMutator;
+    private ExchangeMutator exchangeMutator;
+    private TransformationMutator transformationMutator;
 
     @Override
     public long getTime() {
@@ -106,9 +110,9 @@ public class Simulation implements SimulationInternals, SimulationInterface {
             mNextAgentId = 0;
             reproductionMutator = null;
             consumptionMutator = null;
+            exchangeMutator = null;
+            transformationMutator = null;
         }
-
-        if (simConfig.spawnNewAgents) loadNewAgents();
 
         // TODO: ? time = 0;
         mutatorListener.clearMutators(); //TODO: IMPORTANT!
@@ -120,9 +124,21 @@ public class Simulation implements SimulationInternals, SimulationInterface {
             consumptionMutator = new ConsumptionMutator();
             mutatorListener.addMutator(consumptionMutator);
         }
+        if (exchangeMutator == null) {
+            exchangeMutator = new ExchangeMutator();
+            mutatorListener.addMutator(exchangeMutator);
+        }
+        if (transformationMutator == null) {
+            transformationMutator = new TransformationMutator();
+            mutatorListener.addMutator(transformationMutator);
+        }
 
         reproductionMutator.setParams(this, simConfig.reproductionParams, simConfig.getAgentTypes());
         consumptionMutator.setParams(this, simConfig.consumptionParams, simConfig.getAgentTypes());
+        exchangeMutator.setParams(this, simConfig.exchangeParams, simConfig.getAgentTypes());
+        transformationMutator.setParams(this, simConfig.transformationParams, simConfig.getAgentTypes());
+
+        if (simConfig.spawnNewAgents) loadNewAgents();
     }
 
     @Override

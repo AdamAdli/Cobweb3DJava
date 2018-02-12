@@ -175,6 +175,4 @@ public class EnvironmentConfigPage implements ConfigPage {
     public void validateUI() throws IllegalArgumentException {
         // Nothing
     }
-
-
 }

@@ -131,7 +131,7 @@ public class ParameterSerializer {
 
             boolean squish = f.isAnnotationPresent(ConfSquishParent.class);
             ConfXMLTag tagname = f.getAnnotation(ConfXMLTag.class);
-
+            // if (tagname.value().equals(""))
             Element tag;
             if (squish) // store config in current node, don't create a child
             {

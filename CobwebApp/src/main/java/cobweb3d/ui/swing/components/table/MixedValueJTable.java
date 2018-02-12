@@ -32,8 +32,7 @@ public class MixedValueJTable extends JTable {
         TableCellEditor editor = tableColumn.getCellEditor();
         if (getValueAt(row, column) instanceof ParameterChoice) {
             editor = new CobwebSelectionEditor(configModel.getRowOptions(row));
-        }
-        if (getValueAt(row, column).getClass().isEnum()) {
+        } else if (getValueAt(row, column).getClass().isEnum()) {
             editor = new EnumSelectionEditor(getValueAt(row, column).getClass());
         }
         if (editor == null && getValueAt(row, column) != null) {
@@ -69,7 +68,7 @@ public class MixedValueJTable extends JTable {
         private static final long serialVersionUID = 3458173499957389679L;
 
         private CobwebSelectionEditor(Set<ParameterChoice> options) {
-            super(new JComboBox<ParameterChoice>(options.toArray(new ParameterChoice[0])));
+            super(new JComboBox<>(options != null ? options.toArray(new ParameterChoice[0]) : new ParameterChoice[0]));
         }
 
         @Override

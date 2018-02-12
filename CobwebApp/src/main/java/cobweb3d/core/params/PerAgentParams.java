@@ -12,6 +12,7 @@ import java.util.Arrays;
 public abstract class PerAgentParams<T extends ParameterSerializable> implements PerTypeParam<T> {
 
     private static final long serialVersionUID = 1L;
+
     @ConfXMLTag("AgentParams")
     @ConfList(indexName = "Agent", startAtOne = true)
     public T[] agentParams;

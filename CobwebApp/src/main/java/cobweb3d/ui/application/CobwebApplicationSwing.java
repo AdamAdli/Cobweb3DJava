@@ -12,6 +12,7 @@ import cobweb3d.ui.swing.dialogs.CreditsDialog;
 import cobweb3d.ui.util.FileDialogUtil;
 import org.jetbrains.annotations.NotNull;
 import util.FileUtils;
+import util.ResourceRetriever;
 import util.swing.SimpleAction;
 
 import javax.swing.*;
@@ -276,20 +277,28 @@ public abstract class CobwebApplicationSwing extends CobwebApplicationSwingBase 
         // Two fashions for retrieving default data:
         // The first fashion for retrieving default data -- using the file default_data_(reserved).xml if one is
         // provided.
-        String defaultData = DEFAULT_DATA_FILE_NAME + CONFIG_FILE_EXTENSION;
-
-        File df = new File(defaultData);
+        String defaultData;
         boolean isTheFirstFashion = false;
-        if (df.exists()) {
-            if (df.canWrite()) {
-                df.setReadOnly();
+        try {
+            File df = new File(defaultData = ResourceRetriever.getResource("default_config.xml").getFile());
+            if (df.exists()) {
+                if (df.canWrite()) {
+                    df.setReadOnly();
+                }
+                isTheFirstFashion = true;
             }
-            isTheFirstFashion = true;
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
         }
 
-        String tempDefaultData = DEFAULT_DATA_FILE_NAME + TEMPORARY_FILE_EXTENSION;
-        File tdf = new File(tempDefaultData);
-        tdf.deleteOnExit();
+        String tempDefaultData;
+        File tdf;
+        try {
+            tdf = new File(tempDefaultData = ResourceRetriever.getResource("default_config.cwtemp").getFile());
+            tdf.deleteOnExit();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
 
         if (isTheFirstFashion) {
             try {
