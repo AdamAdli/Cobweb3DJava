@@ -64,7 +64,7 @@ public class SimulationConfig implements ParameterSerializable, AgentFoodCountab
     /**
      * Number of BaseAgent types.
      */
-    @ConfDisplayName("BaseAgent types")
+    @ConfDisplayName("Agent types")
     @ConfXMLTag("AgentTypeCount")
     public void setAgentTypes(int count) {
         this.agentTypeCount = count;

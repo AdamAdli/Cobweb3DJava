@@ -17,11 +17,11 @@ public class ExchangeAgentPairParams implements ParameterSerializable, Resizable
 
     @ConfDisplayName("Quantity of x transferred")
     @ConfXMLTag("quantXTransfer")
-    public int quantXTransfer = 0;
+    public float quantXTransfer = 0;
 
     @ConfDisplayName("Quantity of y transferred")
     @ConfXMLTag("quantYTransfer")
-    public int quantYTransfer = 0;
+    public float quantYTransfer = 0;
 
     @ConfDisplayName("Dynamic Quantity")
     @ConfXMLTag("dynamicParams")

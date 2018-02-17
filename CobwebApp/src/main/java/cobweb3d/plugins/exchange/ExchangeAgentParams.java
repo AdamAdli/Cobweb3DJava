@@ -12,11 +12,11 @@ public class ExchangeAgentParams implements ParameterSerializable, Calculation {
 
     @ConfDisplayName("Initial x")
     @ConfXMLTag("initialX")
-    public int initialX = 0;
+    public float initialX = 0;
 
     @ConfDisplayName("Initial y")
     @ConfXMLTag("initialY")
-    public int initialY = 0;
+    public float initialY = 0;
 
     @ConfDisplayName("Utility function")
     @ConfXMLTag("utilityFunction")
@@ -38,17 +38,17 @@ public class ExchangeAgentParams implements ParameterSerializable, Calculation {
         }
     }
 
-    public int calculateU(ExchangeState agentState) {
+    public float calculateU(ExchangeState agentState) {
         if (agentState == null) return -1;
         return calculateU(agentState.x, agentState.y);
     }
 
-    public int calculateU(int x, int y) {
+    public float calculateU(float x, float y) {
         return calculateU(x, y, utilityFunctionParam.varA, utilityFunctionParam.varB);
     }
 
     @Override
-    public int calculateU(int x, int y, float A, float B) {
+    public float calculateU(float x, float y, float A, float B) {
         return utilityFunctionParam.formula.calculateU(x, y, A, B);
     }
 }

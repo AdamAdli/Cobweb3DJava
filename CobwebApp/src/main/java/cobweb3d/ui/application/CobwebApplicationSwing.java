@@ -101,6 +101,7 @@ public abstract class CobwebApplicationSwing extends CobwebApplicationSwingBase 
         if (!continuation) {
             simRunner.getSimulation().resetTime();
             simRunner.setLog(null);
+            simRunner.setExcelLog(null); // TODO
         }
         simRunner.getSimulation().load(config);
         updateDynamicUI();
@@ -325,6 +326,7 @@ public abstract class CobwebApplicationSwing extends CobwebApplicationSwingBase 
     protected void startSimulationLog(String path) {
         try {
             simRunner.setLog(new FileWriter(path, false));
+            simRunner.setExcelLog(path);
         } catch (IOException ex) {
             throw new UserInputException("Can't create log file!", ex);
         }

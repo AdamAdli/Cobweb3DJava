@@ -18,7 +18,10 @@ public class MutatorListener implements AgentListener {
     private Set<StepMutator> stepMutators = new LinkedHashSet<>();
     private Set<EnergyMutator> energyMutators = new LinkedHashSet<>();
     private Set<UpdateMutator> updateMutators = new LinkedHashSet<>();
+
     private Set<LoggingMutator> loggingMutators = new LinkedHashSet<>();
+    private Set<ExcelLoggingMutator> excelLoggingMutators = new LinkedHashSet<>();
+
     private Set<ConsumptionMutator> consumptionMutators = new LinkedHashSet<>();
     private Set<ControllerInputMutator> controllerMutators = new LinkedHashSet<>();
     private Set<AgentMutator> allMutators = new HashSet<>();
@@ -45,8 +48,12 @@ public class MutatorListener implements AgentListener {
         if (mutator instanceof LoggingMutator)
             loggingMutators.add((LoggingMutator) mutator);
 
+        if (mutator instanceof ExcelLoggingMutator)
+            excelLoggingMutators.add((ExcelLoggingMutator) mutator);
+
         if (mutator instanceof ControllerInputMutator)
             controllerMutators.add((ControllerInputMutator) mutator);
+
 
         allMutators.add(mutator);
     }
@@ -59,6 +66,7 @@ public class MutatorListener implements AgentListener {
         energyMutators.remove(mutator);
         updateMutators.remove(mutator);
         loggingMutators.remove(mutator);
+        excelLoggingMutators.remove(mutator);
         consumptionMutators.remove(mutator);
         controllerMutators.remove(mutator);
 
@@ -72,6 +80,7 @@ public class MutatorListener implements AgentListener {
         energyMutators.clear();
         updateMutators.clear();
         loggingMutators.clear();
+        excelLoggingMutators.clear();
         consumptionMutators.clear();
         controllerMutators.clear();
 
@@ -162,6 +171,10 @@ public class MutatorListener implements AgentListener {
         for (ControllerInputMutator mutator : controllerMutators) {
             mutator.onControl(agent, cInput);
         }
+    }
+
+    public Set<ExcelLoggingMutator> getLoggingMutators() {
+        return excelLoggingMutators;
     }
 
     public List<String> logDataAgent(int type) {

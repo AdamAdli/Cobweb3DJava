@@ -2,8 +2,11 @@ package cobweb3d;
 
 import cobweb3d.impl.Simulation;
 import cobweb3d.impl.stats.StatsLogger;
+import cobweb3d.impl.stats.excel.ExcelLogger;
 import cobweb3d.ui.UpdatableUI;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.Writer;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -17,7 +20,7 @@ public class SimulationRunnerBase implements SimulationRunner {
 
     private long tickAutoStop = 0;
 
-    private StatsLogger statsLogger = null;
+    private ExcelLogger statsLogger = null;
     private Set<UpdatableUI> uiComponents = new HashSet<>();
 
     public SimulationRunnerBase(Simulation simulation) {
@@ -115,6 +118,7 @@ public class SimulationRunnerBase implements SimulationRunner {
      * @see StatsLogger
      */
     public void setLog(Writer writer) {
+        /* TODO
         if (statsLogger != null) {
             statsLogger.dispose();
             removeUIComponent(statsLogger);
@@ -122,6 +126,23 @@ public class SimulationRunnerBase implements SimulationRunner {
 
         if (writer != null) {
             statsLogger = new StatsLogger(writer, simulation);
+            addUIComponent(statsLogger);
+        }*/
+    }
+
+    public void setExcelLog(String path) {
+        if (statsLogger != null) {
+            try {
+                statsLogger.saveLog();
+                statsLogger.dispose();
+            } catch (IOException ex) {
+
+            }
+            removeUIComponent(statsLogger);
+        }
+
+        if (path != null) {
+            statsLogger = new ExcelLogger(simulation, new File(path));
             addUIComponent(statsLogger);
         }
     }

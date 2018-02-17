@@ -117,7 +117,9 @@ public class ExchangeAgentPairConfigPage extends JPanel implements ConfigPage {
                 add(yTransfer);
 
                 dynamicQuanitites = new BoundCheckBox(pairParams.dynParams, new FieldPropertyAccessor(ExchangeAgentPairDynamicParams.class.getField("enabled")));
-                add(new JLabel(dynamicQuanitites.getLabelText()));
+                dynamicQuanitites.setText(dynamicQuanitites.getLabelText());
+                dynamicQuanitites.setHorizontalTextPosition(SwingConstants.LEFT);
+                // add(new JLabel(dynamicQuanitites.getLabelText()));
                 add(dynamicQuanitites);
 
                 lowerLim = new BoundJFormattedTextField(pairParams.dynParams,
@@ -140,7 +142,7 @@ public class ExchangeAgentPairConfigPage extends JPanel implements ConfigPage {
 
                 // ExchangeConfigPage.makeOptionsTable(this, 6);
                 setLayout(new SpringLayout());
-                SpringUtilities.makeCompactGrid(this, 12, 1, 0, 0, 0, 0, 50, 0);
+                SpringUtilities.makeCompactGrid(this, 11, 1, 0, 0, 0, 0, 50, 0);
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }

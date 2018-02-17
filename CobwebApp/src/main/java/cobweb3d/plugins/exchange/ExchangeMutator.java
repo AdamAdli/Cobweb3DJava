@@ -3,17 +3,21 @@ package cobweb3d.plugins.exchange;
 import cobweb3d.core.SimulationTimeSpace;
 import cobweb3d.core.agent.BaseAgent;
 import cobweb3d.core.location.Location;
+import cobweb3d.impl.stats.excel.BaseStatsProvider;
+import cobweb3d.plugins.exchange.log.ExchangeLogger;
 import cobweb3d.plugins.mutators.*;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
 public class ExchangeMutator extends StatefulMutatorBase<ExchangeState> implements ContactMutator,
-        StepMutator, LoggingMutator, SpawnMutator {
+        StepMutator, LoggingMutator, SpawnMutator, ExcelLoggingMutator {
     ExchangeParams params;
 
     private SimulationTimeSpace simulation;
+    private ExchangeLogger exchangeLogger;
 
     public ExchangeMutator() {
         super(ExchangeState.class);
@@ -22,6 +26,7 @@ public class ExchangeMutator extends StatefulMutatorBase<ExchangeState> implemen
     public void setParams(SimulationTimeSpace sim, ExchangeParams exchangeParams, int agentTypes) {
         this.simulation = sim;
         this.params = exchangeParams;
+        this.exchangeLogger = new ExchangeLogger(params);
     }
 
     @Override
@@ -57,11 +62,71 @@ public class ExchangeMutator extends StatefulMutatorBase<ExchangeState> implemen
     private void tryExchange(BaseAgent agent, BaseAgent other) {
         ExchangeAgentPairParams pairParams = params.getPairParams(agent.getType(), other.getType());
         if (pairParams.quantXTransfer != 0 || pairParams.quantYTransfer != 0) {
-            System.out.println("Exchange!");
-            ExchangeState agentState = getAgentState(agent);
-            ExchangeState otherState = getAgentState(other);
-            System.out.println(params.of(agent).calculateU(agentState));
-            System.out.println(params.of(agent).calculateU(otherState));
+            System.out.println("----- Trying Exchange! -----");
+//            ExchangeState agentState = getAgentState(agent);
+            //           ExchangeState otherState = getAgentState(other);
+            //         System.out.println(params.of(agent).calculateU(agentState));
+            //        System.out.println(params.of(agent).calculateU(otherState));
+
+            ExchangeAgentParams agentOneParams;// = params.of(agent);
+            ExchangeAgentParams agentTwoParams;// = params.of(other);
+            ExchangeState agentOne;// = agent.getType() == pairParams.typeOne ? getAgentState(agent) : getAgentState(other);
+            ExchangeState agentTwo;// = agent.getType() == pairParams.typeTwo ? getAgentState(agent) : getAgentState(other);
+
+            if (agent.getType() == pairParams.typeOne) {
+                agentOneParams = params.of(agent);
+                agentTwoParams = params.of(other);
+                agentOne = getAgentState(agent);
+                agentTwo = getAgentState(other);
+
+            } else {
+                agentOneParams = params.of(other);
+                agentTwoParams = params.of(agent);
+                agentOne = getAgentState(other);
+                agentTwo = getAgentState(agent);
+            }
+
+            float agentOnePreUtil = agentOneParams.calculateU(agentOne);
+            float agentTwoPreUtil = agentTwoParams.calculateU(agentTwo);
+            int lowerBound = pairParams.dynParams.lowerBound;
+            int upperBound = pairParams.dynParams.upperBound;
+            float offeredX = pairParams.quantXTransfer;
+            for (float returnedY = lowerBound; returnedY < upperBound; returnedY += pairParams.dynParams.increment) {
+                // Calculate the utilities after this hypothetical trade.
+                float agentOnePostUtil = agentOneParams.calculateU(agentOne.x - offeredX, agentOne.y + returnedY, agentOneParams.utilityFunctionParam.varA, agentOneParams.utilityFunctionParam.varB);
+                float agentTwoPostUtil = agentTwoParams.calculateU(agentTwo.x + offeredX, agentTwo.y - returnedY, agentTwoParams.utilityFunctionParam.varA, agentTwoParams.utilityFunctionParam.varB);
+
+                // If both benefit (post-trade utility is higher than pre-trade utility), trade and exchange complete!
+                if (agentOnePostUtil > agentOnePreUtil && agentTwoPostUtil > agentTwoPreUtil) {
+                    agentOne.x -= offeredX;
+                    agentOne.y += returnedY;
+                    agentTwo.x += offeredX;
+                    agentTwo.y -= returnedY;
+                    System.out.println("First Exchange offeredX: " + offeredX + " returnedY: " + returnedY);
+                    return;
+                }
+            }
+            // We could not find a suitable y to return for mutually beneficial transaction.
+            // Try again, instead agentOne offers dynamic Y, agentTwo returns fixed X.
+            float returnedX = pairParams.quantXTransfer;
+            for (float offeredY = lowerBound; offeredY < upperBound; offeredY += pairParams.dynParams.increment) {
+                // Calculate the utilities after this hypothetical trade.
+                float agentOnePostUtil = agentOneParams.calculateU(agentOne.x + returnedX, agentOne.y - offeredY, agentOneParams.utilityFunctionParam.varA, agentOneParams.utilityFunctionParam.varB);
+                float agentTwoPostUtil = agentTwoParams.calculateU(agentTwo.x - returnedX, agentTwo.y + offeredY, agentTwoParams.utilityFunctionParam.varA, agentTwoParams.utilityFunctionParam.varB);
+
+                // If both benefit (post-trade utility is higher than pre-trade utility), trade and exchange complete!
+                if (agentOnePostUtil > agentOnePreUtil && agentTwoPostUtil > agentTwoPreUtil) {
+                    agentOne.x += returnedX;
+                    agentOne.y -= offeredY;
+                    agentTwo.x -= returnedX;
+                    agentTwo.y += offeredY;
+                    System.out.println("First Exchange returnedX: " + returnedX + " offeredY: " + offeredY);
+                    return;
+                }
+            }
+
+            // We could not find a suitable y to return for mutually beneficial transaction both ways.
+            System.out.println("No beneficial exchanges occurred.");
         }
     }
 
@@ -83,5 +148,20 @@ public class ExchangeMutator extends StatefulMutatorBase<ExchangeState> implemen
     @Override
     public void onStep(BaseAgent agent, Location from, Location to) {
 
+    }
+
+    @Override
+    public String getName() {
+        return exchangeLogger.getName();
+    }
+
+    @Override
+    public void setWorksheet(XSSFSheet worksheet) {
+        exchangeLogger.setWorksheet(worksheet);
+    }
+
+    @Override
+    public void logData(BaseStatsProvider statsProvider) {
+        exchangeLogger.logData(statsProvider);
     }
 }

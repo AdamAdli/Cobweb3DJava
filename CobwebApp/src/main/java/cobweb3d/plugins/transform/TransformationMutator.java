@@ -2,6 +2,7 @@ package cobweb3d.plugins.transform;
 
 import cobweb3d.core.SimulationTimeSpace;
 import cobweb3d.core.agent.BaseAgent;
+import cobweb3d.impl.Simulation;
 import cobweb3d.impl.agent.Agent;
 import cobweb3d.plugins.exchange.ExchangeState;
 import cobweb3d.plugins.mutators.LoggingMutator;
@@ -67,11 +68,14 @@ public class TransformationMutator extends StatefulMutatorBase<TransformationSta
         if (params.of(agent).enabled && getX(agent) >= params.of(agent).transformationX.getValue() && i >= 30) {
             setAgentState(agent, new TransformationState(getAgentState(agent), agent.getType()));
             agent.transformType(params.of(agent).destType);
+            if (agent instanceof Agent) {
+                ((Agent) agent).setParams(((Simulation) simulation).environment.agentParams[agent.getType()]);
+            }
         }
         i++;
     }
 
-    private int getX(BaseAgent agent) {
+    private float getX(BaseAgent agent) {
         if (agent instanceof Agent) {
             ExchangeState exchangeState = ((Agent) agent).getState(ExchangeState.class);
             if (exchangeState != null) {

@@ -15,7 +15,7 @@ public class AgentParams implements ResizableParam {
      */
     @ConfDisplayName("Initial count")
     @ConfXMLTag("Agents")
-    public int initialAgents = 20;
+    public int initialAgents = 1;
 
     /**
      * Initial number of agents.

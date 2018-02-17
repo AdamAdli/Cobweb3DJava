@@ -96,4 +96,7 @@ dependencies {
 
     // Java3D FX Library
     implementation 'org.fxyz3d:fxyz3d:0.1.1'
+
+    // Apache Excel Library
+    implementation 'org.apache.poi:poi-ooxml:3.17'
 }

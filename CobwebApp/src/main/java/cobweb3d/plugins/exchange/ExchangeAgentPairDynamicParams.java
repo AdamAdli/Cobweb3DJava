@@ -9,7 +9,7 @@ import io.ParameterSerializable;
 public class ExchangeAgentPairDynamicParams implements ParameterSerializable, ResizableParam {
     private static final long serialVersionUID = 12L;
 
-    @ConfDisplayName("Enabled")
+    @ConfDisplayName("Dynamic Quantities Enabled")
     @ConfXMLTag("enabled")
     public boolean enabled = false;
 
@@ -19,11 +19,11 @@ public class ExchangeAgentPairDynamicParams implements ParameterSerializable, Re
 
     @ConfDisplayName("Upper bound")
     @ConfXMLTag("upperBound")
-    public int upperBound = 0;
+    public int upperBound = 1;
 
     @ConfDisplayName("Increment")
     @ConfXMLTag("increment")
-    public int increment = 0;
+    public float increment = 1;
 
     //@Deprecated // for reflection use only!
     public ExchangeAgentPairDynamicParams() {

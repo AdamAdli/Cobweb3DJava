@@ -15,6 +15,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class FXSimulationRenderer implements ISimulationRenderer {
@@ -58,7 +59,7 @@ public class FXSimulationRenderer implements ISimulationRenderer {
                     agentRenderer = new UncachedAgentRenderer();
                     rootGroup.getChildren().add(agentRenderer);
                     if (simulation != null && simulation.environment != null)
-                        agentRenderer.drawAgents(simulation.getAgents());
+                        agentRenderer.drawAgents(new ArrayList<>(simulation.getAgents())); // TODO: Check concurrency.
                 }
             }
         };

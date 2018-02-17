@@ -6,17 +6,17 @@ import io.ConfXMLTag;
 public class ExchangeState implements AgentState {
 
     @ConfXMLTag("x")
-    public int x = 0;
+    public float x = 0;
 
     @ConfXMLTag("y")
-    public int y = 0;
+    public float y = 0;
 
     @Deprecated // for reflection use only!
 
     public ExchangeState() {
     }
 
-    public ExchangeState(int x, int y) {
+    public ExchangeState(float x, float y) {
         this.x = x;
         this.y = y;
     }

@@ -71,6 +71,12 @@ public class EnvironmentConfigPage implements ConfigPage {
         fieldPane.add(new JLabel(Height.getLabelText()));
         fieldPane.add(Height);
 
+        BoundJFormattedTextField depth = new BoundJFormattedTextField(params.envParams,
+                new FieldPropertyAccessor(BaseEnvironmentParams.class.getField("depth")),
+                NumberFormat.getIntegerInstance());
+        fieldPane.add(new JLabel(depth.getLabelText()));
+        fieldPane.add(depth);
+
         BoundCheckBox wrap = new BoundCheckBox(params.envParams,
                 new FieldPropertyAccessor(BaseEnvironmentParams.class.getField("wrapMap")));
         fieldPane.add(new JLabel(wrap.getLabelText()));
@@ -93,7 +99,7 @@ public class EnvironmentConfigPage implements ConfigPage {
 
         panel11.add(fieldPane, BorderLayout.CENTER);
 
-        makeOptionsTable(fieldPane, 4);
+        makeOptionsTable(fieldPane, 5);
         return panel11;
     }
 

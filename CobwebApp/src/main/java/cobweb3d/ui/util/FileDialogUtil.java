@@ -41,4 +41,17 @@ public class FileDialogUtil {
         }
         return null;
     }
+
+    @Nullable
+    public static String saveFile(Dialog parent, String title, String fileFilter) {
+        FileDialog openDialog = new FileDialog(parent, title, FileDialog.SAVE);
+        openDialog.setFile(fileFilter);
+        openDialog.setVisible(true);
+        String directory = openDialog.getDirectory();
+        String file = openDialog.getFile();
+        if (file != null && directory != null) {
+            return directory + file;
+        }
+        return null;
+    }
 }

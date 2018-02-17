@@ -90,7 +90,7 @@ public class Simulation implements SimulationInternals, SimulationInterface {
 
     @Override
     public int getAgentTypeCount() {
-        return 0;
+        return simulationConfig.getAgentTypes();
     }
 
     @Override

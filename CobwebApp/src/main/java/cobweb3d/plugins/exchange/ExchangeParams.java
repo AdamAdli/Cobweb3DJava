@@ -9,9 +9,12 @@ import util.ArrayUtilities;
 public class ExchangeParams extends PerAgentParams<ExchangeAgentParams> {
 
     private static final long serialVersionUID = 2L;
+
     @ConfXMLTag("AgentPairs")
     @ConfList(indexName = "AgentPairs", startAtOne = true)
     public ExchangeAgentPairParams[] pairParams;
+
+    public String logPath = "E:\\Data\\Desktop\\t.xlsl";
     private AgentFoodCountable size;
 
     public ExchangeParams(AgentFoodCountable size) {
