@@ -13,7 +13,6 @@
     <orderEntry type="module" module-name="CobwebApp_main" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.1" level="project" />
     <orderEntry type="module" module-name="CobwebUtil_main" />
-    <orderEntry type="library" name="Gradle: :material-ui-swing:" level="project" />
     <orderEntry type="library" name="Gradle: org.jogamp.gluegen:gluegen-rt:2.3.2" level="project" />
     <orderEntry type="library" name="Gradle: org.jogamp.jogl:jogl-all:2.3.2" level="project" />
     <orderEntry type="library" name="Gradle: org.joml:joml:1.9.4" level="project" />
