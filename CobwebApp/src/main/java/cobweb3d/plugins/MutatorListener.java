@@ -21,6 +21,7 @@ public class MutatorListener implements AgentListener {
 
     private Set<LoggingMutator> loggingMutators = new LinkedHashSet<>();
     private Set<ExcelLoggingMutator> excelLoggingMutators = new LinkedHashSet<>();
+    private Set<DataLoggingMutator> dataLoggingMutators = new LinkedHashSet<>();
 
     private Set<ConsumptionMutator> consumptionMutators = new LinkedHashSet<>();
     private Set<ControllerInputMutator> controllerMutators = new LinkedHashSet<>();
@@ -51,6 +52,9 @@ public class MutatorListener implements AgentListener {
         if (mutator instanceof ExcelLoggingMutator)
             excelLoggingMutators.add((ExcelLoggingMutator) mutator);
 
+        if (mutator instanceof DataLoggingMutator)
+            dataLoggingMutators.add((DataLoggingMutator) mutator);
+
         if (mutator instanceof ControllerInputMutator)
             controllerMutators.add((ControllerInputMutator) mutator);
 
@@ -67,6 +71,7 @@ public class MutatorListener implements AgentListener {
         updateMutators.remove(mutator);
         loggingMutators.remove(mutator);
         excelLoggingMutators.remove(mutator);
+        dataLoggingMutators.remove(mutator);
         consumptionMutators.remove(mutator);
         controllerMutators.remove(mutator);
 
@@ -81,6 +86,7 @@ public class MutatorListener implements AgentListener {
         updateMutators.clear();
         loggingMutators.clear();
         excelLoggingMutators.clear();
+        dataLoggingMutators.clear();
         consumptionMutators.clear();
         controllerMutators.clear();
 
@@ -175,6 +181,10 @@ public class MutatorListener implements AgentListener {
 
     public Set<ExcelLoggingMutator> getLoggingMutators() {
         return excelLoggingMutators;
+    }
+
+    public Set<DataLoggingMutator> getDataLoggingMutators() {
+        return dataLoggingMutators;
     }
 
     public List<String> logDataAgent(int type) {

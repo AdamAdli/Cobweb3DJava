@@ -13,6 +13,7 @@ import cobweb3d.ui.util.FileDialogUtil;
 import org.jetbrains.annotations.NotNull;
 import util.FileUtils;
 import util.ResourceRetriever;
+import util.swing.FileExtFilter;
 import util.swing.SimpleAction;
 
 import javax.swing.*;
@@ -72,8 +73,8 @@ public abstract class CobwebApplicationSwing extends CobwebApplicationSwingBase 
     Action openSimulationAct = new SimpleAction("Open", e -> {
         pauseUI();
         try {
-            File file = FileDialogUtil.openFile(CobwebApplicationSwing.this, "Open Simulation Configuration", "*.xml");
-            if (file != null) openFile(Cobweb3Serializer.loadConfig(new FileInputStream(file)), false);
+            File file = FileDialogUtil.openFile(CobwebApplicationSwing.this, "Open Simulation Configuration", FileExtFilter.COBWEB3D_XML);
+            if (file != null) openFile(Cobweb3Serializer.loadConfig(file), false);
         } catch (IOException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(CobwebApplicationSwing.this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -81,7 +82,7 @@ public abstract class CobwebApplicationSwing extends CobwebApplicationSwingBase 
     });
     Action saveSimulationAct = new SimpleAction("Save", e -> {
         pauseUI();
-        String path = FileDialogUtil.saveFile(CobwebApplicationSwing.this, "Save Simulation Configuration", "*.xml");
+        String path = FileDialogUtil.saveFile(CobwebApplicationSwing.this, "Save Simulation Configuration", FileExtFilter.COBWEB3D_XML);
         if (path != null && !path.isEmpty()) saveSimulation(path);
     });
 
@@ -173,12 +174,12 @@ public abstract class CobwebApplicationSwing extends CobwebApplicationSwingBase 
     });
     Action setLogAct = new SimpleAction("Log", e -> {
         pauseUI();
-        String path = FileDialogUtil.saveFile(CobwebApplicationSwing.this, "Output Simulation Log", "*.log");
+        String path = FileDialogUtil.saveFile(CobwebApplicationSwing.this, "Output Simulation Log", FileExtFilter.COBWEB3D_XML);
         if (path != null && !path.isEmpty()) startSimulationLog(path);
     });
     Action reportData = new SimpleAction("Report", e -> {
         pauseUI();
-        String path = FileDialogUtil.saveFile(CobwebApplicationSwing.this, "Output Simulation Report", "*.log");
+        String path = FileDialogUtil.saveFile(CobwebApplicationSwing.this, "Output Simulation Report", FileExtFilter.TEXT_LOG);
         if (path != null && !path.isEmpty()) startSimulationReport(path);
     });
     Action quitAct = new SimpleAction("Quit", e -> quitApplication());

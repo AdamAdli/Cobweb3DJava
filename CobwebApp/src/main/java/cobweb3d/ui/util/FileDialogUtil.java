@@ -1,6 +1,7 @@
 package cobweb3d.ui.util;
 
 import org.jetbrains.annotations.Nullable;
+import util.swing.FileExtFilter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,20 +10,23 @@ import java.io.File;
 public class FileDialogUtil {
 
     @Nullable
-    public static File openFile(Frame parent, String title, String fileFilter) {
-        FileDialog openDialog = new FileDialog(parent, title, FileDialog.LOAD);
-        openDialog.setFile(fileFilter);
+    public static File openFile(Window parent, String title, FileExtFilter... fileExtFilters) {
+        JFileChooser openDialog = new JFileChooser();
+        openDialog.setDialogTitle(title);
+        openDialog.setDialogType(JFileChooser.OPEN_DIALOG);
+        openDialog.setAcceptAllFileFilterUsed(false);
+        for (FileExtFilter fileExtFilter : fileExtFilters)
+            openDialog.addChoosableFileFilter(fileExtFilter);
+
         openDialog.setVisible(true);
-        String directory = openDialog.getDirectory();
-        String file = openDialog.getFile();
-        if (file != null && directory != null) {
-            File of = new File(directory + file);
-            if (of.exists()) {
-                return of;
+        if (openDialog.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
+            File file = openDialog.getSelectedFile();
+            if (file.exists()) {
+                return file;
             } else {
                 JOptionPane.showMessageDialog(
                         parent,
-                        "File \" " + directory + file + "\" could not be found!", "Warning",
+                        "File \" " + file.getAbsolutePath() + file + "\" could not be found!", "Warning",
                         JOptionPane.WARNING_MESSAGE);
             }
         }
@@ -30,28 +34,17 @@ public class FileDialogUtil {
     }
 
     @Nullable
-    public static String saveFile(Frame parent, String title, String fileFilter) {
-        FileDialog openDialog = new FileDialog(parent, title, FileDialog.SAVE);
-        openDialog.setFile(fileFilter);
-        openDialog.setVisible(true);
-        String directory = openDialog.getDirectory();
-        String file = openDialog.getFile();
-        if (file != null && directory != null) {
-            return directory + file;
-        }
-        return null;
-    }
+    public static String saveFile(Window parent, String title, FileExtFilter... fileExtFilters) {
+        JFileChooser saveDialog = new JFileChooser();
+        saveDialog.setDialogTitle(title);
+        saveDialog.setDialogType(JFileChooser.SAVE_DIALOG);
+        saveDialog.setAcceptAllFileFilterUsed(false);
+        for (FileExtFilter fileExtFilter : fileExtFilters)
+            saveDialog.addChoosableFileFilter(fileExtFilter);
 
-    @Nullable
-    public static String saveFile(Dialog parent, String title, String fileFilter) {
-        FileDialog openDialog = new FileDialog(parent, title, FileDialog.SAVE);
-        openDialog.setFile(fileFilter);
-        openDialog.setVisible(true);
-        String directory = openDialog.getDirectory();
-        String file = openDialog.getFile();
-        if (file != null && directory != null) {
-            return directory + file;
-        }
+        saveDialog.setVisible(true);
+        if (saveDialog.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION)
+            return saveDialog.getSelectedFile().getAbsolutePath();
         return null;
     }
 }

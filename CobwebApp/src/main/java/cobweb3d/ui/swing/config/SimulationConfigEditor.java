@@ -223,7 +223,10 @@ public class SimulationConfigEditor implements ConfigRefresher {
             try {
                 serializer.saveConfig(simConfig, new FileOutputStream(filePath));
             } catch (java.io.IOException ex) {
-                throw new UserInputException("Cannot write file! Make sure your file is not read-only.", ex);
+                JOptionPane.showMessageDialog(
+                        dialog,
+                        "Cannot write file! Make sure your file is not read-only.", "Warning",
+                        JOptionPane.WARNING_MESSAGE);
             }
 
             /* create a new parser for the xml file */

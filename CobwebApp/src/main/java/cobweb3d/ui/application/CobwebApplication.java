@@ -52,13 +52,13 @@ public class CobwebApplication extends CobwebApplicationSwing {
         fileMenu.add(new JMenuItem(modifySimulationFileAct));
         fileMenu.add(new JMenuItem(retrieveDefaultDataAct));
         fileMenu.add(new JMenuItem(modifySimulationAct));
-        fileMenu.add(new JSeparator());
-        fileMenu.add(new JMenuItem(loadPopulationAct));
-        fileMenu.add(new JMenuItem(savePopulationAct));
+        // fileMenu.add(new JSeparator());
+        // fileMenu.add(new JMenuItem(loadPopulationAct));
+        // fileMenu.add(new JMenuItem(savePopulationAct));
         fileMenu.add(new JSeparator());
         fileMenu.add(new JMenuItem(saveSimulationAct));
         fileMenu.add(new JMenuItem(setLogAct));
-        fileMenu.add(new JMenuItem(reportData));
+        // fileMenu.add(new JMenuItem(reportData));
         fileMenu.add(new JSeparator());
         fileMenu.add(new JMenuItem(quitAct));
 
@@ -134,6 +134,13 @@ public class CobwebApplication extends CobwebApplicationSwing {
     @Override
     protected void openCurrentFile() {
         super.openCurrentData();
+        File file = new File(currentFile);
+        if (file.isHidden() || !file.canWrite()) {
+            JOptionPane.showMessageDialog(this,
+                    "Caution:  The initial data file \"" + currentFile
+                            + "\" is NOT allowed to be modified.\n"
+                            + "\n                  Any modification of this data file will be neither implemented nor saved.");
+        }
         SimulationConfigEditor editor = SimulationConfigEditor.show(this, currentFile, true);
         if (editor.isOK()) openFile(editor.getConfig(), editor.isContinuation());
     }

@@ -2,6 +2,7 @@ package cobweb3d.impl.stats.excel;
 
 import cobweb3d.core.agent.BaseAgent;
 import cobweb3d.impl.Simulation;
+import cobweb3d.plugins.mutators.DataLoggingMutator;
 import cobweb3d.plugins.mutators.ExcelLoggingMutator;
 
 import java.util.List;
@@ -48,6 +49,11 @@ public class BaseStatsProvider {
     public Set<ExcelLoggingMutator> getLoggingPlugins() {
         return simulation.mutatorListener.getLoggingMutators();
     }
+
+    public Set<DataLoggingMutator> getDataLoggingPlugins() {
+        return simulation.mutatorListener.getDataLoggingMutators();
+    }
+
 
     public List<String> pluginStatsHeaderAgent() {
         return simulation.mutatorListener.logHeaderAgent();

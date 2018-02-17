@@ -16,7 +16,6 @@ import java.util.List;
 public class TransformationMutator extends StatefulMutatorBase<TransformationState> implements UpdateMutator,
         LoggingMutator {
     TransformationParams params;
-    int i = 0;
     private SimulationTimeSpace simulation;
 
     public TransformationMutator() {
@@ -65,14 +64,13 @@ public class TransformationMutator extends StatefulMutatorBase<TransformationSta
 
     @Override
     public void onUpdate(BaseAgent agent) {
-        if (params.of(agent).enabled && getX(agent) >= params.of(agent).transformationX.getValue() && i >= 30) {
+        if (params.of(agent).enabled && getX(agent) >= params.of(agent).transformationX.getValue()) {
             setAgentState(agent, new TransformationState(getAgentState(agent), agent.getType()));
-            agent.transformType(params.of(agent).destType);
+            agent.transformType(params.of(agent).destType - 1);
             if (agent instanceof Agent) {
                 ((Agent) agent).setParams(((Simulation) simulation).environment.agentParams[agent.getType()]);
             }
         }
-        i++;
     }
 
     private float getX(BaseAgent agent) {

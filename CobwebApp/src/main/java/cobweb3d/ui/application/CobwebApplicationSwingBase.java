@@ -62,15 +62,6 @@ public abstract class CobwebApplicationSwingBase extends JFrame implements AppCo
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
-            if (file.isHidden() || !file.canWrite()) {
-                /*
-                TODO: FIGURE OUT.
-                JOptionPane.showMessageDialog(this,
-                              "Caution:  The initial data file \"" + currentFile
-                                + "\" is NOT allowed to be modified.\n"
-                                + "\n                  Any modification of this data file will be neither implemented nor saved.");
-                 */
-            }
         }
         setTitle(WINDOW_TITLE + " - " + file.getName());
         return file;

@@ -17,7 +17,7 @@ public class TransformationAgentParams implements ParameterSerializable {
      */
     @ConfDisplayName("Destination Type")
     @ConfXMLTag("transformTo")
-    public int destType = 0;
+    public int destType = 1;
 
     /**
      * Chance that bumping into another agent will result in sexual breeding.

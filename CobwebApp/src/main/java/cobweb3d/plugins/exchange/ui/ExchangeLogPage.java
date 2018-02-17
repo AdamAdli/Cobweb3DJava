@@ -4,16 +4,16 @@ import cobweb3d.plugins.exchange.ExchangeParams;
 import cobweb3d.ui.swing.config.ConfigPage;
 import cobweb3d.ui.util.FileDialogUtil;
 import cobweb3d.ui.util.SpringUtilities;
+import util.swing.FileExtFilter;
 import util.swing.SimpleAction;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class ExchangeLogPage extends JPanel implements ConfigPage {
 
     private ExchangeParams params;
     private SimpleAction setLogAct = new SimpleAction("Set Log", e -> {
-        String path = FileDialogUtil.saveFile((Dialog) SwingUtilities.getWindowAncestor(this), "Exchanges Log", "*.xlsx");
+        String path = FileDialogUtil.saveFile(SwingUtilities.getWindowAncestor(this), "Log", FileExtFilter.EXCEL_XLSX);
         if (path != null && !path.isEmpty()) params.logPath = path;
         else params.logPath = null;
     });
