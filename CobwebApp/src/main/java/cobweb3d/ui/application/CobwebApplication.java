@@ -8,6 +8,7 @@ import cobweb3d.rendering.ISimulationRenderer;
 import cobweb3d.rendering.javafx.FXSimulationRenderer;
 import cobweb3d.ui.swing.components.simstate.SimStatePanel;
 import cobweb3d.ui.swing.config.SimulationConfigEditor;
+import util.ArrayUtilities;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,7 +27,6 @@ public class CobwebApplication extends CobwebApplicationSwing {
     public CobwebApplication() {
         super(new ThreadSimulationRunner(new Simulation()));
         setLayout(new BorderLayout());
-        setJMenuBar(makeMenuBar());
 
         simStatePanel = new SimStatePanel(simRunner);
         simStatePanel.setBackground(Color.WHITE);
@@ -35,6 +35,8 @@ public class CobwebApplication extends CobwebApplicationSwing {
         logInfo("Initializing simulation renderer: " + FXSimulationRenderer.class.getSimpleName());
         simulationRenderer = new FXSimulationRenderer(simRunner);
         add(simulationRenderer.getBackbuffer(), BorderLayout.CENTER);
+
+        setJMenuBar(makeMenuBar());
         setVisible(true);
     }
 
@@ -67,6 +69,9 @@ public class CobwebApplication extends CobwebApplicationSwing {
         JMenu projectMenu = new JMenu("Project");
 
         JMenu viewMenu = new JMenu("View");
+        for (JMenuItem jMenuItem : ArrayUtilities.nullGuard(simulationRenderer.getMenuItem().getJMenuItems())) {
+            viewMenu.add(jMenuItem);
+        }
 
         JMenu dataMenu = new JMenu("Data");
 
@@ -76,10 +81,10 @@ public class CobwebApplication extends CobwebApplicationSwing {
 
         JMenuBar jMenuBar = new JMenuBar();
         jMenuBar.add(fileMenu);
-        jMenuBar.add(editMenu);
-        jMenuBar.add(projectMenu);
+        //jMenuBar.add(editMenu);
+        //jMenuBar.add(projectMenu);
         jMenuBar.add(viewMenu);
-        jMenuBar.add(dataMenu);
+        //jMenuBar.add(dataMenu);
         jMenuBar.add(helpMenu);
 
         //  jMenuBar.add(new PauseButton(simRunner));

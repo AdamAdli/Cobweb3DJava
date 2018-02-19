@@ -120,6 +120,7 @@ public class BaseEnvironment implements Updatable {
     }
 
     public BaseAgent getAgent(Location l) {
+        System.out.println("env.getAgent - " + l);
         return agentTable.get(l);
     }
 

@@ -21,6 +21,7 @@ import cobweb3d.ui.SimulationInterface;
 import util.RandomNoGenerator;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Simulation implements SimulationInternals, SimulationInterface {
 
@@ -141,17 +142,22 @@ public class Simulation implements SimulationInternals, SimulationInterface {
         if (simConfig.spawnNewAgents) loadNewAgents();
     }
 
+    private static final AtomicLong ticks = new AtomicLong();
     @Override
     public void step() {
         environment.update();
-        synchronized (environment) {
+        synchronized (ticks) {
             for (BaseAgent agent : new LinkedList<>(mAgents)) {
+                System.out.println("Update 1 - " + agent.id());
                 agent.update();
+                System.out.println("Update 2 - " + agent.id());
                 mutatorListener.onUpdate(agent);
                 if (!agent.isAlive()) mAgents.remove(agent);
+                System.out.println("Update 3 - " + agent.id());
             }
         }
         time++;
+        ticks.set(time);
     }
 
     public Agent spawnAgent(Location location, int agentType) {

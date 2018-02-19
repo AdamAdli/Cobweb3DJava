@@ -74,7 +74,7 @@ public class SimulationConfigEditor implements ConfigRefresher {
         // Add the tabbed pane to this panel.
         j.add(tabbedPane, BorderLayout.CENTER);
         j.add(buttons, BorderLayout.SOUTH);
-        j.setPreferredSize(new Dimension(750, 513));
+        j.setPreferredSize(new Dimension(800, 600));
 
         dialog.getRootPane().setDefaultButton(okButton);
         dialog.add(j);

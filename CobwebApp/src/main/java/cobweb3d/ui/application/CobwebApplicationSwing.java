@@ -174,7 +174,7 @@ public abstract class CobwebApplicationSwing extends CobwebApplicationSwingBase 
     });
     Action setLogAct = new SimpleAction("Log", e -> {
         pauseUI();
-        String path = FileDialogUtil.saveFile(CobwebApplicationSwing.this, "Output Simulation Log", FileExtFilter.COBWEB3D_XML);
+        String path = FileDialogUtil.saveFile(CobwebApplicationSwing.this, "Output Simulation Log", FileExtFilter.EXCEL_XLSX);
         if (path != null && !path.isEmpty()) startSimulationLog(path);
     });
     Action reportData = new SimpleAction("Report", e -> {

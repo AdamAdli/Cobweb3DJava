@@ -3,8 +3,10 @@ package cobweb3d.rendering.javafx;
 import cobweb3d.SimulationRunnerBase;
 import cobweb3d.impl.Simulation;
 import cobweb3d.rendering.ISimulationRenderer;
+import cobweb3d.rendering.ISimulationRendererMenuItem;
 import cobweb3d.rendering.javafx.renderers.GridRenderer;
 import cobweb3d.rendering.javafx.renderers.UncachedAgentRenderer;
+import cobweb3d.rendering.javafx.ui.FXSimulationRendererMenuItem;
 import cobwebutil.MaterialColor;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
@@ -15,11 +17,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class FXSimulationRenderer implements ISimulationRenderer {
     private JFXPanel jfxPanel;
+    private FXSimulationRendererMenuItem fxSimulationRendererMenuItem;
 
     private Simulation simulation;
     private final Logger logger = Logger.getLogger("FXSimulationRenderer");
@@ -33,12 +35,16 @@ public class FXSimulationRenderer implements ISimulationRenderer {
             (int) renderScene.getParent().getScene().getHeight());
     private UncachedAgentRenderer agentRenderer;
 
+    private boolean toonRendering = true;
+    private boolean outlineRendering = true;
+
     AnimationTimer animationTimer;
 
     public FXSimulationRenderer(SimulationRunnerBase simulationRunner) {
         bindSimulation(simulationRunner.getSimulation());
         simulationRunner.addUIComponent(this);
         initJavaFX();
+        fxSimulationRendererMenuItem = new FXSimulationRendererMenuItem(this);
     }
 
     private void initJavaFX() {
@@ -56,13 +62,14 @@ public class FXSimulationRenderer implements ISimulationRenderer {
                 if (rootGroup != null) {
                     // TODO: FIX FUNCTIONALITY! POOR PERFORMANCE WITH THIS FIX.
                     rootGroup.getChildren().remove(agentRenderer);
-                    agentRenderer = new UncachedAgentRenderer();
+                    agentRenderer = new UncachedAgentRenderer(toonRendering, outlineRendering);
                     rootGroup.getChildren().add(agentRenderer);
                     if (simulation != null && simulation.environment != null)
-                        agentRenderer.drawAgents(new ArrayList<>(simulation.getAgents())); // TODO: Check concurrency.
+                        agentRenderer.drawAgents(simulation.getAgents()); // TODO: Check concurrency.
                 }
             }
         };
+        animationTimer.stop();
     }
 
     private SubScene initRenderScene() {
@@ -80,7 +87,7 @@ public class FXSimulationRenderer implements ISimulationRenderer {
     @Override
     public void refreshSimulation() {
         if (jfxPanel == null) return;
-        animationTimer.stop(); // TODO: Should contol the animationTimer?
+        animationTimer.stop(); // TODO: Should control the animationTimer?
         Platform.runLater(() -> {
             if (rootGroup != null) {
                 if (gridRenderer != null) {
@@ -104,7 +111,7 @@ public class FXSimulationRenderer implements ISimulationRenderer {
                     gridRenderer.generateGeometry(simulation.environment);
                     gridRenderer.focusCamera(camera);
                 }
-                animationTimer.start();
+                // animationTimer.start();
             }
         });
     }
@@ -117,6 +124,15 @@ public class FXSimulationRenderer implements ISimulationRenderer {
     @Override
     synchronized public void update(boolean synchronous) {
         if (jfxPanel == null) return;
+        Platform.runLater(() -> {
+            if (rootGroup != null) {
+                if (gridRenderer != null) {
+                    gridRenderer.generateGeometry(simulation.environment);
+                    gridRenderer.focusCamera(camera);
+                }
+                // animationTimer.start();
+            }
+        });
     }
 
     @Override
@@ -126,7 +142,7 @@ public class FXSimulationRenderer implements ISimulationRenderer {
 
     @Override
     public void onStarted() {
-        animationTimer.start();
+        //animationTimer.start();
     }
 
     private void resizeRendering(int width, int height) {
@@ -135,5 +151,26 @@ public class FXSimulationRenderer implements ISimulationRenderer {
         if (height == 0) height = 1;   // prevent divide by zero
         camera.adjustForResolution(width, height);
         gridRenderer.focusCamera(camera);
+    }
+
+    public boolean toonRendering() {
+        return toonRendering;
+    }
+
+    public void setToonRendering(boolean toonRendering) {
+        this.toonRendering = toonRendering;
+    }
+
+    public boolean outlineRendering() {
+        return outlineRendering;
+    }
+
+    public void setOutlineRendering(boolean outlineRendering) {
+        this.outlineRendering = outlineRendering;
+    }
+
+    @Override
+    public ISimulationRendererMenuItem getMenuItem() {
+        return fxSimulationRendererMenuItem;
     }
 }

@@ -27,7 +27,14 @@ public class UncachedAgentRenderer extends Group {
     private ToonRenderer toonRenderer;
     private OutlineRenderer outRenderer;
 
+    private boolean doToonShading = true;
+    private boolean doOutlineRendering = true;
+
     public UncachedAgentRenderer() {
+        this(true, true);
+    }
+
+    public UncachedAgentRenderer(boolean toonShading, boolean outlineRendering) {
         super();
         setCache(false);
 
@@ -40,9 +47,10 @@ public class UncachedAgentRenderer extends Group {
         pointLight.getScope().add(this);
         getChildren().addAll(ambientLight, pointLight);
 
-        toonRenderer = new ToonRenderer();
-        outRenderer = new OutlineRenderer();
+        if ((doToonShading = toonShading)) toonRenderer = new ToonRenderer();
+        if ((outlineRendering = outlineRendering)) outRenderer = new OutlineRenderer();
     }
+
 
     public void drawAgents(Collection<BaseAgent> agentList) {
         PyramidMesh pyramidMesh;
@@ -71,8 +79,8 @@ public class UncachedAgentRenderer extends Group {
 
                 TransformUtil.TransformNode(pyramidMesh, new Vector3f(agent.position), 0.5f, 0.5f, 0.5f,
                         new Vector3f(agent.position.direction), PyramidMesh.UP);
-                outRenderer.drawAgent(agent);
-                toonRenderer.drawAgent(agent);
+                if (doOutlineRendering && outRenderer != null) outRenderer.drawAgent(agent);
+                if (doToonShading && toonRenderer != null) toonRenderer.drawAgent(agent);
             }
         }
         // TODO: To track movement, render a trail and delay the removal of trail meshes.
@@ -123,6 +131,5 @@ public class UncachedAgentRenderer extends Group {
                     new Vector3f(agent.position.direction), PyramidMesh.UP);
             getChildren().add(outlineMesh);
         }
-
     }
 }

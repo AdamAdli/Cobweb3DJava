@@ -62,8 +62,8 @@ public class ExchangeMutator extends StatefulMutatorBase<ExchangeState> implemen
     private void tryExchange(BaseAgent agent, BaseAgent other) {
         ExchangeAgentPairParams pairParams = params.getPairParams(agent.getType(), other.getType());
         if (pairParams.quantXTransfer != 0 || pairParams.quantYTransfer != 0) {
-            System.out.println("----- Trying Exchange! -----");
-//            ExchangeState agentState = getAgentState(agent);
+            // System.out.println("----- Trying Exchange! -----");
+            //            ExchangeState agentState = getAgentState(agent);
             //           ExchangeState otherState = getAgentState(other);
             //         System.out.println(params.of(agent).calculateU(agentState));
             //        System.out.println(params.of(agent).calculateU(otherState));
@@ -102,7 +102,7 @@ public class ExchangeMutator extends StatefulMutatorBase<ExchangeState> implemen
                     agentOne.y += returnedY;
                     agentTwo.x += offeredX;
                     agentTwo.y -= returnedY;
-                    System.out.println("First Exchange offeredX: " + offeredX + " returnedY: " + returnedY);
+                    // System.out.println("First Exchange offeredX: " + offeredX + " returnedY: " + returnedY);
                     return;
                 }
             }
@@ -120,13 +120,13 @@ public class ExchangeMutator extends StatefulMutatorBase<ExchangeState> implemen
                     agentOne.y -= offeredY;
                     agentTwo.x -= returnedX;
                     agentTwo.y += offeredY;
-                    System.out.println("First Exchange returnedX: " + returnedX + " offeredY: " + offeredY);
+                    // System.out.println("First Exchange returnedX: " + returnedX + " offeredY: " + offeredY);
                     return;
                 }
             }
 
             // We could not find a suitable y to return for mutually beneficial transaction both ways.
-            System.out.println("No beneficial exchanges occurred.");
+            // System.out.println("No beneficial exchanges occurred.");
         }
     }
 

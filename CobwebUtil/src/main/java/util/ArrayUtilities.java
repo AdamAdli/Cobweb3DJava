@@ -3,6 +3,7 @@ package util;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ArrayUtilities {
@@ -78,4 +79,7 @@ public class ArrayUtilities {
         return list;
     }
 
+    public static <T> Iterable<T> nullGuard(Iterable<T> iterable) {
+        return iterable == null ? Collections.emptyList() : iterable;
+    }
 }

@@ -1,11 +1,12 @@
 package cobweb3d.rendering.javafx;
 
 import javafx.geometry.Point3D;
-import javafx.scene.PerspectiveCamera;
 import javafx.scene.transform.Affine;
+import org.fxyz3d.scene.SimpleFPSCamera;
 import org.joml.Vector3f;
 
-public class SimCamera extends PerspectiveCamera implements ISimCamera {
+public class SimFPSCamera extends SimpleFPSCamera implements ISimCamera {
+
     private float aspectRatio = 1f;
     private float fovY = 45.0f;
     private float fovX = 45.0f;
@@ -14,16 +15,18 @@ public class SimCamera extends PerspectiveCamera implements ISimCamera {
     private double nearClip = 0.1;
     private double farClip = 10000.0;
 
-    public SimCamera() {
+    public SimFPSCamera() {
         this(true);
     }
 
-    public SimCamera(boolean fixedEyeAtCameraZero) {
-        super(fixedEyeAtCameraZero);
-        setNearClip(nearClip);
-        setFarClip(farClip);
-        setFieldOfView(fovY);
+    public SimFPSCamera(boolean fixedEyeAtCameraZero) {
+        super();
+        getCamera().setNearClip(nearClip);
+        getCamera().setFarClip(farClip);
+        getCamera().setFieldOfView(fovY);
+        //getCamera().setVerticalFieldOfView(false);
     }
+
 
     private static Affine lookAtCalc(Vector3f from, Vector3f to, Vector3f ydir) {
         Vector3f zVec = to.sub(from, new Vector3f()).normalize();
@@ -43,24 +46,24 @@ public class SimCamera extends PerspectiveCamera implements ISimCamera {
                 xVec.getZ(), yVec.getZ(), zVec.getZ(), from.getZ());
     }
 
-    public SimCamera adjustForResolution(int width, int height) {
+    public SimFPSCamera adjustForResolution(int width, int height) {
         aspectRatio = ((float) width) / ((float) height);
         fovYr = (float) Math.toRadians(fovY);
         fovXr = 2 * (float) Math.atan(Math.tan(fovYr / 2) * aspectRatio);//fovYr * aspect; //2 * (float) Math.atan(Math.tan(fovYr / 2) * aspect);
         fovX = (float) Math.toDegrees(fovXr);
-        setNearClip(nearClip);
-        setFarClip(farClip);
-        setFieldOfView(fovY);
+        getCamera().setNearClip(nearClip);
+        getCamera().setFarClip(farClip);
+        getCamera().setFieldOfView(fovY);
         return this;
     }
 
-    public SimCamera lookAt(Point3D from, Point3D to, Point3D ydir) {
+    public SimFPSCamera lookAt(Point3D from, Point3D to, Point3D ydir) {
         getTransforms().clear();
         getTransforms().add(lookAtCalc(from, to, ydir));
         return this;
     }
 
-    public SimCamera lookAt(Vector3f from, Vector3f to, Vector3f ydir) {
+    public SimFPSCamera lookAt(Vector3f from, Vector3f to, Vector3f ydir) {
         getTransforms().clear();
         getTransforms().add(lookAtCalc(from, to, ydir));
         return this;

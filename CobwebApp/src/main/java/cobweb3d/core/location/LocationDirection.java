@@ -11,4 +11,14 @@ public class LocationDirection extends Location {
     public LocationDirection(Location l) {
         this(l, new Direction(0, 0, 0));
     }
+
+    @Override
+    public String toString() {
+        return "LocationDirection{" +
+                "direction=" + direction +
+                ", x=" + x +
+                ", y=" + y +
+                ", z=" + z +
+                '}';
+    }
 }

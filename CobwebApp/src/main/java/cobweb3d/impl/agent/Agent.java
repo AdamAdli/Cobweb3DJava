@@ -90,10 +90,12 @@ public class Agent extends BaseAgent {
     @Override
     public void update() {
         if (!isAlive()) return;
+        System.out.println("Update 1.1 - " + id());
         if (params.agingMode && getAge() >= params.agingLimit.getValue() || getEnergy() <= 0) {
             die();
             return;
         }
+        System.out.println("Update 1.2 - " + id());
         if (controller != null) controller.controlAgent(this, simulation.getAgentListener());
     }
 
@@ -190,8 +192,10 @@ public class Agent extends BaseAgent {
         LocationDirection destPos = environment.topology.getAdjacent(getPosition());
         if (!destPos.equals(getPosition())) {
             if (canStep(destPos)) {
+                System.out.println("FreeTile - " + id());
                 onStepFreeTile(destPos);
             } else if (environment.hasAgent(destPos)) {
+                System.out.println("Bump - " + id());
                 onStepAgentBump(environment.getAgent(destPos));
             } else {
                 // Non-free tile rock, waste, etc.
@@ -206,7 +210,9 @@ public class Agent extends BaseAgent {
 
     private void onStepAgentBump(BaseAgent otherAgent) {
         simulation.getAgentListener().onContact(this, otherAgent);
+        System.out.println("onContacted - " + id() + " with " + otherAgent.id());
         changeEnergy(-params.stepAgentEnergy.getValue(), new BumpAgentCause());
+        System.out.println("changeEnergyed - " + id() + " with " + otherAgent.id());
         if (!otherAgent.isAlive()) return;
         // If agents are the same type, try to reproduction.
         if (otherAgent instanceof Agent && otherAgent.getType() == getType()) {

@@ -27,8 +27,8 @@ public class ExchangeConfigPage implements ConfigPage {
         exchangeAgentConfigPage = new ExchangeAgentConfigPage(params, agentColors);
         mainPanel.add(exchangeAgentConfigPage.getPanel());
         mainPanel.add(makePairPanel(params, agentColors));
-        ExchangeLogPage exchangeLogPage = new ExchangeLogPage(params);
-        mainPanel.add(exchangeLogPage);
+        //ExchangeLogPage exchangeLogPage = new ExchangeLogPage(params);
+        // mainPanel.add(exchangeLogPage);
        /* JPanel logGrpPanel = new JPanel();
         Util.makeGroupPanel(logGrpPanel , "Logging");
         logGrpPanel.setLayout(new BorderLayout());
@@ -37,7 +37,7 @@ public class ExchangeConfigPage implements ConfigPage {
         logGrpPanel.add(pathLabel);
         logGrpPanel.add(changePath);*/
 
-        SpringUtilities.makeCompactGrid(mainPanel, 3, 1, 0, 0, 0, 0, 0, 192);
+        SpringUtilities.makeCompactGrid(mainPanel, 2, 1, 0, 0, 0, 0, 0, 192);
     }
 
     public static void makeOptionsTable(JPanel fieldPane, int items) {

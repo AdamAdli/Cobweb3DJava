@@ -5,6 +5,7 @@ import cobweb3d.impl.Simulation;
 import cobweb3d.plugins.mutators.DataLoggingMutator;
 import cobweb3d.plugins.mutators.ExcelLoggingMutator;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -17,7 +18,7 @@ public class BaseStatsProvider {
 
     public long countAgentEnergy() {
         long totalEnergy = 0;
-        for (BaseAgent a : simulation.environment.getAgents()) totalEnergy += a.getEnergy();
+        for (BaseAgent a : new ArrayList<>(simulation.environment.getAgents())) totalEnergy += a.getEnergy();
         return totalEnergy;
     }
 
@@ -27,13 +28,13 @@ public class BaseStatsProvider {
 
     public long countAgents(int agentType) {
         long count = 0;
-        for (BaseAgent a : simulation.environment.getAgents()) if (a.getType() == agentType) count++;
+        for (BaseAgent a : new ArrayList<>(simulation.environment.getAgents())) if (a.getType() == agentType) count++;
         return count;
     }
 
     public long countAgentEnergy(int agentType) {
         long totalEnergy = 0;
-        for (BaseAgent a : simulation.environment.getAgents())
+        for (BaseAgent a : new ArrayList<>(simulation.environment.getAgents()))
             if (a.getType() == agentType) totalEnergy += a.getEnergy();
         return totalEnergy;
     }
@@ -53,7 +54,6 @@ public class BaseStatsProvider {
     public Set<DataLoggingMutator> getDataLoggingPlugins() {
         return simulation.mutatorListener.getDataLoggingMutators();
     }
-
 
     public List<String> pluginStatsHeaderAgent() {
         return simulation.mutatorListener.logHeaderAgent();
