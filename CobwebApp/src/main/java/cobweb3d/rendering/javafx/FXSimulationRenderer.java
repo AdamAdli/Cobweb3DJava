@@ -17,6 +17,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class FXSimulationRenderer implements ISimulationRenderer {
@@ -61,7 +62,7 @@ public class FXSimulationRenderer implements ISimulationRenderer {
         animationTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                draw();
+                drawParallel();
             }
         };
         animationTimer.stop();
@@ -101,6 +102,17 @@ public class FXSimulationRenderer implements ISimulationRenderer {
         }
     }
 
+    private void drawParallel() {
+        if (rootGroup != null) {
+            // TODO: FIX FUNCTIONALITY! POOR PERFORMANCE WITH THIS FIX.
+            rootGroup.getChildren().remove(agentRenderer);
+            agentRenderer = new UncachedAgentRenderer(toonRendering, outlineRendering);
+            rootGroup.getChildren().add(agentRenderer);
+            if (simulation != null && simulation.environment != null)
+                agentRenderer.drawAgents(new ArrayList<>(simulation.getAgents())); // TODO: Check concurrency.
+        }
+    }
+
     @Override
     public void refreshSimulation() {
         if (jfxPanel == null) return;
@@ -124,7 +136,7 @@ public class FXSimulationRenderer implements ISimulationRenderer {
     @Override
     synchronized public void update(boolean synchronous) {
         if (jfxPanel == null) return;
-        if (!parallelRendering) Platform.runLater(FXSimulationRenderer.this::draw);
+        if (!running || !parallelRendering) Platform.runLater(FXSimulationRenderer.this::draw);
     }
 
     @Override

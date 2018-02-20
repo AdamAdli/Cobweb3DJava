@@ -27,13 +27,13 @@ public class BaseStatsProvider {
 
     public long countAgents(int agentType) {
         long count = 0;
-        for (BaseAgent a : new ArrayList<>(simulation.environment.getAgents())) if (a.getType() == agentType) count++;
+        for (BaseAgent a : simulation.environment.getAgents()) if (a.getType() == agentType) count++;
         return count;
     }
 
     public long countAgentEnergy(int agentType) {
         long totalEnergy = 0;
-        for (BaseAgent a : new ArrayList<>(simulation.environment.getAgents()))
+        for (BaseAgent a : simulation.environment.getAgents())
             if (a.getType() == agentType) totalEnergy += a.getEnergy();
         return totalEnergy;
     }

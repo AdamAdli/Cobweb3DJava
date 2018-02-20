@@ -1,7 +1,7 @@
 package cobweb3d.core.location;
 
 public class LocationDirection extends Location {
-    public final Direction direction;
+    public Direction direction;
 
     public LocationDirection(Location l, Direction d) {
         super(l.x, l.y, l.z);

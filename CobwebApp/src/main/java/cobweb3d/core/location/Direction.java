@@ -18,4 +18,18 @@ public class Direction extends Vector3i {
     public Direction(int x, int y, int z) {
         super(x, y, z);
     }
+
+    public Direction setD(int x, int y, int z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        return this;
+    }
+
+    public Direction setD(Direction d) {
+        this.x = d.x;
+        this.y = d.y;
+        this.z = d.z;
+        return this;
+    }
 }

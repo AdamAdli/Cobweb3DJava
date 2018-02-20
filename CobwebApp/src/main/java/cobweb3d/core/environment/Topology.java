@@ -175,7 +175,7 @@ public class Topology {
         return result;
     }
 
-    public LocationDirection getTurnRightPosition(LocationDirection location) {
+    /*public LocationDirection getTurnRightPosition(LocationDirection location) {
         if (location == null || location.direction == null) return location;
         return new LocationDirection(location, turnRight(location.direction));
     }
@@ -195,7 +195,7 @@ public class Topology {
         return new LocationDirection(location, turnDown(location.direction));
     }
 
-    protected Direction turnRight(Direction dir) {
+    /*protected Direction turnRight(Direction dir) {
         if (dir.y != 0) {
             return new Direction(-dir.y, -dir.x, 0);
         } else {
@@ -231,8 +231,68 @@ public class Topology {
             else if (dir.z == 0) return new Direction(0, dir.x, 0);
             else return Direction.yPos;
         }
+    }*/
+    public LocationDirection getTurnRightPosition(LocationDirection location) {
+        if (location == null || location.direction == null) return location;
+        turnRight(location.direction);
+        return location;
     }
 
+    public LocationDirection getTurnLeftPosition(LocationDirection location) {
+        if (location == null || location.direction == null) return location;
+        turnLeft(location.direction);
+        return location;
+    }
+
+    public LocationDirection getTurnUpPosition(LocationDirection location) {
+        if (location == null || location.direction == null) return location;
+        turnUp(location.direction);
+        return location;
+    }
+
+    public LocationDirection getTurnDownPosition(LocationDirection location) {
+        if (location == null || location.direction == null) return location;
+        turnDown(location.direction);
+        return location;
+    }
+
+    protected Direction turnRight(Direction dir) {
+        if (dir.y != 0) {
+            return dir.setD(-dir.y, -dir.x, 0);
+        } else {
+            if (dir.x == 0 && dir.z == 0) return dir.setD(getRandomXZDir());
+            else return dir.setD(-dir.z, 0, dir.x);
+        }
+    }
+
+    protected Direction turnLeft(Direction dir) {
+        if (dir.y != 0) {
+            return dir.setD(dir.y, dir.x, 0);
+        } else {
+            if (dir.x == 0 && dir.z == 0) return dir.setD(getRandomXZDir());
+            else return dir.setD(-dir.z, 0, dir.x);
+        }
+    }
+
+    protected Direction turnUp(Direction dir) {
+        if (dir.y != 0) {
+            return dir.setD(0, -dir.z, dir.y);
+        } else {
+            if (dir.x == 0) return dir.setD(0, -dir.z, 0);
+            else if (dir.z == 0) return dir.setD(0, -dir.x, 0);
+            else return dir.setD(Direction.yNeg);
+        }
+    }
+
+    protected Direction turnDown(Direction dir) {
+        if (dir.y != 0) {
+            return dir.setD(0, dir.z, -dir.y);
+        } else {
+            if (dir.x == 0) return dir.setD(0, dir.z, 0);
+            else if (dir.z == 0) return dir.setD(0, dir.x, 0);
+            else return dir.setD(Direction.yPos);
+        }
+    }
 
     public Rotation getRotationBetween(Direction from, Direction to) {
         if (from.equals(to))

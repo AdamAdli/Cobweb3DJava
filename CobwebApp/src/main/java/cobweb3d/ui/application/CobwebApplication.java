@@ -6,6 +6,7 @@ import cobweb3d.impl.Simulation;
 import cobweb3d.impl.SimulationConfig;
 import cobweb3d.rendering.ISimulationRenderer;
 import cobweb3d.rendering.javafx.FXSimulationRenderer;
+import cobweb3d.ui.swing.components.logstate.LogStateJMenuItems;
 import cobweb3d.ui.swing.components.logstate.LogStatePanel;
 import cobweb3d.ui.swing.components.simstate.SimStatePanel;
 import cobweb3d.ui.swing.config.SimulationConfigEditor;
@@ -76,10 +77,18 @@ public class CobwebApplication extends CobwebApplicationSwing {
         JMenu editMenu = new JMenu("Edit");
 
         JMenu dataMenu = new JMenu("Data");
+        LogStateJMenuItems logStateJMenuItems = new LogStateJMenuItems(simRunner, this);
+        dataMenu.add(logStateJMenuItems.toggleLogCheckbox);
+        dataMenu.add(logStateJMenuItems.autoSaveLogMenuItem);
+        dataMenu.add(logStateJMenuItems.saveLogMenuItem);
 
+     /*   LogDataJMenuItem toggleLogCheckbox = new LogDataJMenuItem(toggleLogAct);
+        toggleLogCheckbox.setState(simRunner.isLogging());
+        simRunner.addUIComponent(toggleLogCheckbox);
+        dataMenu.add(toggleLogCheckbox);
         dataMenu.add(new JMenuItem(setAutoSaveLogAct));
         dataMenu.add(new JMenuItem(saveLogAct));
-
+*/
         JMenu projectMenu = new JMenu("Project");
 
         JMenu viewMenu = new JMenu("View");

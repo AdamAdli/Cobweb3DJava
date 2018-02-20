@@ -28,13 +28,7 @@ public class SimulationRunnerBase implements SimulationRunner, SimulationRunner.
 
     public void loadSimulation(SimulationConfig simulationConfig) {
         simulation.load(simulationConfig);
-        logManager = new LogManager(simulation);
-        addUIComponent(logManager);
-        for (UpdatableUI loggingUI : uiComponents) {
-            if (loggingUI instanceof UpdatableUI.UpdateableLoggingUI) {
-                ((UpdatableUI.UpdateableLoggingUI) loggingUI).onLogStarted();
-            }
-        }
+        initializeLogManager();
     }
 
     @Override
@@ -121,8 +115,13 @@ public class SimulationRunnerBase implements SimulationRunner, SimulationRunner.
     }
 
     public void clearLogManager() {
-        if (logManager != null && logManager instanceof AutoSavingLogManager) {
-            ((AutoSavingLogManager) logManager).saveLog();
+        disableLogging();
+        logManager = null;//new LogManager(simulation);
+    }
+
+    public void disableLogging() {
+        if (logManager != null) {
+            if (logManager instanceof AutoSavingLogManager) ((AutoSavingLogManager) logManager).saveLog();
             removeUIComponent(logManager);
             for (UpdatableUI loggingUI : uiComponents) {
                 if (loggingUI instanceof UpdatableUI.UpdateableLoggingUI) {
@@ -130,11 +129,21 @@ public class SimulationRunnerBase implements SimulationRunner, SimulationRunner.
                 }
             }
         }
-        logManager = null;//new LogManager(simulation);
+    }
+
+    public void enableLogging() {
+        if (logManager == null) initializeLogManager();
+        if (!uiComponents.contains(logManager)) uiComponents.add(logManager);
+        for (UpdatableUI loggingUI : uiComponents) {
+            if (loggingUI instanceof UpdatableUI.UpdateableLoggingUI) {
+                ((UpdatableUI.UpdateableLoggingUI) loggingUI).onLogStarted();
+            }
+        }
     }
 
     public void initializeLogManager() {
-
+        disableLogging();
+        logManager = new LogManager(simulation);
     }
 
     public void setLogManagerAutoSaveFile(File file) {
@@ -150,7 +159,7 @@ public class SimulationRunnerBase implements SimulationRunner, SimulationRunner.
         } else {
             logManager = new AutoSavingLogManager(simulation, file);
         }
-        addUIComponent(logManager);
+        uiComponents.add(logManager);
         for (UpdatableUI loggingUI : uiComponents) {
             if (loggingUI instanceof UpdatableUI.UpdateableLoggingUI) {
                 ((UpdatableUI.UpdateableLoggingUI) loggingUI).onLogStarted();
@@ -220,7 +229,7 @@ public class SimulationRunnerBase implements SimulationRunner, SimulationRunner.
 
     @Override
     public boolean isLogging() {
-        return logManager != null;//statsLogger != null;
+        return logManager != null && uiComponents.contains(logManager);//statsLogger != null;
     }
 
     @Override

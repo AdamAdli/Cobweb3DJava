@@ -89,18 +89,6 @@ public abstract class CobwebApplicationSwing extends CobwebApplicationSwingBase 
         if (path != null && !path.isEmpty()) saveSimulation(path);
     });
 
-    Action setAutoSaveLogAct = new SimpleAction("AutoSave Log", e -> {
-        pauseUI();
-        String path = FileDialogUtil.saveFileJFX(CobwebApplicationSwing.this, "AutoSave Simulation Log", JFXFileExtFilter.LOG_CSV_FASTEST, JFXFileExtFilter.LOG_TEXT_FAST, JFXFileExtFilter.EXCEL_XLSX_SLOWEST);
-        if (path != null && !path.isEmpty()) startSimulationLog(path);
-    });
-
-    Action saveLogAct = new SimpleAction("Save Log", e -> {
-        pauseUI();
-        String path = FileDialogUtil.saveFileJFX(CobwebApplicationSwing.this, "Save Simulation Log", JFXFileExtFilter.LOG_CSV_FASTEST, JFXFileExtFilter.LOG_TEXT_FAST, JFXFileExtFilter.EXCEL_XLSX_SLOWEST);
-        if (path != null && !path.isEmpty()) saveSimulationLog(path);
-    });
-
     public void saveSimulation(String savePath) {
         File sf = new File(savePath);
         if (sf.isHidden() || (sf.exists() && !sf.canWrite())) {
@@ -329,41 +317,6 @@ public abstract class CobwebApplicationSwing extends CobwebApplicationSwingBase 
         SimulationConfigEditor editor = SimulationConfigEditor.show(this, tempDefaultData, false);
         if (editor.isOK()) openFile(editor.getConfig(), editor.isContinuation());
     }
-
-    /**
-     * Allows the user to select the log file to write to.
-     */
-    protected void startSimulationLog(String path) {
-        File file = new File(path);
-        if (!file.exists() || file.canWrite()) {
-            simRunner.setLogManagerAutoSaveFile(file);
-        } else {
-            if (!file.canWrite()) {
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Caution:  File \"" + path + "\" is NOT allowed to be written to.", "Warning",
-                        JOptionPane.WARNING_MESSAGE);
-            }
-        }
-    }
-
-    /**
-     * Allows the user to select the log file to write to.
-     */
-    protected void saveSimulationLog(String path) {
-        File file = new File(path);
-        if (!file.exists() || file.canWrite()) {
-            simRunner.saveLogManager(file);
-        } else {
-            if (!file.canWrite()) {
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Caution:  File \"" + path + "\" is NOT allowed to be written to.", "Warning",
-                        JOptionPane.WARNING_MESSAGE);
-            }
-        }
-    }
-
 
     /**
      * Opens a dialog box for the user to select the file he/she would like
