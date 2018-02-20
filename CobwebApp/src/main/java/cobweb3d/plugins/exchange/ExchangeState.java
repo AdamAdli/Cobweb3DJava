@@ -11,18 +11,21 @@ public class ExchangeState implements AgentState {
     @ConfXMLTag("y")
     public float y = 0;
 
-    @Deprecated // for reflection use only!
+    @ConfXMLTag("u")
+    public float util = 0;
 
+    @Deprecated // for reflection use only!
     public ExchangeState() {
     }
 
-    public ExchangeState(float x, float y) {
+    public ExchangeState(float x, float y, float util) {
         this.x = x;
         this.y = y;
+        this.util = util;
     }
 
     public ExchangeState(ExchangeAgentParams agentParams) {
-        this(agentParams.initialX, agentParams.initialY);
+        this(agentParams.initialX, agentParams.initialY, agentParams.calculateU(agentParams.initialX, agentParams.initialY));
     }
 
     @Override

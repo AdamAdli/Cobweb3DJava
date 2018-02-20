@@ -4,7 +4,6 @@ import cobweb3d.core.agent.BaseAgent;
 import cobweb3d.impl.Simulation;
 import cobweb3d.plugins.mutators.DataLoggingMutator;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -17,7 +16,7 @@ public class BaseStatsProvider {
 
     public long countAgentEnergy() {
         long totalEnergy = 0;
-        for (BaseAgent a : new ArrayList<>(simulation.environment.getAgents())) totalEnergy += a.getEnergy();
+        for (BaseAgent a : simulation.environment.getAgents()) totalEnergy += a.getEnergy();
         return totalEnergy;
     }
 

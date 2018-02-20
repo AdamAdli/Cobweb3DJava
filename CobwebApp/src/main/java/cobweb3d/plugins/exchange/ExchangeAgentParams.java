@@ -40,7 +40,7 @@ public class ExchangeAgentParams implements ParameterSerializable, Calculation {
 
     public float calculateU(ExchangeState agentState) {
         if (agentState == null) return -1;
-        return calculateU(agentState.x, agentState.y);
+        return agentState.util = calculateU(agentState.x, agentState.y);
     }
 
     public float calculateU(float x, float y) {

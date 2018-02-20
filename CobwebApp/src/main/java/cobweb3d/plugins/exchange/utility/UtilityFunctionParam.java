@@ -30,7 +30,7 @@ public class UtilityFunctionParam implements ParameterSerializable {
 
     public enum Formula implements ParameterChoice, Calculation {
         NONE("0", "None", ((x, y, A, B) -> 0)),
-        SQRTxy("1", "\u221A(x * y)", ((x, y, A, B) -> x * y)),
+        SQRTxy("1", "\u221A(x * y)", ((x, y, A, B) -> (float) Math.sqrt(x * y))),
         MINxy("2", "min(x, y)", ((x, y, A, B) -> x < y ? x : y)),
         xPaMyPb("3", "x^A * y^B", ((x, y, A, B) -> (float) (Math.pow(x, A) * Math.pow(y, B)))),
         axAby("4", "Ax + By", ((x, y, A, B) -> ((A * x) + (B * y))));
