@@ -39,4 +39,12 @@ public interface SimulationRunner {
     void addUIComponent(UpdatableUI ui);
 
     void setAutoStopTime(long time);
+
+    interface LoggingSimulationRunner {
+        boolean isLogging();
+
+        default String getLoggingStatus() {
+            return "Logging";
+        }
+    }
 }

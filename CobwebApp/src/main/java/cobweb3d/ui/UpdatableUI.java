@@ -25,4 +25,22 @@ public interface UpdatableUI {
     void onStopped();
 
     void onStarted();
+
+    interface UpdateableLoggingUI extends UpdatableUI {
+        void onLogStarted();
+
+        void onLogStopped();
+
+        @Override
+        default void update(boolean synchronous) {
+        }
+
+        @Override
+        default void onStopped() {
+        }
+
+        @Override
+        default void onStarted() {
+        }
+    }
 }

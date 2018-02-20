@@ -153,4 +153,8 @@ public class ExcelLogger implements UpdatableUI {
     public void onStarted() {
         // Nothing
     }
+
+    public String getLogPath() {
+        return file != null ? file.getPath() : "nowhere";
+    }
 }

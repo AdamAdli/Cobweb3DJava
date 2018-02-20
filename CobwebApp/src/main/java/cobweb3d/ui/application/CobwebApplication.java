@@ -6,11 +6,15 @@ import cobweb3d.impl.Simulation;
 import cobweb3d.impl.SimulationConfig;
 import cobweb3d.rendering.ISimulationRenderer;
 import cobweb3d.rendering.javafx.FXSimulationRenderer;
+import cobweb3d.ui.swing.components.logstate.LogStatePanel;
 import cobweb3d.ui.swing.components.simstate.SimStatePanel;
 import cobweb3d.ui.swing.config.SimulationConfigEditor;
+import cobwebutil.MaterialColor;
 import util.ArrayUtilities;
+import util.swing.layout.BetterBorderLayout;
 
 import javax.swing.*;
+import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.io.File;
 
@@ -21,16 +25,21 @@ import java.io.File;
  */
 public class CobwebApplication extends CobwebApplicationSwing {
 
-    SimStatePanel simStatePanel;
+    private SimStatePanel simStatePanel;
+    private LogStatePanel logStatePanel;
     private ISimulationRenderer simulationRenderer;
 
     public CobwebApplication() {
         super(new ThreadSimulationRunner(new Simulation()));
-        setLayout(new BorderLayout());
+        setLayout(new BetterBorderLayout());
 
         simStatePanel = new SimStatePanel(simRunner);
         simStatePanel.setBackground(Color.WHITE);
         add(simStatePanel, BorderLayout.NORTH);
+
+        logStatePanel = new LogStatePanel(simRunner);
+        logStatePanel.setBackground(Color.WHITE);
+        add(logStatePanel, BorderLayout.SOUTH);
 
         logInfo("Initializing simulation renderer: " + FXSimulationRenderer.class.getSimpleName());
         simulationRenderer = new FXSimulationRenderer(simRunner);
@@ -69,9 +78,15 @@ public class CobwebApplication extends CobwebApplicationSwing {
         JMenu projectMenu = new JMenu("Project");
 
         JMenu viewMenu = new JMenu("View");
-        for (JMenuItem jMenuItem : ArrayUtilities.nullGuard(simulationRenderer.getMenuItem().getJMenuItems())) {
+
+        for (Component jMenuItem : ArrayUtilities.nullGuard(logStatePanel.getJMenuItems())) {
             viewMenu.add(jMenuItem);
         }
+        JMenu rendererMenu = new JMenu("Renderer");
+        for (Component jMenuItem : ArrayUtilities.nullGuard(simulationRenderer.getMenuItem().getJMenuItems())) {
+            rendererMenu.add(jMenuItem);
+        }
+        viewMenu.add(rendererMenu);
 
         JMenu dataMenu = new JMenu("Data");
 
@@ -91,6 +106,7 @@ public class CobwebApplication extends CobwebApplicationSwing {
         //  jMenuBar.add(new StepButton(simRunner));
         // simStatePanel.setPreferredSize(new Dimension(200, 20));
         // jMenuBar.add(simStatePanel);
+        jMenuBar.setBorder(new MatteBorder(0, 0, 1, 0, MaterialColor.grey_500.asAWTColor()));
         return jMenuBar;
     }
 

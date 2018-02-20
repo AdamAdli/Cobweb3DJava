@@ -8,6 +8,7 @@ import cobweb3d.ui.swing.config.ConfigPage;
 import cobweb3d.ui.util.SpringUtilities;
 import cobweb3d.ui.util.binding.BoundCheckBox;
 import cobweb3d.ui.util.binding.BoundJFormattedTextField;
+import cobweb3d.ui.util.binding.BoundJSpinner;
 import util.swing.ColorLookup;
 import util.swing.SimpleAction;
 
@@ -97,9 +98,9 @@ public class ExchangeAgentPairConfigPage extends JPanel implements ConfigPage {
         BoundJFormattedTextField xTransfer;
         BoundJFormattedTextField yTransfer;
         BoundCheckBox dynamicQuanitites;
-        BoundJFormattedTextField lowerLim;
-        BoundJFormattedTextField upperLim;
-        BoundJFormattedTextField increment;
+        BoundJSpinner lowerLim;
+        BoundJSpinner upperLim;
+        BoundJSpinner incrementSpinner;
 
         public ExchangePanel(ExchangeAgentPairParams pairParams) {
             this.pairParams = pairParams;
@@ -118,27 +119,40 @@ public class ExchangeAgentPairConfigPage extends JPanel implements ConfigPage {
 
                 dynamicQuanitites = new BoundCheckBox(pairParams.dynParams, new FieldPropertyAccessor(ExchangeAgentPairDynamicParams.class.getField("enabled")));
                 dynamicQuanitites.setText(dynamicQuanitites.getLabelText());
+                dynamicQuanitites.setMargin(new Insets(4, -2, 0, 0));
                 dynamicQuanitites.setHorizontalTextPosition(SwingConstants.LEFT);
-                // add(new JLabel(dynamicQuanitites.getLabelText()));
+                dynamicQuanitites.addActionListener(l -> {
+                    boolean selected = ((AbstractButton) l.getSource()).isSelected();
+                    lowerLim.setEnabled(selected);
+                    upperLim.setEnabled(selected);
+                    incrementSpinner.setEnabled(selected);
+                });
                 add(dynamicQuanitites);
 
-                lowerLim = new BoundJFormattedTextField(pairParams.dynParams,
-                        new FieldPropertyAccessor(ExchangeAgentPairDynamicParams.class.getField("lowerBound")),
-                        NumberFormat.getIntegerInstance());
+                if (pairParams.dynParams.lowerBound < 0) pairParams.dynParams.lowerBound = 0;
+                lowerLim = new BoundJSpinner(pairParams.dynParams,
+                        new FieldPropertyAccessor(ExchangeAgentPairDynamicParams.class.getField("lowerBound")), new SpinnerNumberModel(1, -0.01f, Float.MAX_VALUE, 0.1));
                 add(new JLabel(lowerLim.getLabelText()));
+                ((JSpinner.DefaultEditor) lowerLim.getEditor()).getTextField().setHorizontalAlignment(JTextField.LEFT);
                 add(lowerLim);
 
-                upperLim = new BoundJFormattedTextField(pairParams.dynParams,
-                        new FieldPropertyAccessor(ExchangeAgentPairDynamicParams.class.getField("upperBound")),
-                        NumberFormat.getIntegerInstance());
+                if (pairParams.dynParams.upperBound < 0) pairParams.dynParams.upperBound = 0;
+                upperLim = new BoundJSpinner(pairParams.dynParams,
+                        new FieldPropertyAccessor(ExchangeAgentPairDynamicParams.class.getField("upperBound")), new SpinnerNumberModel(1, -0.01f, Float.MAX_VALUE, 0.1));
                 add(new JLabel(upperLim.getLabelText()));
+                ((JSpinner.DefaultEditor) upperLim.getEditor()).getTextField().setHorizontalAlignment(JTextField.LEFT);
                 add(upperLim);
 
-                increment = new BoundJFormattedTextField(pairParams.dynParams,
-                        new FieldPropertyAccessor(ExchangeAgentPairDynamicParams.class.getField("increment")),
-                        NumberFormat.getIntegerInstance());
-                add(new JLabel(increment.getLabelText()));
-                add(increment);
+                if (pairParams.dynParams.increment <= 0) pairParams.dynParams.increment = 1;
+                incrementSpinner = new BoundJSpinner(pairParams.dynParams,
+                        new FieldPropertyAccessor(ExchangeAgentPairDynamicParams.class.getField("increment")), new SpinnerNumberModel(1, 0.01f, Float.MAX_VALUE, 0.1));
+                ((JSpinner.DefaultEditor) incrementSpinner.getEditor()).getTextField().setHorizontalAlignment(JTextField.LEFT);
+                add(new JLabel(incrementSpinner.getLabelText()));
+                add(incrementSpinner);
+
+                lowerLim.setEnabled(pairParams.dynParams.enabled);
+                upperLim.setEnabled(pairParams.dynParams.enabled);
+                incrementSpinner.setEnabled(pairParams.dynParams.enabled);
 
                 // ExchangeConfigPage.makeOptionsTable(this, 6);
                 setLayout(new SpringLayout());
@@ -159,13 +173,15 @@ public class ExchangeAgentPairConfigPage extends JPanel implements ConfigPage {
             remove(dynamicQuanitites);
             remove(lowerLim);
             remove(upperLim);
-            remove(increment);
+            remove(incrementSpinner);
+            // remove(increment);
             xTransfer = null;
             yTransfer = null;
             dynamicQuanitites = null;
             lowerLim = null;
             upperLim = null;
-            increment = null;
+            // increment = null;
+            incrementSpinner = null;
         }
     }
 }

@@ -1,8 +1,6 @@
 package cobweb3d.rendering;
 
-import javax.swing.*;
-import java.util.Collection;
+import cobweb3d.ui.MenuItemComponent;
 
-public interface ISimulationRendererMenuItem {
-    Collection<JMenuItem> getJMenuItems();
+public interface ISimulationRendererMenuItem extends MenuItemComponent {
 }

@@ -5,6 +5,7 @@ import cobweb3d.rendering.javafx.FXSimulationRenderer;
 import util.swing.SimpleAction;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,9 +13,11 @@ import java.util.List;
 public class FXSimulationRendererMenuItem implements ISimulationRendererMenuItem {
 
     private FXSimulationRenderer fxSimulationRenderer;
-    private List<JMenuItem> menuItemList;
-    private JCheckBoxMenuItem toonShadingJMenuItem;
-    private JCheckBoxMenuItem outlineRenderingJMenuItem;
+    private List<Component> menuItemList;
+
+    public FXSimulationRendererMenuItem(FXSimulationRenderer simulationRenderer) {
+        this.fxSimulationRenderer = simulationRenderer;
+    }
     private Action toggleToonshading = new SimpleAction("Toon Shading", e -> {
         boolean selected = ((AbstractButton) e.getSource()).isSelected();
         if (fxSimulationRenderer != null) fxSimulationRenderer.setToonRendering(selected);
@@ -23,23 +26,27 @@ public class FXSimulationRendererMenuItem implements ISimulationRendererMenuItem
         boolean selected = ((AbstractButton) e.getSource()).isSelected();
         if (fxSimulationRenderer != null) fxSimulationRenderer.setOutlineRendering(selected);
     });
-
-    public FXSimulationRendererMenuItem(FXSimulationRenderer simulationRenderer) {
-        this.fxSimulationRenderer = simulationRenderer;
-    }
+    private Action toggleParallelRendering = new SimpleAction("Parallel Rendering", e -> {
+        boolean selected = ((AbstractButton) e.getSource()).isSelected();
+        if (fxSimulationRenderer != null) fxSimulationRenderer.setParallelRendering(selected);
+    });
 
     private void buildMenuItems() {
         menuItemList = new LinkedList<>();
-        toonShadingJMenuItem = new JCheckBoxMenuItem(toggleToonshading);
+        JCheckBoxMenuItem toonShadingJMenuItem = new JCheckBoxMenuItem(toggleToonshading);
         toonShadingJMenuItem.setState(fxSimulationRenderer == null || fxSimulationRenderer.toonRendering());
-        outlineRenderingJMenuItem = new JCheckBoxMenuItem(toggleOutlines);
+        JCheckBoxMenuItem outlineRenderingJMenuItem = new JCheckBoxMenuItem(toggleOutlines);
         outlineRenderingJMenuItem.setState(fxSimulationRenderer == null || fxSimulationRenderer.outlineRendering());
+        JCheckBoxMenuItem parallelRenderingJMenuItem = new JCheckBoxMenuItem(toggleParallelRendering);
+        parallelRenderingJMenuItem.setState(fxSimulationRenderer == null || fxSimulationRenderer.parallelRendering());
         menuItemList.add(toonShadingJMenuItem);
         menuItemList.add(outlineRenderingJMenuItem);
+        menuItemList.add(new JSeparator());
+        menuItemList.add(parallelRenderingJMenuItem);
     }
 
     @Override
-    public Collection<JMenuItem> getJMenuItems() {
+    public Collection<Component> getJMenuItems() {
         if (menuItemList == null) buildMenuItems();
         return menuItemList;
     }

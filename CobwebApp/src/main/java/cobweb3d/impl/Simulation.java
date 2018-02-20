@@ -148,12 +148,9 @@ public class Simulation implements SimulationInternals, SimulationInterface {
         environment.update();
         synchronized (ticks) {
             for (BaseAgent agent : new LinkedList<>(mAgents)) {
-                System.out.println("Update 1 - " + agent.id());
                 agent.update();
-                System.out.println("Update 2 - " + agent.id());
                 mutatorListener.onUpdate(agent);
                 if (!agent.isAlive()) mAgents.remove(agent);
-                System.out.println("Update 3 - " + agent.id());
             }
         }
         time++;

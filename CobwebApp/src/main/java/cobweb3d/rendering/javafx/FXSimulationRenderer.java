@@ -37,6 +37,8 @@ public class FXSimulationRenderer implements ISimulationRenderer {
 
     private boolean toonRendering = true;
     private boolean outlineRendering = true;
+    private boolean parallelRendering = true;
+    private boolean running = false;
 
     AnimationTimer animationTimer;
 
@@ -59,14 +61,7 @@ public class FXSimulationRenderer implements ISimulationRenderer {
         animationTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (rootGroup != null) {
-                    // TODO: FIX FUNCTIONALITY! POOR PERFORMANCE WITH THIS FIX.
-                    rootGroup.getChildren().remove(agentRenderer);
-                    agentRenderer = new UncachedAgentRenderer(toonRendering, outlineRendering);
-                    rootGroup.getChildren().add(agentRenderer);
-                    if (simulation != null && simulation.environment != null)
-                        agentRenderer.drawAgents(simulation.getAgents()); // TODO: Check concurrency.
-                }
+                draw();
             }
         };
         animationTimer.stop();
@@ -84,20 +79,33 @@ public class FXSimulationRenderer implements ISimulationRenderer {
         return renderScene;
     }
 
+    private void focusAndDraw() {
+        if (rootGroup != null) {
+            if (gridRenderer != null) {
+                gridRenderer.generateGeometry(simulation.environment);
+                gridRenderer.focusCamera(camera);
+            }
+            if (agentRenderer != null) agentRenderer.clearCache();
+            draw();
+        }
+    }
+
+    private void draw() {
+        if (rootGroup != null) {
+            // TODO: FIX FUNCTIONALITY! POOR PERFORMANCE WITH THIS FIX.
+            rootGroup.getChildren().remove(agentRenderer);
+            agentRenderer = new UncachedAgentRenderer(toonRendering, outlineRendering);
+            rootGroup.getChildren().add(agentRenderer);
+            if (simulation != null && simulation.environment != null)
+                agentRenderer.drawAgents(simulation.getAgents()); // TODO: Check concurrency.
+        }
+    }
+
     @Override
     public void refreshSimulation() {
         if (jfxPanel == null) return;
         animationTimer.stop(); // TODO: Should control the animationTimer?
-        Platform.runLater(() -> {
-            if (rootGroup != null) {
-                if (gridRenderer != null) {
-                    gridRenderer.generateGeometry(simulation.environment);
-                    gridRenderer.focusCamera(camera);
-                }
-                if (agentRenderer != null) agentRenderer.clearCache();
-                animationTimer.start();
-            }
-        });
+        Platform.runLater(FXSimulationRenderer.this::focusAndDraw);
     }
 
     @Override
@@ -105,15 +113,7 @@ public class FXSimulationRenderer implements ISimulationRenderer {
         this.simulation = simulation;
         if (jfxPanel == null) return;
         animationTimer.stop();
-        Platform.runLater(() -> {
-            if (rootGroup != null) {
-                if (gridRenderer != null) {
-                    gridRenderer.generateGeometry(simulation.environment);
-                    gridRenderer.focusCamera(camera);
-                }
-                // animationTimer.start();
-            }
-        });
+        Platform.runLater(FXSimulationRenderer.this::focusAndDraw);
     }
 
     @Override
@@ -124,25 +124,19 @@ public class FXSimulationRenderer implements ISimulationRenderer {
     @Override
     synchronized public void update(boolean synchronous) {
         if (jfxPanel == null) return;
-        Platform.runLater(() -> {
-            if (rootGroup != null) {
-                if (gridRenderer != null) {
-                    gridRenderer.generateGeometry(simulation.environment);
-                    gridRenderer.focusCamera(camera);
-                }
-                // animationTimer.start();
-            }
-        });
+        Platform.runLater(FXSimulationRenderer.this::draw);
     }
 
     @Override
     public void onStopped() {
-        // TODO: Test animationTimer.stop();
+        running = false;
+        if (animationTimer != null) animationTimer.stop();
     }
 
     @Override
     public void onStarted() {
-        //animationTimer.start();
+        running = true;
+        if (parallelRendering && animationTimer != null) animationTimer.start();
     }
 
     private void resizeRendering(int width, int height) {
@@ -159,6 +153,7 @@ public class FXSimulationRenderer implements ISimulationRenderer {
 
     public void setToonRendering(boolean toonRendering) {
         this.toonRendering = toonRendering;
+        update(false);
     }
 
     public boolean outlineRendering() {
@@ -167,6 +162,19 @@ public class FXSimulationRenderer implements ISimulationRenderer {
 
     public void setOutlineRendering(boolean outlineRendering) {
         this.outlineRendering = outlineRendering;
+        update(false);
+    }
+
+    public boolean parallelRendering() {
+        return parallelRendering;
+    }
+
+    public void setParallelRendering(boolean parallelRendering) {
+        this.parallelRendering = parallelRendering;
+        if (animationTimer != null) {
+            if (parallelRendering && running) animationTimer.start();
+            else animationTimer.stop();
+        }
     }
 
     @Override

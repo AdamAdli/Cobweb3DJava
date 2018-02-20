@@ -15,11 +15,11 @@ public class ExchangeAgentPairDynamicParams implements ParameterSerializable, Re
 
     @ConfDisplayName("Lower bound")
     @ConfXMLTag("lowerBound")
-    public int lowerBound = 0;
+    public float lowerBound = 0;
 
     @ConfDisplayName("Upper bound")
     @ConfXMLTag("upperBound")
-    public int upperBound = 1;
+    public float upperBound = 1;
 
     @ConfDisplayName("Increment")
     @ConfXMLTag("increment")

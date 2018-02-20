@@ -12,6 +12,9 @@ import java.awt.*;
 public class SimStatePanel extends JToolBar implements UpdatableUI {
 
     private static final long serialVersionUID = 1L;
+
+    private static final int HEIGHT = 19;
+
     private PauseButton pauseButton;
     private StepButton stepButton;
     private SpeedBar speedBar;
@@ -26,25 +29,30 @@ public class SimStatePanel extends JToolBar implements UpdatableUI {
 
     public SimStatePanel() {
         super();
+        //setLayout(new WrapLayout(FlowLayout.LEFT, 5, 0));
         setFloatable(false);
         add(pauseButton = new PauseButton());
         add(stepButton = new StepButton());
         add(speedBar = new SpeedBar());
+        addSeparator();
         add(tickDisplay = new JLabel());
         add(new JLabel("Stop at: "));
         add(tickField = new JTextField());
 
-        pauseButton.setPreferredSize(new Dimension(pauseButton.getPreferredSize().width, 20));
-        stepButton.setPreferredSize(new Dimension(stepButton.getPreferredSize().width, 20));
+        pauseButton.setPreferredSize(new Dimension(pauseButton.getPreferredSize().width, HEIGHT));
+        stepButton.setPreferredSize(new Dimension(stepButton.getPreferredSize().width, HEIGHT));
 
-        speedBar.setPreferredSize(new Dimension(64, 20));
-        speedBar.setMaximumSize(new Dimension(64, 20));
+        speedBar.setPreferredSize(new Dimension(192, HEIGHT));
+        speedBar.setMaximumSize(new Dimension(192, HEIGHT));
+        speedBar.getPreferredSize().height = HEIGHT;
+        speedBar.getMaximumSize().height = HEIGHT;
 
-        tickDisplay.setPreferredSize(new Dimension(128, 20));
 
-        tickField.setMinimumSize(new Dimension(128, 20));
-        tickField.setPreferredSize(new Dimension(128, 20));
-        tickField.setMaximumSize(new Dimension(128, 20));
+        tickDisplay.setPreferredSize(new Dimension(96, HEIGHT));
+
+        tickField.setMinimumSize(new Dimension(64, HEIGHT));
+        tickField.setPreferredSize(new Dimension(64, HEIGHT));
+        tickField.setMaximumSize(new Dimension(64, HEIGHT));
         tickField.getDocument().addDocumentListener((SimpleDocumentListener)
                 () -> simRunner.setAutoStopTime(Integer.parseInt(tickField.getText())));
         tickField.addFocusListener(new SimpleFocusAdapter(tickField::repaint));

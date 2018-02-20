@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
-public class SimulationRunnerBase implements SimulationRunner {
+public class SimulationRunnerBase implements SimulationRunner, SimulationRunner.LoggingSimulationRunner {
 
     protected Simulation simulation;
 
@@ -139,11 +139,22 @@ public class SimulationRunnerBase implements SimulationRunner {
 
             }
             removeUIComponent(statsLogger);
+            statsLogger = null;
+            for (UpdatableUI loggingUI : uiComponents) {
+                if (loggingUI instanceof UpdatableUI.UpdateableLoggingUI) {
+                    ((UpdatableUI.UpdateableLoggingUI) loggingUI).onLogStopped();
+                }
+            }
         }
 
         if (path != null) {
             statsLogger = new ExcelLogger(simulation, new File(path));
             addUIComponent(statsLogger);
+            for (UpdatableUI loggingUI : uiComponents) {
+                if (loggingUI instanceof UpdatableUI.UpdateableLoggingUI) {
+                    ((UpdatableUI.UpdateableLoggingUI) loggingUI).onLogStarted();
+                }
+            }
         }
     }
 
@@ -197,5 +208,15 @@ public class SimulationRunnerBase implements SimulationRunner {
     @Override
     public void setAutoStopTime(long t) {
         tickAutoStop = t;
+    }
+
+    @Override
+    public boolean isLogging() {
+        return statsLogger != null;
+    }
+
+    @Override
+    public String getLoggingStatus() {
+        return statsLogger != null ? "Logging to: " + statsLogger.getLogPath() : "Not Logging";
     }
 }

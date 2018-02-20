@@ -30,35 +30,11 @@ public class BoundJFormattedTextField extends JFormattedTextField implements Fie
     @Override
     @SuppressWarnings("boxing")
     public void propertyChange(PropertyChangeEvent evt) {
-        Object value = evt.getNewValue();
-        Object out = null;
-        if (field.getType().equals(value.getClass())) {
-            out = value;
-        } else if (value instanceof Double) {
-            Double d = (Double) value;
-            if (field.getType().equals(double.class)) {
-                out = d;
-            } else if (field.getType().equals(float.class)) {
-                out = d.floatValue();
-            }
-        } else if (value instanceof Long) {
-            Long l = (Long) value;
-            if (field.getType().equals(long.class)) {
-                out = l;
-            } else if (field.getType().equals(int.class)) {
-                out = l.intValue();
-            } else if (field.getType().equals(float.class)) {
-                out = l.floatValue();
-            }
-        } else {
-            throw new IllegalArgumentException("bad input/output combination: " + value.getClass() + " -> " + field.getType());
-        }
-        field.set(obj, out);
+        field.set(obj, FieldBoundComponent.validate(field, evt.getNewValue()));
     }
 
     @Override
     public String getLabelText() {
         return field.getName();
     }
-
 }

@@ -4,6 +4,7 @@ import cobweb3d.ThreadSimulationRunner;
 import cobwebutil.MaterialColor;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.AdjustmentEvent;
 
@@ -25,6 +26,7 @@ public class SpeedBar extends JScrollBar implements
         setValues(SCROLLBAR_TICKS - 1, 0, 0, SCROLLBAR_TICKS);
         setPreferredSize(new Dimension(70, getPreferredSize().height));
         setMaximumSize(new Dimension(70, getPreferredSize().height));
+        setBorder(new EmptyBorder(-1, 0, -1, 0));
         original = this.getBackground();
     }
 
