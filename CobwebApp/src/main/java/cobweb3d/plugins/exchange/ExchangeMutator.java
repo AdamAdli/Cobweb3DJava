@@ -2,8 +2,9 @@ package cobweb3d.plugins.exchange;
 
 import cobweb3d.core.SimulationTimeSpace;
 import cobweb3d.core.agent.BaseAgent;
+import cobweb3d.impl.logging.SmartDataTable;
 import cobweb3d.impl.stats.excel.BaseStatsProvider;
-import cobweb3d.plugins.exchange.log.ExchangeLogger;
+import cobweb3d.plugins.exchange.log.ExchangeDataLogger;
 import cobweb3d.plugins.mutators.*;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 
@@ -12,11 +13,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ExchangeMutator extends StatefulMutatorBase<ExchangeState> implements ContactMutator,
-        LoggingMutator, SpawnMutator, ExcelLoggingMutator {
+        LoggingMutator, SpawnMutator, ExcelLoggingMutator, DataLoggingMutator {
     ExchangeParams params;
 
     private SimulationTimeSpace simulation;
-    private ExchangeLogger exchangeLogger;
+    private ExchangeDataLogger exchangeLogger;
 
     public ExchangeMutator() {
         super(ExchangeState.class);
@@ -25,7 +26,7 @@ public class ExchangeMutator extends StatefulMutatorBase<ExchangeState> implemen
     public void setParams(SimulationTimeSpace sim, ExchangeParams exchangeParams, int agentTypes) {
         this.simulation = sim;
         this.params = exchangeParams;
-        this.exchangeLogger = new ExchangeLogger(params);
+        this.exchangeLogger = new ExchangeDataLogger(params);
     }
 
     @Override
@@ -196,11 +197,21 @@ public class ExchangeMutator extends StatefulMutatorBase<ExchangeState> implemen
 
     @Override
     public void setWorksheet(XSSFSheet worksheet) {
-        exchangeLogger.setWorksheet(worksheet);
+        // exchangeLogger.setWorksheet(worksheet);
     }
 
     @Override
     public void logData(BaseStatsProvider statsProvider) {
         exchangeLogger.logData(statsProvider);
+    }
+
+    @Override
+    public int getTableCount() {
+        return exchangeLogger.getTableCount();
+    }
+
+    @Override
+    public Collection<SmartDataTable> getTables() {
+        return exchangeLogger.getTables();
     }
 }

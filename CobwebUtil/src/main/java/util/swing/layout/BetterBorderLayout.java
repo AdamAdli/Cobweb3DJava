@@ -45,6 +45,4 @@ public class BetterBorderLayout extends BorderLayout {
         }
         super.addLayoutComponent(comp, constraints);
     }
-
-
 }

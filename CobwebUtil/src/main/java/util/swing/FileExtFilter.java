@@ -7,6 +7,7 @@ public class FileExtFilter extends FileFilter {
 
     public static final FileExtFilter EXCEL_XLSX = new FileExtFilter("xlsx", "Excel");
     public static final FileExtFilter TEXT_LOG = new FileExtFilter("log", "Text Log");
+    public static final FileExtFilter LOG_CSV = new FileExtFilter("csv", "Log");
     public static final FileExtFilter COBWEB3D_XML = new FileExtFilter("xml", "COBWEB3D");
     String description = null;
     String fileExt = "*";

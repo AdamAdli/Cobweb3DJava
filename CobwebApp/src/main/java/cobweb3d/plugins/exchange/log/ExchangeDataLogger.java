@@ -1,0 +1,79 @@
+package cobweb3d.plugins.exchange.log;
+
+import cobweb3d.impl.logging.SmartDataTable;
+import cobweb3d.impl.stats.excel.BaseStatsProvider;
+import cobweb3d.plugins.exchange.ExchangeParams;
+import cobweb3d.plugins.mutators.DataLoggingMutator;
+import cobweb3d.plugins.states.AgentState;
+
+import java.util.Collection;
+import java.util.Collections;
+
+public class ExchangeDataLogger implements DataLoggingMutator {
+    public static final int FIRST_DATA_ROW = 0;
+    int nextDataRow = 0;
+
+    SmartDataTable smartDataTable;
+
+    ExchangeParams params;
+
+    public ExchangeDataLogger(ExchangeParams params) {
+        this.params = params;
+        initializeTable();
+    }
+
+    @Override
+    public String getName() {
+        return "Exchange Data";
+    }
+
+    @Override
+    public void logData(BaseStatsProvider statsProvider) {
+        if (smartDataTable == null) return;
+        SmartDataTable.SmartLogRow row = smartDataTable.getRow(nextDataRow);
+        row.putVal(0, statsProvider.getTime());
+
+        long totAgentCount = statsProvider.getAgentCount();
+
+        float totalX = ExchangeStatTracker.getTotalX(statsProvider);
+        float totalY = ExchangeStatTracker.getTotalY(statsProvider);
+        float totalU = ExchangeStatTracker.getTotalUtility(statsProvider, params);
+
+        row.putVal(1, totAgentCount);
+        row.putVal(2, totalX);
+        row.putVal(3, totalY);
+        row.putVal(4, totalU);
+        row.putVal(5, (totalU / (float) totAgentCount));
+        int agentCount = params.agentParams.length;
+        for (int i = 0; i < agentCount; i++) {
+            long typeAgentCount = statsProvider.countAgents(i);
+            float typeU = ExchangeStatTracker.getUtilityForAgent(statsProvider, params, i);
+            row.putVal(i + 6, (typeU / (float) typeAgentCount));
+        }
+        nextDataRow++;
+    }
+
+    @Override
+    public <T extends AgentState> boolean acceptsState(Class<T> type, T value) {
+        return false;
+    }
+
+    private void initializeTable() {
+        smartDataTable = new SmartDataTable("Tick", "Total Agents", "Total X", "Total Y", "Total Utility", "Average Utility");
+        int agentCount = params.agentParams.length;
+        for (int i = 1; i <= agentCount; i++) {
+            smartDataTable.addColumn("Agent " + i + " Average Utility");
+        }
+        nextDataRow = FIRST_DATA_ROW;
+    }
+
+    @Override
+    public int getTableCount() {
+        return 1;
+    }
+
+    @Override
+    public Collection<SmartDataTable> getTables() {
+        return Collections.singleton(smartDataTable);
+    }
+}

@@ -1,6 +1,7 @@
 package cobweb3d;
 
 import cobweb3d.impl.Simulation;
+import cobweb3d.impl.logging.LogManager;
 import cobweb3d.impl.stats.StatsLogger;
 import cobweb3d.impl.stats.excel.ExcelLogger;
 import cobweb3d.ui.UpdatableUI;
@@ -21,6 +22,7 @@ public class SimulationRunnerBase implements SimulationRunner, SimulationRunner.
     private long tickAutoStop = 0;
 
     private ExcelLogger statsLogger = null;
+    private LogManager logManager = null;
     private Set<UpdatableUI> uiComponents = new HashSet<>();
 
     public SimulationRunnerBase(Simulation simulation) {
@@ -49,7 +51,7 @@ public class SimulationRunnerBase implements SimulationRunner, SimulationRunner.
 				"Running '%1$s' for %2$d steps. Log: %3$s",
 				simulation.simulationConfig.fileName,
 				getAutoStopTime(),
-                statsLogger == null ? "No" : "Yes"));
+                logManager == null ? "No" : "Yes"));
 
         long increment = getAutoStopTime() / 100;
         if (increment > 1000)
@@ -128,6 +130,34 @@ public class SimulationRunnerBase implements SimulationRunner, SimulationRunner.
             statsLogger = new StatsLogger(writer, simulation);
             addUIComponent(statsLogger);
         }*/
+    }
+
+    public void setLogManager(String path) {
+        if (logManager != null) {
+            try {
+                logManager.saveLog();
+                logManager.dispose();
+            } catch (IOException ex) {
+
+            }
+            removeUIComponent(logManager);
+            logManager = null;
+            for (UpdatableUI loggingUI : uiComponents) {
+                if (loggingUI instanceof UpdatableUI.UpdateableLoggingUI) {
+                    ((UpdatableUI.UpdateableLoggingUI) loggingUI).onLogStopped();
+                }
+            }
+        }
+
+        if (path != null) {
+            logManager = new LogManager(simulation, new File(path));
+            addUIComponent(logManager);
+            for (UpdatableUI loggingUI : uiComponents) {
+                if (loggingUI instanceof UpdatableUI.UpdateableLoggingUI) {
+                    ((UpdatableUI.UpdateableLoggingUI) loggingUI).onLogStarted();
+                }
+            }
+        }
     }
 
     public void setExcelLog(String path) {
@@ -212,11 +242,12 @@ public class SimulationRunnerBase implements SimulationRunner, SimulationRunner.
 
     @Override
     public boolean isLogging() {
-        return statsLogger != null;
+        return logManager != null;//statsLogger != null;
     }
 
     @Override
     public String getLoggingStatus() {
-        return statsLogger != null ? "Logging to: " + statsLogger.getLogPath() : "Not Logging";
+        return logManager != null ? "Logging to: " + logManager.getLogPath() : "Not Logging";
+        //return statsLogger != null ? "Logging to: " + statsLogger.getLogPath() : "Not Logging";
     }
 }

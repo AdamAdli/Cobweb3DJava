@@ -113,7 +113,6 @@ public class CobwebApplication extends CobwebApplicationSwing {
     @Override
     public void updateDynamicUI() {
         // TODO:
-
         super.updateDynamicUI();
     }
 

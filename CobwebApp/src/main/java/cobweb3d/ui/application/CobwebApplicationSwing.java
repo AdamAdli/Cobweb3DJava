@@ -86,28 +86,11 @@ public abstract class CobwebApplicationSwing extends CobwebApplicationSwingBase 
         if (path != null && !path.isEmpty()) saveSimulation(path);
     });
 
-    /**
-     * Load simulation config.
-     *
-     * @param config       simulation configuration
-     * @param continuation load this as a continuation of the current simulation?
-     */
-    @Override
-    public File openFile(SimulationConfig config, boolean continuation) {
-        File file = super.openFile(config, continuation);
-        // TODO more organized way to deal with loading simulation configurations
-        // TODO create new simRunner when starting new simulation, reuse when modifying
-        if (simRunner.isRunning())
-            simRunner.stop();
-        if (!continuation) {
-            simRunner.getSimulation().resetTime();
-            simRunner.setLog(null);
-            simRunner.setExcelLog(null); // TODO
-        }
-        simRunner.getSimulation().load(config);
-        updateDynamicUI();
-        return file;
-    }
+    Action setLogAct = new SimpleAction("Log", e -> {
+        pauseUI();
+        String path = FileDialogUtil.saveFile(CobwebApplicationSwing.this, "Output Simulation Log", FileExtFilter.LOG_CSV);
+        if (path != null && !path.isEmpty()) startSimulationLog(path);
+    });
 
     public void saveSimulation(String savePath) {
         File sf = new File(savePath);
@@ -172,11 +155,29 @@ public abstract class CobwebApplicationSwing extends CobwebApplicationSwingBase 
         pauseUI();
         retrieveDefaultData();
     });
-    Action setLogAct = new SimpleAction("Log", e -> {
-        pauseUI();
-        String path = FileDialogUtil.saveFile(CobwebApplicationSwing.this, "Output Simulation Log", FileExtFilter.EXCEL_XLSX);
-        if (path != null && !path.isEmpty()) startSimulationLog(path);
-    });
+
+    /**
+     * Load simulation config.
+     *
+     * @param config       simulation configuration
+     * @param continuation load this as a continuation of the current simulation?
+     */
+    @Override
+    public File openFile(SimulationConfig config, boolean continuation) {
+        File file = super.openFile(config, continuation);
+        // TODO more organized way to deal with loading simulation configurations
+        // TODO create new simRunner when starting new simulation, reuse when modifying
+        if (simRunner.isRunning())
+            simRunner.stop();
+        if (!continuation) {
+            simRunner.getSimulation().resetTime();
+            simRunner.setLog(null);
+            simRunner.setLogManager(null); // TODO
+        }
+        simRunner.getSimulation().load(config);
+        updateDynamicUI();
+        return file;
+    }
     Action reportData = new SimpleAction("Report", e -> {
         pauseUI();
         String path = FileDialogUtil.saveFile(CobwebApplicationSwing.this, "Output Simulation Report", FileExtFilter.TEXT_LOG);
@@ -327,7 +328,7 @@ public abstract class CobwebApplicationSwing extends CobwebApplicationSwingBase 
     protected void startSimulationLog(String path) {
         try {
             simRunner.setLog(new FileWriter(path, false));
-            simRunner.setExcelLog(path);
+            simRunner.setLogManager(path);
         } catch (IOException ex) {
             throw new UserInputException("Can't create log file!", ex);
         }
