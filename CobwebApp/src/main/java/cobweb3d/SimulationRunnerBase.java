@@ -1,15 +1,12 @@
 package cobweb3d;
 
 import cobweb3d.impl.Simulation;
+import cobweb3d.impl.SimulationConfig;
 import cobweb3d.impl.logging.AutoSavingLogManager;
 import cobweb3d.impl.logging.LogManager;
-import cobweb3d.impl.stats.StatsLogger;
-import cobweb3d.impl.stats.excel.ExcelLogger;
 import cobweb3d.ui.UpdatableUI;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.Writer;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
@@ -22,12 +19,22 @@ public class SimulationRunnerBase implements SimulationRunner, SimulationRunner.
 
     private long tickAutoStop = 0;
 
-    private ExcelLogger statsLogger = null;
     private LogManager logManager = null;
     private Set<UpdatableUI> uiComponents = new HashSet<>();
 
     public SimulationRunnerBase(Simulation simulation) {
         this.simulation = simulation;
+    }
+
+    public void loadSimulation(SimulationConfig simulationConfig) {
+        simulation.load(simulationConfig);
+        logManager = new LogManager(simulation);
+        addUIComponent(logManager);
+        for (UpdatableUI loggingUI : uiComponents) {
+            if (loggingUI instanceof UpdatableUI.UpdateableLoggingUI) {
+                ((UpdatableUI.UpdateableLoggingUI) loggingUI).onLogStarted();
+            }
+        }
     }
 
     @Override
@@ -113,74 +120,49 @@ public class SimulationRunnerBase implements SimulationRunner, SimulationRunner.
         }
     }
 
-    /**
-     * Sets log Writer for the simulation.
-     * null to disable.
-     *
-     * @param writer where to write the log.
-     * @see StatsLogger
-     */
-    public void setLog(Writer writer) {
-        /* TODO
-        if (statsLogger != null) {
-            statsLogger.dispose();
-            removeUIComponent(statsLogger);
+    public void clearLogManager() {
+        if (logManager != null && logManager instanceof AutoSavingLogManager) {
+            ((AutoSavingLogManager) logManager).saveLog();
+            removeUIComponent(logManager);
+            for (UpdatableUI loggingUI : uiComponents) {
+                if (loggingUI instanceof UpdatableUI.UpdateableLoggingUI) {
+                    ((UpdatableUI.UpdateableLoggingUI) loggingUI).onLogStopped();
+                }
+            }
         }
-
-        if (writer != null) {
-            statsLogger = new StatsLogger(writer, simulation);
-            addUIComponent(statsLogger);
-        }*/
+        logManager = null;//new LogManager(simulation);
     }
 
-    public void setLogManager(String path) {
+    public void initializeLogManager() {
+
+    }
+
+    public void setLogManagerAutoSaveFile(File file) {
         if (logManager != null) {
             if (logManager instanceof AutoSavingLogManager) ((AutoSavingLogManager) logManager).saveLog();
             removeUIComponent(logManager);
-            logManager = null;
             for (UpdatableUI loggingUI : uiComponents) {
                 if (loggingUI instanceof UpdatableUI.UpdateableLoggingUI) {
                     ((UpdatableUI.UpdateableLoggingUI) loggingUI).onLogStopped();
                 }
             }
+            logManager = new AutoSavingLogManager(logManager, file);
+        } else {
+            logManager = new AutoSavingLogManager(simulation, file);
         }
-
-        if (path != null) {
-            logManager = new AutoSavingLogManager(simulation, new File(path));
-            addUIComponent(logManager);
-            for (UpdatableUI loggingUI : uiComponents) {
-                if (loggingUI instanceof UpdatableUI.UpdateableLoggingUI) {
-                    ((UpdatableUI.UpdateableLoggingUI) loggingUI).onLogStarted();
-                }
+        addUIComponent(logManager);
+        for (UpdatableUI loggingUI : uiComponents) {
+            if (loggingUI instanceof UpdatableUI.UpdateableLoggingUI) {
+                ((UpdatableUI.UpdateableLoggingUI) loggingUI).onLogStarted();
             }
         }
     }
 
-    public void setExcelLog(String path) {
-        if (statsLogger != null) {
-            try {
-                statsLogger.saveLog();
-                statsLogger.dispose();
-            } catch (IOException ex) {
-
-            }
-            removeUIComponent(statsLogger);
-            statsLogger = null;
-            for (UpdatableUI loggingUI : uiComponents) {
-                if (loggingUI instanceof UpdatableUI.UpdateableLoggingUI) {
-                    ((UpdatableUI.UpdateableLoggingUI) loggingUI).onLogStopped();
-                }
-            }
-        }
-
-        if (path != null) {
-            statsLogger = new ExcelLogger(simulation, new File(path));
-            addUIComponent(statsLogger);
-            for (UpdatableUI loggingUI : uiComponents) {
-                if (loggingUI instanceof UpdatableUI.UpdateableLoggingUI) {
-                    ((UpdatableUI.UpdateableLoggingUI) loggingUI).onLogStarted();
-                }
-            }
+    public void saveLogManager(File file) {
+        if (logManager != null) {
+            logManager.saveLog(file);
+        } else {
+            System.err.println("Did not save log: logManager is null.");
         }
     }
 

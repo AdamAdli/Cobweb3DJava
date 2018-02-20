@@ -5,16 +5,10 @@ import cobweb3d.core.agent.BaseAgent;
 import cobweb3d.impl.Simulation;
 import cobweb3d.impl.agent.Agent;
 import cobweb3d.plugins.exchange.ExchangeState;
-import cobweb3d.plugins.mutators.LoggingMutator;
 import cobweb3d.plugins.mutators.StatefulMutatorBase;
 import cobweb3d.plugins.mutators.UpdateMutator;
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-
-public class TransformationMutator extends StatefulMutatorBase<TransformationState> implements UpdateMutator,
-        LoggingMutator {
+public class TransformationMutator extends StatefulMutatorBase<TransformationState> implements UpdateMutator {
     TransformationParams params;
     private SimulationTimeSpace simulation;
 
@@ -25,36 +19,6 @@ public class TransformationMutator extends StatefulMutatorBase<TransformationSta
     public void setParams(SimulationTimeSpace sim, TransformationParams transformationParams, int agentTypes) {
         this.simulation = sim;
         this.params = transformationParams;
-    }
-
-    @Override
-    public Collection<String> logDataAgent(int agentType) {
-        List<String> l = new LinkedList<String>();
-
-        return l;
-    }
-
-    @Override
-    public Collection<String> logDataTotal() {
-        List<String> l = new LinkedList<String>();
-        int sum = 0;
-
-        l.add(Integer.toString(sum));
-        return l;
-    }
-
-    @Override
-    public Collection<String> logHeadersAgent() {
-        List<String> header = new LinkedList<String>();
-        header.add("Transformations");
-        return header;
-    }
-
-    @Override
-    public Collection<String> logHeaderTotal() {
-        List<String> header = new LinkedList<String>();
-        header.add("Transformations");
-        return header;
     }
 
     @Override

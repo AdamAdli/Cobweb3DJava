@@ -20,7 +20,6 @@ public class LogStatePanel extends JToolBar implements UpdatableUI.UpdateableLog
     private JLabel logStatusDisplay;
 
     private SimulationRunner.LoggingSimulationRunner simRunner;
-    private JCheckBoxMenuItem toggleLogCheckbox;
     private Action toggleLogStatePanel = new SimpleAction("Show Logger State", e -> {
         boolean selected = ((AbstractButton) e.getSource()).isSelected();
         setVisible(selected);
@@ -42,6 +41,11 @@ public class LogStatePanel extends JToolBar implements UpdatableUI.UpdateableLog
         logStatusDisplay.setVerticalTextPosition(JLabel.CENTER);
         logStatusDisplay.setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
 
+        JPopupMenu popupMenu = new JPopupMenu("Logger State Panel");
+        for (Component component : getJMenuItems())
+            popupMenu.add(component);
+        setComponentPopupMenu(popupMenu);
+        setInheritsPopupMenu(false);
         setPreferredSize(new Dimension(getPreferredSize().width, HEIGHT));
     }
 
@@ -68,12 +72,12 @@ public class LogStatePanel extends JToolBar implements UpdatableUI.UpdateableLog
         boolean oldVisible = isVisible();
         super.setVisible(visible);
         firePropertyChange("visible", oldVisible, visible);
-        if (toggleLogCheckbox != null) toggleLogCheckbox.setState(visible);
     }
 
     @Override
     public Collection<Component> getJMenuItems() {
-        toggleLogCheckbox = new JCheckBoxMenuItem(toggleLogStatePanel);
+        JCheckBoxMenuItem toggleLogCheckbox = new JCheckBoxMenuItem(toggleLogStatePanel);
+        addPropertyChangeListener("visible", e -> toggleLogCheckbox.setState((boolean) e.getNewValue()));
         toggleLogCheckbox.setState(isVisible());
         return Collections.singleton(toggleLogCheckbox);
     }

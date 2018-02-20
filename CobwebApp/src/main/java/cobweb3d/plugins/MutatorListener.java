@@ -8,7 +8,9 @@ import cobweb3d.core.location.LocationDirection;
 import cobweb3d.plugins.mutators.*;
 import cobweb3d.plugins.states.AgentState;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 
 public class MutatorListener implements AgentListener {
@@ -19,10 +21,7 @@ public class MutatorListener implements AgentListener {
     private Set<EnergyMutator> energyMutators = new LinkedHashSet<>();
     private Set<UpdateMutator> updateMutators = new LinkedHashSet<>();
 
-    private Set<LoggingMutator> loggingMutators = new LinkedHashSet<>();
-    private Set<ExcelLoggingMutator> excelLoggingMutators = new LinkedHashSet<>();
     private Set<DataLoggingMutator> dataLoggingMutators = new LinkedHashSet<>();
-
     private Set<ConsumptionMutator> consumptionMutators = new LinkedHashSet<>();
     private Set<ControllerInputMutator> controllerMutators = new LinkedHashSet<>();
     private Set<AgentMutator> allMutators = new HashSet<>();
@@ -46,12 +45,6 @@ public class MutatorListener implements AgentListener {
         if (mutator instanceof ConsumptionMutator)
             consumptionMutators.add((ConsumptionMutator) mutator);
 
-        if (mutator instanceof LoggingMutator)
-            loggingMutators.add((LoggingMutator) mutator);
-
-        if (mutator instanceof ExcelLoggingMutator)
-            excelLoggingMutators.add((ExcelLoggingMutator) mutator);
-
         if (mutator instanceof DataLoggingMutator)
             dataLoggingMutators.add((DataLoggingMutator) mutator);
 
@@ -69,8 +62,6 @@ public class MutatorListener implements AgentListener {
         stepMutators.remove(mutator);
         energyMutators.remove(mutator);
         updateMutators.remove(mutator);
-        loggingMutators.remove(mutator);
-        excelLoggingMutators.remove(mutator);
         dataLoggingMutators.remove(mutator);
         consumptionMutators.remove(mutator);
         controllerMutators.remove(mutator);
@@ -84,8 +75,6 @@ public class MutatorListener implements AgentListener {
         stepMutators.clear();
         energyMutators.clear();
         updateMutators.clear();
-        loggingMutators.clear();
-        excelLoggingMutators.clear();
         dataLoggingMutators.clear();
         consumptionMutators.clear();
         controllerMutators.clear();
@@ -179,44 +168,7 @@ public class MutatorListener implements AgentListener {
         }
     }
 
-    public Set<ExcelLoggingMutator> getLoggingMutators() {
-        return excelLoggingMutators;
-    }
-
     public Set<DataLoggingMutator> getDataLoggingMutators() {
         return dataLoggingMutators;
     }
-
-    public List<String> logDataAgent(int type) {
-        List<String> res = new LinkedList<String>();
-        for (LoggingMutator mut : loggingMutators) {
-            res.addAll(mut.logDataAgent(type));
-        }
-        return res;
-    }
-
-    public List<String> logDataTotal() {
-        List<String> res = new LinkedList<String>();
-        for (LoggingMutator mut : loggingMutators) {
-            res.addAll(mut.logDataTotal());
-        }
-        return res;
-    }
-
-    public List<String> logHeaderAgent() {
-        List<String> res = new LinkedList<String>();
-        for (LoggingMutator mut : loggingMutators) {
-            res.addAll(mut.logHeadersAgent());
-        }
-        return res;
-    }
-
-    public List<String> logHeaderTotal() {
-        List<String> res = new LinkedList<String>();
-        for (LoggingMutator mut : loggingMutators) {
-            res.addAll(mut.logHeaderTotal());
-        }
-        return res;
-    }
-
 }

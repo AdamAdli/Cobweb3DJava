@@ -1,7 +1,7 @@
 package cobweb3d.plugins.exchange.log;
 
 import cobweb3d.impl.logging.DataTable;
-import cobweb3d.impl.stats.excel.BaseStatsProvider;
+import cobweb3d.impl.stats.BaseStatsProvider;
 import cobweb3d.plugins.exchange.ExchangeParams;
 import cobweb3d.plugins.mutators.DataLoggingMutator;
 import cobweb3d.plugins.states.AgentState;

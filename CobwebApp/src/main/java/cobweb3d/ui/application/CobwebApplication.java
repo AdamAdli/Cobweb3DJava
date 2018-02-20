@@ -68,12 +68,17 @@ public class CobwebApplication extends CobwebApplicationSwing {
         // fileMenu.add(new JMenuItem(savePopulationAct));
         fileMenu.add(new JSeparator());
         fileMenu.add(new JMenuItem(saveSimulationAct));
-        fileMenu.add(new JMenuItem(setLogAct));
+
         // fileMenu.add(new JMenuItem(reportData));
         fileMenu.add(new JSeparator());
         fileMenu.add(new JMenuItem(quitAct));
 
         JMenu editMenu = new JMenu("Edit");
+
+        JMenu dataMenu = new JMenu("Data");
+
+        dataMenu.add(new JMenuItem(setAutoSaveLogAct));
+        dataMenu.add(new JMenuItem(saveLogAct));
 
         JMenu projectMenu = new JMenu("Project");
 
@@ -88,8 +93,6 @@ public class CobwebApplication extends CobwebApplicationSwing {
         }
         viewMenu.add(rendererMenu);
 
-        JMenu dataMenu = new JMenu("Data");
-
         JMenu helpMenu = new JMenu("Help");
         helpMenu.add(new JMenuItem(openAboutAct));
         helpMenu.add(new JMenuItem(openCreditsAct));
@@ -98,6 +101,7 @@ public class CobwebApplication extends CobwebApplicationSwing {
         jMenuBar.add(fileMenu);
         //jMenuBar.add(editMenu);
         //jMenuBar.add(projectMenu);
+        jMenuBar.add(dataMenu);
         jMenuBar.add(viewMenu);
         //jMenuBar.add(dataMenu);
         jMenuBar.add(helpMenu);

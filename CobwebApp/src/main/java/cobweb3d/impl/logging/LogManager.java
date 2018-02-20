@@ -1,10 +1,14 @@
 package cobweb3d.impl.logging;
 
 import cobweb3d.impl.Simulation;
-import cobweb3d.impl.stats.excel.BaseStatsProvider;
+import cobweb3d.impl.logging.strategies.ExcelXSSFSavingStrategy;
+import cobweb3d.impl.logging.strategies.printwriter.CSVSavingStrategy;
+import cobweb3d.impl.logging.strategies.printwriter.PlainTextSavingStategy;
+import cobweb3d.impl.stats.BaseStatsProvider;
 import cobweb3d.plugins.mutators.DataLoggingMutator;
 import cobweb3d.ui.UpdatableUI;
 import org.jetbrains.annotations.NotNull;
+import util.FileUtils;
 
 import java.io.File;
 import java.util.Set;
@@ -14,8 +18,15 @@ public class LogManager implements UpdatableUI {
     private BaseStatsProvider baseStatsProvider;
     private int nextDataRow = 0;
 
-    public LogManager(Simulation simulation) {
-        coreDataTable = new DataTable("Tick", "Total Agent Count", "Total Agent Energy", "Average Agent Energy");
+    public LogManager(@NotNull LogManager prev) {
+        coreDataTable = prev.coreDataTable;
+        baseStatsProvider = prev.baseStatsProvider;
+        nextDataRow = prev.nextDataRow;
+        writeHeaders();
+    }
+
+    public LogManager(@NotNull Simulation simulation) {
+        coreDataTable = new DataTable();
         baseStatsProvider = new BaseStatsProvider(simulation);
         writeHeaders();
     }
@@ -24,17 +35,19 @@ public class LogManager implements UpdatableUI {
         return baseStatsProvider.getDataLoggingPlugins();
     }
 
-    public void writeHeaders() {
-        coreDataTable = new DataTable("Tick", "Total Agent Count", "Total Agent Energy", "Average Agent Energy");
-        for (int i = 0; i < baseStatsProvider.getAgentTypeCount(); i++) {
-            coreDataTable.addColumn("Agent " + (i + 1) + " Count");
-            coreDataTable.addColumn("Total Agent " + (i + 1) + " Energy");
-            coreDataTable.addColumn("Average Agent " + (i + 1) + " Energy");
+    public static SavingStrategy getSavingStrategyForExt(String fileExt) {
+        if (fileExt != null && !fileExt.isEmpty()) {
+            String lowercaseExt = fileExt.toLowerCase();
+            if (lowercaseExt.contains("csv"))
+                return new CSVSavingStrategy();
+            else if (lowercaseExt.contains("log"))
+                return new PlainTextSavingStategy();
+            else if (lowercaseExt.contains("xlsx"))
+                return new ExcelXSSFSavingStrategy();
         }
 
-        for (DataLoggingMutator plugin : getDataLoggingPlugins()) {
-            plugin.getTableCount();
-        }
+        // Last Resort is CSV
+        return new CSVSavingStrategy();
     }
 
     public void writeLogEntry(long tick, DataTable.SmartLogRow logRow) {
@@ -69,6 +82,19 @@ public class LogManager implements UpdatableUI {
         else System.err.println("Did not save log: null SavingStategy in LogManager.saveLog()!");
     }
 
+    public void writeHeaders() {
+        coreDataTable.addColumns("Tick", "Total Agent Count", "Total Agent Energy", "Average Agent Energy");
+        for (int i = 0; i < baseStatsProvider.getAgentTypeCount(); i++) {
+            coreDataTable.addColumn("Agent " + (i + 1) + " Count");
+            coreDataTable.addColumn("Total Agent " + (i + 1) + " Energy");
+            coreDataTable.addColumn("Average Agent " + (i + 1) + " Energy");
+        }
+
+        for (DataLoggingMutator plugin : getDataLoggingPlugins()) {
+            plugin.getTableCount();
+        }
+    }
+
     public String getLoggingStatus() {
         return "Logging to Memory";
     }
@@ -77,5 +103,9 @@ public class LogManager implements UpdatableUI {
     @Override
     public boolean isReadyToUpdate() {
         return true;
+    }
+
+    public void saveLog(@NotNull File file) {
+        saveLog(file, getSavingStrategyForExt(FileUtils.getFileExtension(file)));
     }
 }

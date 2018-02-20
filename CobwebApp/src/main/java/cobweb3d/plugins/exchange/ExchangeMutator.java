@@ -3,17 +3,17 @@ package cobweb3d.plugins.exchange;
 import cobweb3d.core.SimulationTimeSpace;
 import cobweb3d.core.agent.BaseAgent;
 import cobweb3d.impl.logging.DataTable;
-import cobweb3d.impl.stats.excel.BaseStatsProvider;
+import cobweb3d.impl.stats.BaseStatsProvider;
 import cobweb3d.plugins.exchange.log.ExchangeDataLogger;
-import cobweb3d.plugins.mutators.*;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
+import cobweb3d.plugins.mutators.ContactMutator;
+import cobweb3d.plugins.mutators.DataLoggingMutator;
+import cobweb3d.plugins.mutators.SpawnMutator;
+import cobweb3d.plugins.mutators.StatefulMutatorBase;
 
 import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
 
 public class ExchangeMutator extends StatefulMutatorBase<ExchangeState> implements ContactMutator,
-        LoggingMutator, SpawnMutator, ExcelLoggingMutator, DataLoggingMutator {
+        SpawnMutator, DataLoggingMutator {
     ExchangeParams params;
 
     private SimulationTimeSpace simulation;
@@ -27,36 +27,6 @@ public class ExchangeMutator extends StatefulMutatorBase<ExchangeState> implemen
         this.simulation = sim;
         this.params = exchangeParams;
         this.exchangeLogger = new ExchangeDataLogger(params);
-    }
-
-    @Override
-    public Collection<String> logDataAgent(int agentType) {
-        List<String> l = new LinkedList<String>();
-
-        return l;
-    }
-
-    @Override
-    public Collection<String> logDataTotal() {
-        List<String> l = new LinkedList<String>();
-        int sum = 0;
-
-        l.add(Integer.toString(sum));
-        return l;
-    }
-
-    @Override
-    public Collection<String> logHeadersAgent() {
-        List<String> header = new LinkedList<String>();
-        header.add("Exchanges");
-        return header;
-    }
-
-    @Override
-    public Collection<String> logHeaderTotal() {
-        List<String> header = new LinkedList<String>();
-        header.add("Exchanges");
-        return header;
     }
 
     private void tryExchange(BaseAgent agent, BaseAgent other) {
@@ -193,11 +163,6 @@ public class ExchangeMutator extends StatefulMutatorBase<ExchangeState> implemen
     @Override
     public String getName() {
         return exchangeLogger.getName();
-    }
-
-    @Override
-    public void setWorksheet(XSSFSheet worksheet) {
-        // exchangeLogger.setWorksheet(worksheet);
     }
 
     @Override

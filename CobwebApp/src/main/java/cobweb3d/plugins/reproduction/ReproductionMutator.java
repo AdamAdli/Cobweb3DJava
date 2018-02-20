@@ -5,15 +5,14 @@ import cobweb3d.core.agent.BaseAgent;
 import cobweb3d.core.location.Location;
 import cobweb3d.core.location.LocationDirection;
 import cobweb3d.impl.agent.Agent;
-import cobweb3d.plugins.mutators.*;
+import cobweb3d.plugins.mutators.ContactMutator;
+import cobweb3d.plugins.mutators.StatefulMutatorBase;
+import cobweb3d.plugins.mutators.StepMutator;
+import cobweb3d.plugins.mutators.UpdateMutator;
 import util.ArrayUtilities;
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-
 public class ReproductionMutator extends StatefulMutatorBase<ReproductionState> implements ContactMutator,
-        StepMutator, UpdateMutator, LoggingMutator {
+        StepMutator, UpdateMutator {
     ReproductionParams params;
 
     private int[] birthCounts = new int[0];
@@ -28,37 +27,6 @@ public class ReproductionMutator extends StatefulMutatorBase<ReproductionState> 
         this.simulation = sim;
         this.params = reproductionParams;
         this.birthCounts = ArrayUtilities.resizeArray(birthCounts, agentTypes);
-    }
-
-    @Override
-    public Collection<String> logDataAgent(int agentType) {
-        List<String> l = new LinkedList<String>();
-        l.add(Integer.toString(birthCounts[agentType]));
-        return l;
-    }
-
-    @Override
-    public Collection<String> logDataTotal() {
-        List<String> l = new LinkedList<String>();
-        int sum = 0;
-        for (int x : birthCounts)
-            sum += x;
-        l.add(Integer.toString(sum));
-        return l;
-    }
-
-    @Override
-    public Collection<String> logHeadersAgent() {
-        List<String> header = new LinkedList<String>();
-        header.add("Births");
-        return header;
-    }
-
-    @Override
-    public Collection<String> logHeaderTotal() {
-        List<String> header = new LinkedList<String>();
-        header.add("Births");
-        return header;
     }
 
     private void tryGiveBirth(BaseAgent agent, Location location) {

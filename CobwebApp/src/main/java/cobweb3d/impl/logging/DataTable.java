@@ -17,12 +17,12 @@ public class DataTable {
     public void addColumns(String... columnNames) {
         int prevSize = columnInts.size();
         for (int i = 0; i < columnNames.length; i++) {
-            this.columnInts.put(i + prevSize, columnNames[i]);
+            if (!columnInts.containsValue(columnNames[i])) this.columnInts.put(i + prevSize, columnNames[i]);
         }
     }
 
     public void addColumn(String columnName) {
-        this.columnInts.put(columnInts.size(), columnName);
+        if (!columnInts.containsValue(columnName)) this.columnInts.put(columnInts.size(), columnName);
     }
 
     public SmartLogRow getRow(int tick) {

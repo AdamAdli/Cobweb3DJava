@@ -1,7 +1,7 @@
 package cobweb3d.plugins.mutators;
 
 import cobweb3d.impl.logging.DataTable;
-import cobweb3d.impl.stats.excel.BaseStatsProvider;
+import cobweb3d.impl.stats.BaseStatsProvider;
 
 import java.util.Collection;
 

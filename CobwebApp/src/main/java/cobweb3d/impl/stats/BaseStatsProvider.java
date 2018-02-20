@@ -2,20 +2,22 @@ package cobweb3d.impl.stats;
 
 import cobweb3d.core.agent.BaseAgent;
 import cobweb3d.impl.Simulation;
+import cobweb3d.plugins.mutators.DataLoggingMutator;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
-public class StatsTracker {
-
+public class BaseStatsProvider {
     protected Simulation simulation;
 
-    public StatsTracker(Simulation simulation) {
+    public BaseStatsProvider(Simulation simulation) {
         this.simulation = simulation;
     }
 
     public long countAgentEnergy() {
         long totalEnergy = 0;
-        for (BaseAgent a : simulation.environment.getAgents()) totalEnergy += a.getEnergy();
+        for (BaseAgent a : new ArrayList<>(simulation.environment.getAgents())) totalEnergy += a.getEnergy();
         return totalEnergy;
     }
 
@@ -25,13 +27,13 @@ public class StatsTracker {
 
     public long countAgents(int agentType) {
         long count = 0;
-        for (BaseAgent a : simulation.environment.getAgents()) if (a.getType() == agentType) count++;
+        for (BaseAgent a : new ArrayList<>(simulation.environment.getAgents())) if (a.getType() == agentType) count++;
         return count;
     }
 
     public long countAgentEnergy(int agentType) {
         long totalEnergy = 0;
-        for (BaseAgent a : simulation.environment.getAgents())
+        for (BaseAgent a : new ArrayList<>(simulation.environment.getAgents()))
             if (a.getType() == agentType) totalEnergy += a.getEnergy();
         return totalEnergy;
     }
@@ -44,19 +46,11 @@ public class StatsTracker {
         return simulation.getTime();
     }
 
-    public List<String> pluginStatsHeaderAgent() {
-        return simulation.mutatorListener.logHeaderAgent();
+    public Set<DataLoggingMutator> getDataLoggingPlugins() {
+        return simulation.mutatorListener.getDataLoggingMutators();
     }
 
-    public List<String> pluginStatsHeaderTotal() {
-        return simulation.mutatorListener.logHeaderTotal();
-    }
-
-    public List<String> pluginStatsTotal() {
-        return simulation.mutatorListener.logDataTotal();
-    }
-
-    public List<String> pluginStatsAgent(int type) {
-        return simulation.mutatorListener.logDataAgent(type);
+    public List<BaseAgent> getAgents() {
+        return simulation.getAgents();
     }
 }

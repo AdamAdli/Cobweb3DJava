@@ -2,7 +2,7 @@ package cobweb3d.plugins.exchange.log;
 
 import cobweb3d.core.agent.BaseAgent;
 import cobweb3d.impl.agent.Agent;
-import cobweb3d.impl.stats.excel.BaseStatsProvider;
+import cobweb3d.impl.stats.BaseStatsProvider;
 import cobweb3d.plugins.exchange.ExchangeParams;
 import cobweb3d.plugins.exchange.ExchangeState;
 

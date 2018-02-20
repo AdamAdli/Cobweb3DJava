@@ -89,10 +89,8 @@ public class Simulation implements SimulationInternals, SimulationInterface {
         }
     }
 
-    @Override
-    public int getAgentTypeCount() {
-        return simulationConfig.getAgentTypes();
-    }
+    // TODO: Check
+    private static final AtomicLong ticks = new AtomicLong();
 
     @Override
     public BaseAgent newAgent(int type) {
@@ -142,7 +140,10 @@ public class Simulation implements SimulationInternals, SimulationInterface {
         if (simConfig.spawnNewAgents) loadNewAgents();
     }
 
-    private static final AtomicLong ticks = new AtomicLong();
+    @Override
+    public int getAgentTypeCount() {
+        return simulationConfig != null ? simulationConfig.getAgentTypes() : 0;
+    }
     @Override
     public void step() {
         environment.update();

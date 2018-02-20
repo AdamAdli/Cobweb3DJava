@@ -1,12 +1,11 @@
 package cobweb3d.impl.logging;
 
 import cobweb3d.impl.Simulation;
-import cobweb3d.impl.logging.strategies.ExcelXSSFSavingStrategy;
-import cobweb3d.impl.logging.strategies.printwriter.CSVSavingStrategy;
-import cobweb3d.impl.logging.strategies.printwriter.PlainTextSavingStategy;
+import org.jetbrains.annotations.NotNull;
 import util.FileUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -19,24 +18,25 @@ public class AutoSavingLogManager extends LogManager {
     private File file;
     private int autoSaveCounter = 100;
 
-    public AutoSavingLogManager(Simulation simulation, File file) {
+    public AutoSavingLogManager(@NotNull Simulation simulation, File file) {
         super(simulation);
         setAutoSaveFile(file);
     }
 
-    public static SavingStrategy getSavingStrategyForExt(String fileExt) {
-        if (fileExt != null && !fileExt.isEmpty()) {
-            String lowercaseExt = fileExt.toLowerCase();
-            if (lowercaseExt.contains("csv"))
-                return new CSVSavingStrategy();
-            else if (lowercaseExt.contains("log"))
-                return new PlainTextSavingStategy();
-            else if (lowercaseExt.contains("xlsx"))
-                return new ExcelXSSFSavingStrategy();
-        }
+    public AutoSavingLogManager(@NotNull LogManager prev, File file) {
+        super(prev);
 
-        // Last Resort is CSV
-        return new CSVSavingStrategy();
+        if (file == null || this.file == null) {
+            setAutoSaveFile(file);
+        } else {
+            try {
+                if (!file.getCanonicalPath().equals(this.file.getCanonicalPath())) {
+                    setAutoSaveFile(file);
+                }
+            } catch (IOException ex) {
+                setAutoSaveFile(file);
+            }
+        }
     }
 
     public void setAutoSaveFile(File file) {

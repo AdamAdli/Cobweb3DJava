@@ -18,7 +18,10 @@ import util.swing.jfx.JFXFileExtFilter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
 public abstract class CobwebApplicationSwing extends CobwebApplicationSwingBase {
     public ThreadSimulationRunner simRunner;
@@ -86,10 +89,16 @@ public abstract class CobwebApplicationSwing extends CobwebApplicationSwingBase 
         if (path != null && !path.isEmpty()) saveSimulation(path);
     });
 
-    Action setLogAct = new SimpleAction("Log", e -> {
+    Action setAutoSaveLogAct = new SimpleAction("AutoSave Log", e -> {
         pauseUI();
-        String path = FileDialogUtil.saveFileJFX(CobwebApplicationSwing.this, "Output Simulation Log", JFXFileExtFilter.LOG_CSV_FASTEST, JFXFileExtFilter.LOG_TEXT_FAST, JFXFileExtFilter.EXCEL_XLSX_SLOWEST);
+        String path = FileDialogUtil.saveFileJFX(CobwebApplicationSwing.this, "AutoSave Simulation Log", JFXFileExtFilter.LOG_CSV_FASTEST, JFXFileExtFilter.LOG_TEXT_FAST, JFXFileExtFilter.EXCEL_XLSX_SLOWEST);
         if (path != null && !path.isEmpty()) startSimulationLog(path);
+    });
+
+    Action saveLogAct = new SimpleAction("Save Log", e -> {
+        pauseUI();
+        String path = FileDialogUtil.saveFileJFX(CobwebApplicationSwing.this, "Save Simulation Log", JFXFileExtFilter.LOG_CSV_FASTEST, JFXFileExtFilter.LOG_TEXT_FAST, JFXFileExtFilter.EXCEL_XLSX_SLOWEST);
+        if (path != null && !path.isEmpty()) saveSimulationLog(path);
     });
 
     public void saveSimulation(String savePath) {
@@ -171,10 +180,9 @@ public abstract class CobwebApplicationSwing extends CobwebApplicationSwingBase 
             simRunner.stop();
         if (!continuation) {
             simRunner.getSimulation().resetTime();
-            simRunner.setLog(null);
-            simRunner.setLogManager(null); // TODO
+            simRunner.clearLogManager();
         }
-        simRunner.getSimulation().load(config);
+        simRunner.loadSimulation(config);
         updateDynamicUI();
         return file;
     }
@@ -326,13 +334,36 @@ public abstract class CobwebApplicationSwing extends CobwebApplicationSwingBase 
      * Allows the user to select the log file to write to.
      */
     protected void startSimulationLog(String path) {
-        try {
-            simRunner.setLog(new FileWriter(path, false));
-            simRunner.setLogManager(path);
-        } catch (IOException ex) {
-            throw new UserInputException("Can't create log file!", ex);
+        File file = new File(path);
+        if (!file.exists() || file.canWrite()) {
+            simRunner.setLogManagerAutoSaveFile(file);
+        } else {
+            if (!file.canWrite()) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Caution:  File \"" + path + "\" is NOT allowed to be written to.", "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+            }
         }
     }
+
+    /**
+     * Allows the user to select the log file to write to.
+     */
+    protected void saveSimulationLog(String path) {
+        File file = new File(path);
+        if (!file.exists() || file.canWrite()) {
+            simRunner.saveLogManager(file);
+        } else {
+            if (!file.canWrite()) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Caution:  File \"" + path + "\" is NOT allowed to be written to.", "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+        }
+    }
+
 
     /**
      * Opens a dialog box for the user to select the file he/she would like
