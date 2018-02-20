@@ -13,8 +13,8 @@ import cobweb3d.ui.util.FileDialogUtil;
 import org.jetbrains.annotations.NotNull;
 import util.FileUtils;
 import util.ResourceRetriever;
-import util.swing.FileExtFilter;
 import util.swing.SimpleAction;
+import util.swing.jfx.JFXFileExtFilter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -73,7 +73,7 @@ public abstract class CobwebApplicationSwing extends CobwebApplicationSwingBase 
     Action openSimulationAct = new SimpleAction("Open", e -> {
         pauseUI();
         try {
-            File file = FileDialogUtil.openFile(CobwebApplicationSwing.this, "Open Simulation Configuration", FileExtFilter.COBWEB3D_XML);
+            File file = FileDialogUtil.openFileJFX(CobwebApplicationSwing.this, "Open Simulation Configuration", JFXFileExtFilter.COBWEB3D_XML);
             if (file != null) openFile(Cobweb3Serializer.loadConfig(file), false);
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -82,13 +82,13 @@ public abstract class CobwebApplicationSwing extends CobwebApplicationSwingBase 
     });
     Action saveSimulationAct = new SimpleAction("Save", e -> {
         pauseUI();
-        String path = FileDialogUtil.saveFile(CobwebApplicationSwing.this, "Save Simulation Configuration", FileExtFilter.COBWEB3D_XML);
+        String path = FileDialogUtil.saveFileJFX(CobwebApplicationSwing.this, "Save Simulation Configuration", JFXFileExtFilter.COBWEB3D_XML);
         if (path != null && !path.isEmpty()) saveSimulation(path);
     });
 
     Action setLogAct = new SimpleAction("Log", e -> {
         pauseUI();
-        String path = FileDialogUtil.saveFile(CobwebApplicationSwing.this, "Output Simulation Log", FileExtFilter.LOG_CSV);
+        String path = FileDialogUtil.saveFileJFX(CobwebApplicationSwing.this, "Output Simulation Log", JFXFileExtFilter.LOG_CSV_FASTEST, JFXFileExtFilter.LOG_TEXT_FAST, JFXFileExtFilter.EXCEL_XLSX_SLOWEST);
         if (path != null && !path.isEmpty()) startSimulationLog(path);
     });
 
@@ -180,7 +180,7 @@ public abstract class CobwebApplicationSwing extends CobwebApplicationSwingBase 
     }
     Action reportData = new SimpleAction("Report", e -> {
         pauseUI();
-        String path = FileDialogUtil.saveFile(CobwebApplicationSwing.this, "Output Simulation Report", FileExtFilter.TEXT_LOG);
+        String path = FileDialogUtil.saveFileJFX(CobwebApplicationSwing.this, "Output Simulation Report", JFXFileExtFilter.LOG_TEXT);
         if (path != null && !path.isEmpty()) startSimulationReport(path);
     });
     Action quitAct = new SimpleAction("Quit", e -> quitApplication());

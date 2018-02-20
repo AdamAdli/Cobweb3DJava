@@ -41,4 +41,17 @@ public class FileUtils {
         }
     }
 
+    public static String getFileExtension(File file) {
+        if (file == null) return "";
+        String fileName = file.getPath();
+        String extension = "";
+
+        int i = fileName.lastIndexOf('.');
+        int p = Math.max(fileName.lastIndexOf('/'), fileName.lastIndexOf('\\'));
+
+        if (i > p) {
+            extension = fileName.substring(i + 1);
+        }
+        return extension;
+    }
 }

@@ -22,9 +22,11 @@ public interface UpdatableUI {
         return false;
     }
 
-    void onStopped();
+    default void onStopped() {
+    }
 
-    void onStarted();
+    default void onStarted() {
+    }
 
     interface UpdateableLoggingUI extends UpdatableUI {
         void onLogStarted();

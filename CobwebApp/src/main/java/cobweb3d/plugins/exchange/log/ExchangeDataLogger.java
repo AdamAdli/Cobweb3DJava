@@ -1,6 +1,6 @@
 package cobweb3d.plugins.exchange.log;
 
-import cobweb3d.impl.logging.SmartDataTable;
+import cobweb3d.impl.logging.DataTable;
 import cobweb3d.impl.stats.excel.BaseStatsProvider;
 import cobweb3d.plugins.exchange.ExchangeParams;
 import cobweb3d.plugins.mutators.DataLoggingMutator;
@@ -13,7 +13,7 @@ public class ExchangeDataLogger implements DataLoggingMutator {
     public static final int FIRST_DATA_ROW = 0;
     int nextDataRow = 0;
 
-    SmartDataTable smartDataTable;
+    DataTable dataTable;
 
     ExchangeParams params;
 
@@ -29,8 +29,8 @@ public class ExchangeDataLogger implements DataLoggingMutator {
 
     @Override
     public void logData(BaseStatsProvider statsProvider) {
-        if (smartDataTable == null) return;
-        SmartDataTable.SmartLogRow row = smartDataTable.getRow(nextDataRow);
+        if (dataTable == null) return;
+        DataTable.SmartLogRow row = dataTable.getRow(nextDataRow);
         row.putVal(0, statsProvider.getTime());
 
         long totAgentCount = statsProvider.getAgentCount();
@@ -59,10 +59,10 @@ public class ExchangeDataLogger implements DataLoggingMutator {
     }
 
     private void initializeTable() {
-        smartDataTable = new SmartDataTable("Tick", "Total Agents", "Total X", "Total Y", "Total Utility", "Average Utility");
+        dataTable = new DataTable("Tick", "Total Agents", "Total X", "Total Y", "Total Utility", "Average Utility");
         int agentCount = params.agentParams.length;
         for (int i = 1; i <= agentCount; i++) {
-            smartDataTable.addColumn("Agent " + i + " Average Utility");
+            dataTable.addColumn("Agent " + i + " Average Utility");
         }
         nextDataRow = FIRST_DATA_ROW;
     }
@@ -73,7 +73,7 @@ public class ExchangeDataLogger implements DataLoggingMutator {
     }
 
     @Override
-    public Collection<SmartDataTable> getTables() {
-        return Collections.singleton(smartDataTable);
+    public Collection<DataTable> getTables() {
+        return Collections.singleton(dataTable);
     }
 }

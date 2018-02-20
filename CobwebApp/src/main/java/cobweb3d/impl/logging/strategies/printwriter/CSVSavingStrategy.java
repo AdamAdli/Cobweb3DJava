@@ -1,51 +1,39 @@
-package cobweb3d.impl.logging.strategies;
+package cobweb3d.impl.logging.strategies.printwriter;
 
-import cobweb3d.impl.logging.SavingStrategy;
-import cobweb3d.impl.logging.SmartDataTable;
+import cobweb3d.impl.logging.DataTable;
 import cobweb3d.plugins.mutators.DataLoggingMutator;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.*;
 
-public class CSVSavingStrategy implements SavingStrategy {
+public class CSVSavingStrategy extends AbstractPrintWritingSavingStrategy {
 
-    private File lastFile;
-    private int lastSavedTick = 0;
+    private char delimiter;
 
-    @Override
-    public int save(SmartDataTable coreData, Collection<DataLoggingMutator> plugins, File file) {
-        if (file == null) return 0;
-        if (lastFile == null || (!lastFile.equals(file) && !lastFile.getAbsolutePath().equals(file.getAbsolutePath())))
-            lastSavedTick = 0;
-        try {
-            PrintWriter printWriter = new PrintWriter(new FileOutputStream(file, true));
-            saveDataToCSV(printWriter, coreData, plugins);
-            printWriter.flush();
-            printWriter.close();
-        } catch (Exception ex) {
-            System.err.println("Failed saving log to CSV.");
-        }
-        lastFile = file;
-        return this.lastSavedTick;
+    public CSVSavingStrategy() {
+        this(',');
     }
 
-    public void saveDataToCSV(PrintWriter printWriter, SmartDataTable coreData, Collection<DataLoggingMutator> plugins) {
+    public CSVSavingStrategy(char delimiter) {
+        this.delimiter = delimiter;
+    }
+
+    @Override
+    int saveDataToPrintWriter(PrintWriter printWriter, DataTable coreData, Collection<DataLoggingMutator> plugins, int lastSavedTick) {
         if (lastSavedTick == 0) {
             Iterator<Map.Entry<Integer, String>> iterator = coreData.columnInts.entrySet().iterator();
             while (iterator.hasNext()) {
                 Map.Entry<Integer, String> pairs = iterator.next();
                 printWriter.append(pairs.getValue());
-                printWriter.append(',');
+                printWriter.append(delimiter);
             }
             for (DataLoggingMutator plugin : plugins) {
-                for (SmartDataTable smartDataTable : plugin.getTables()) {
-                    iterator = smartDataTable.columnInts.entrySet().iterator();
+                for (DataTable dataTable : plugin.getTables()) {
+                    iterator = dataTable.columnInts.entrySet().iterator();
                     while (iterator.hasNext()) {
                         Map.Entry<Integer, String> pairs = iterator.next();
                         printWriter.append(pairs.getValue());
-                        if (iterator.hasNext()) printWriter.append(',');
+                        if (iterator.hasNext()) printWriter.append(delimiter);
                     }
                 }
             }
@@ -54,18 +42,18 @@ public class CSVSavingStrategy implements SavingStrategy {
 
         int maxRows = coreData.rowMap.size();
         for (DataLoggingMutator plugin : plugins) {
-            for (SmartDataTable smartDataTable : plugin.getTables()) {
-                int count = smartDataTable.rowMap.size();
+            for (DataTable dataTable : plugin.getTables()) {
+                int count = dataTable.rowMap.size();
                 if (count > maxRows) maxRows = count;
             }
         }
         for (int r = lastSavedTick; r < maxRows; r++) {
             printRowToCSV(printWriter, coreData.rowMap.get(r));
-            printWriter.append(',');
+            printWriter.append(delimiter);
 
             Iterator<DataLoggingMutator> dataLoggingMutatorIterator = plugins.iterator();
             while (dataLoggingMutatorIterator.hasNext()) {
-                Iterator<SmartDataTable> tableIterator = dataLoggingMutatorIterator.next().getTables().iterator();
+                Iterator<DataTable> tableIterator = dataLoggingMutatorIterator.next().getTables().iterator();
                 while (tableIterator.hasNext()) {
                     printRowToCSV(printWriter, tableIterator.next().rowMap.get(r));
                     if (tableIterator.hasNext() || dataLoggingMutatorIterator.hasNext()) printWriter.append(',');
@@ -74,16 +62,16 @@ public class CSVSavingStrategy implements SavingStrategy {
 
             printWriter.append("\r\n");
         }
-        this.lastSavedTick = maxRows;
+        return maxRows;
     }
 
-    public void printRowToCSV(PrintWriter printWriter, SmartDataTable.SmartLogRow row) {
+    public void printRowToCSV(PrintWriter printWriter, DataTable.SmartLogRow row) {
         if (row == null) return;
         Set<Integer> col = new TreeSet<>(row.cells.keySet());
         int lastCol = 0;
         for (int i : col) {
             for (int j = 0; j < i - lastCol; j++)
-                printWriter.append(',');
+                printWriter.append(delimiter);
             printWriter.append(row.cells.get(i).value);
             lastCol = i;
         }

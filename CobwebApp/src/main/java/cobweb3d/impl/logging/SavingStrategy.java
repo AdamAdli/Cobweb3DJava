@@ -6,5 +6,5 @@ import java.io.File;
 import java.util.Collection;
 
 public interface SavingStrategy {
-    int save(SmartDataTable coreData, Collection<DataLoggingMutator> plugins, File file);
+    int save(DataTable coreData, Collection<DataLoggingMutator> plugins, File file);
 }

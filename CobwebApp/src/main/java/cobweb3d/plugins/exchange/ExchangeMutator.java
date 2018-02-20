@@ -2,7 +2,7 @@ package cobweb3d.plugins.exchange;
 
 import cobweb3d.core.SimulationTimeSpace;
 import cobweb3d.core.agent.BaseAgent;
-import cobweb3d.impl.logging.SmartDataTable;
+import cobweb3d.impl.logging.DataTable;
 import cobweb3d.impl.stats.excel.BaseStatsProvider;
 import cobweb3d.plugins.exchange.log.ExchangeDataLogger;
 import cobweb3d.plugins.mutators.*;
@@ -211,7 +211,7 @@ public class ExchangeMutator extends StatefulMutatorBase<ExchangeState> implemen
     }
 
     @Override
-    public Collection<SmartDataTable> getTables() {
+    public Collection<DataTable> getTables() {
         return exchangeLogger.getTables();
     }
 }

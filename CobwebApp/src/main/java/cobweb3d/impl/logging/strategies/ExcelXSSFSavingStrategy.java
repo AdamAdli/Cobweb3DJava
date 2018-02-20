@@ -1,7 +1,7 @@
 package cobweb3d.impl.logging.strategies;
 
+import cobweb3d.impl.logging.DataTable;
 import cobweb3d.impl.logging.SavingStrategy;
-import cobweb3d.impl.logging.SmartDataTable;
 import cobweb3d.plugins.mutators.DataLoggingMutator;
 import org.apache.poi.EmptyFileException;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -14,47 +14,41 @@ import java.io.FileOutputStream;
 import java.util.Collection;
 
 public class ExcelXSSFSavingStrategy implements SavingStrategy {
-    XSSFWorkbook workbook;
-    private File lastFile;
-    private int lastSavedTick = 0;
 
     @Override
-    public int save(SmartDataTable coreData, Collection<DataLoggingMutator> plugins, File file) {
+    public int save(DataTable coreData, Collection<DataLoggingMutator> plugins, File file) {
         if (file == null) return 0;
-        if (lastFile == null || (!lastFile.equals(file) && !lastFile.getAbsolutePath().equals(file.getAbsolutePath())))
-            lastSavedTick = 0;
         try {
+            XSSFWorkbook workbook;
             try {
                 workbook = new XSSFWorkbook(new FileInputStream(file));
             } catch (EmptyFileException ex2) {
                 workbook = new XSSFWorkbook();
             }
-            saveDataToExcelSheets(coreData, plugins);
+            saveDataToExcelSheets(workbook, coreData, plugins);
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             workbook.write(fileOutputStream);
             workbook.close();
             fileOutputStream.close();
-
         } catch (Exception ex) {
             System.err.println("Failed saving log to XLSL.");
         }
-        lastFile = file;
-        return this.lastSavedTick;
+        return 1;
     }
 
-    public void saveDataToExcelSheets(SmartDataTable coreData, Collection<DataLoggingMutator> plugins) {
-        saveDataToExcelSheet("COBWEB base", coreData);
+    public void saveDataToExcelSheets(XSSFWorkbook workbook, DataTable coreData, Collection<DataLoggingMutator> plugins) {
+        saveDataToExcelSheet(workbook, "COBWEB base", coreData);
         for (DataLoggingMutator plugin : plugins) {
             int i = 1;
-            for (SmartDataTable smartDataTable : plugin.getTables()) {
-                if (i >= 2) saveDataToExcelSheet(plugin.getName() + " " + i, smartDataTable);
-                else saveDataToExcelSheet(plugin.getName(), smartDataTable);
+            for (DataTable dataTable : plugin.getTables()) {
+                if (i >= 2) saveDataToExcelSheet(workbook, plugin.getName() + " " + i, dataTable);
+                else saveDataToExcelSheet(workbook, plugin.getName(), dataTable);
                 i++;
             }
         }
     }
 
-    public void saveDataToExcelSheet(String title, SmartDataTable table) {
+    public void saveDataToExcelSheet(XSSFWorkbook workbook, String title, DataTable table) {
         XSSFSheet sheet = workbook.getSheet(title);
         if (sheet == null) sheet = workbook.createSheet(title);
         XSSFRow headingRow = sheet.getRow(0);
@@ -64,10 +58,12 @@ public class ExcelXSSFSavingStrategy implements SavingStrategy {
         }
 
         for (int r = 0; r < table.rowMap.size(); r++) {
-            XSSFRow row = sheet.createRow(1 + r);
-            SmartDataTable.SmartLogRow logRow = table.rowMap.get(r);
-            for (int c : logRow.cells.keySet()) {
-                row.createCell(c).setCellValue(logRow.cells.get(c).value);
+            DataTable.SmartLogRow logRow = table.rowMap.get(r);
+            if (logRow != null) {
+                XSSFRow row = sheet.createRow(1 + r);
+                for (int c : logRow.cells.keySet()) {
+                    row.createCell(c).setCellValue(logRow.cells.get(c).value);
+                }
             }
         }
     }

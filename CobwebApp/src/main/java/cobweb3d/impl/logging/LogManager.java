@@ -1,43 +1,43 @@
 package cobweb3d.impl.logging;
 
 import cobweb3d.impl.Simulation;
-import cobweb3d.impl.logging.strategies.ExcelXSSFSavingStrategy;
 import cobweb3d.impl.stats.excel.BaseStatsProvider;
 import cobweb3d.plugins.mutators.DataLoggingMutator;
 import cobweb3d.ui.UpdatableUI;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.Set;
 
 public class LogManager implements UpdatableUI {
-    SmartDataTable coreDataTable;
+    private DataTable coreDataTable;
     private BaseStatsProvider baseStatsProvider;
-    private File file;
-    private int autoSaveCounter = 100;
+    private int nextDataRow = 0;
 
-    private SavingStrategy savingStrategy = new ExcelXSSFSavingStrategy();
-
-    public LogManager(Simulation simulation, File file) {
-        this.file = file;
-        coreDataTable = new SmartDataTable("Tick", "Total Agent Count", "Total Agent Energy", "Average Agent Energy");
+    public LogManager(Simulation simulation) {
+        coreDataTable = new DataTable("Tick", "Total Agent Count", "Total Agent Energy", "Average Agent Energy");
         baseStatsProvider = new BaseStatsProvider(simulation);
         writeHeaders();
     }
 
+    public Set<DataLoggingMutator> getDataLoggingPlugins() {
+        return baseStatsProvider.getDataLoggingPlugins();
+    }
+
     public void writeHeaders() {
-        coreDataTable = new SmartDataTable("Tick", "Total Agent Count", "Total Agent Energy", "Average Agent Energy");
+        coreDataTable = new DataTable("Tick", "Total Agent Count", "Total Agent Energy", "Average Agent Energy");
         for (int i = 0; i < baseStatsProvider.getAgentTypeCount(); i++) {
             coreDataTable.addColumn("Agent " + (i + 1) + " Count");
             coreDataTable.addColumn("Total Agent " + (i + 1) + " Energy");
             coreDataTable.addColumn("Average Agent " + (i + 1) + " Energy");
         }
 
-        for (DataLoggingMutator plugin : baseStatsProvider.getDataLoggingPlugins()) {
-            // Validate later?
+        for (DataLoggingMutator plugin : getDataLoggingPlugins()) {
             plugin.getTableCount();
         }
     }
 
-    public void writeLogEntry(long tick, SmartDataTable.SmartLogRow logRow) {
+    public void writeLogEntry(long tick, DataTable.SmartLogRow logRow) {
         long agentCount = baseStatsProvider.getAgentCount(),
                 totEnergy = baseStatsProvider.countAgentEnergy();
 
@@ -57,41 +57,25 @@ public class LogManager implements UpdatableUI {
 
     @Override
     public void update(boolean synchronous) {
-        writeLogEntry(baseStatsProvider.getTime(), coreDataTable.getRow((int) baseStatsProvider.getTime()));
-        for (DataLoggingMutator plugin : baseStatsProvider.getDataLoggingPlugins()) {
+        writeLogEntry(baseStatsProvider.getTime(), coreDataTable.getRow(nextDataRow));
+        for (DataLoggingMutator plugin : getDataLoggingPlugins()) {
             plugin.logData(baseStatsProvider);
         }
-        autoSaveCounter--;
-        if (autoSaveCounter <= 0) {
-            saveLog();
-            autoSaveCounter = 100;
-        }
+        nextDataRow++;
     }
 
-    public void saveLog() {
-        if (savingStrategy != null) savingStrategy.save(coreDataTable, baseStatsProvider.getDataLoggingPlugins(), file);
+    public void saveLog(@NotNull File file, @NotNull SavingStrategy savingStrategy) {
+        if (savingStrategy != null) savingStrategy.save(coreDataTable, getDataLoggingPlugins(), file);
+        else System.err.println("Did not save log: null SavingStategy in LogManager.saveLog()!");
     }
 
-    public void dispose() {
+    public String getLoggingStatus() {
+        return "Logging to Memory";
     }
 
+    // Updates EVERY frame even when update speed is so fast its async.
     @Override
     public boolean isReadyToUpdate() {
         return true;
-    }
-
-
-    @Override
-    public void onStopped() {
-        saveLog();
-    }
-
-    @Override
-    public void onStarted() {
-        // Nothing
-    }
-
-    public String getLogPath() {
-        return file != null ? file.getPath() : "nowhere";
     }
 }

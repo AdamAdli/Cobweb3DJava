@@ -1,7 +1,9 @@
 package cobweb3d.ui.util;
 
+import javafx.stage.FileChooser;
 import org.jetbrains.annotations.Nullable;
 import util.swing.FileExtFilter;
+import util.swing.jfx.SynchronousJFXFileChooser;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,7 +28,7 @@ public class FileDialogUtil {
             } else {
                 JOptionPane.showMessageDialog(
                         parent,
-                        "File \" " + file.getAbsolutePath() + file + "\" could not be found!", "Warning",
+                        "File \"" + file.getAbsolutePath() + file + "\" could not be found!", "Warning",
                         JOptionPane.WARNING_MESSAGE);
             }
         }
@@ -46,5 +48,44 @@ public class FileDialogUtil {
         if (saveDialog.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION)
             return saveDialog.getSelectedFile().getAbsolutePath();
         return null;
+    }
+
+    @Nullable
+    public static File openFileJFX(Window parent, String title, FileChooser.ExtensionFilter... fileExtFilters) {
+        File file = launchJFXFileChooser(true, parent, title, fileExtFilters);
+        if (file != null) {
+            if (file.exists()) {
+                return file;
+            } else {
+                JOptionPane.showMessageDialog(
+                        parent,
+                        "File \"" + file.getAbsolutePath() + file + "\" could not be found!", "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+                return null;
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    public static String saveFileJFX(Window parent, String title, FileChooser.ExtensionFilter... fileExtFilters) {
+        File file = launchJFXFileChooser(false, parent, title, fileExtFilters);
+        if (file != null) {
+            if (file.exists())
+                System.out.println("Warning: File \"" + file.getAbsolutePath() + file + "\" already exists, overwriting!");
+            return file.getAbsolutePath();
+        }
+        return null;
+    }
+
+    private static File launchJFXFileChooser(boolean open, Window parent, String title, FileChooser.ExtensionFilter... fileExtFilters) {
+        SynchronousJFXFileChooser synchronousJFXFileChooser = new SynchronousJFXFileChooser(() -> {
+            FileChooser jfxOpenDialog = new FileChooser();
+            jfxOpenDialog.setTitle(title);
+            jfxOpenDialog.getExtensionFilters().clear();
+            jfxOpenDialog.getExtensionFilters().addAll(fileExtFilters);
+            return jfxOpenDialog;
+        });
+        return open ? synchronousJFXFileChooser.showOpenDialog() : synchronousJFXFileChooser.showSaveDialog();
     }
 }

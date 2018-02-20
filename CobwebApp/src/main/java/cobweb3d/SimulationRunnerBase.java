@@ -1,6 +1,7 @@
 package cobweb3d;
 
 import cobweb3d.impl.Simulation;
+import cobweb3d.impl.logging.AutoSavingLogManager;
 import cobweb3d.impl.logging.LogManager;
 import cobweb3d.impl.stats.StatsLogger;
 import cobweb3d.impl.stats.excel.ExcelLogger;
@@ -134,12 +135,7 @@ public class SimulationRunnerBase implements SimulationRunner, SimulationRunner.
 
     public void setLogManager(String path) {
         if (logManager != null) {
-            try {
-                logManager.saveLog();
-                logManager.dispose();
-            } catch (IOException ex) {
-
-            }
+            if (logManager instanceof AutoSavingLogManager) ((AutoSavingLogManager) logManager).saveLog();
             removeUIComponent(logManager);
             logManager = null;
             for (UpdatableUI loggingUI : uiComponents) {
@@ -150,7 +146,7 @@ public class SimulationRunnerBase implements SimulationRunner, SimulationRunner.
         }
 
         if (path != null) {
-            logManager = new LogManager(simulation, new File(path));
+            logManager = new AutoSavingLogManager(simulation, new File(path));
             addUIComponent(logManager);
             for (UpdatableUI loggingUI : uiComponents) {
                 if (loggingUI instanceof UpdatableUI.UpdateableLoggingUI) {
@@ -247,7 +243,6 @@ public class SimulationRunnerBase implements SimulationRunner, SimulationRunner.
 
     @Override
     public String getLoggingStatus() {
-        return logManager != null ? "Logging to: " + logManager.getLogPath() : "Not Logging";
-        //return statsLogger != null ? "Logging to: " + statsLogger.getLogPath() : "Not Logging";
+        return logManager != null ? logManager.getLoggingStatus() : "Not Logging";
     }
 }
