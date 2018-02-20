@@ -124,7 +124,7 @@ public class FXSimulationRenderer implements ISimulationRenderer {
     @Override
     synchronized public void update(boolean synchronous) {
         if (jfxPanel == null) return;
-        Platform.runLater(FXSimulationRenderer.this::draw);
+        if (!parallelRendering) Platform.runLater(FXSimulationRenderer.this::draw);
     }
 
     @Override
@@ -174,6 +174,14 @@ public class FXSimulationRenderer implements ISimulationRenderer {
         if (animationTimer != null) {
             if (parallelRendering && running) animationTimer.start();
             else animationTimer.stop();
+        } else {
+            animationTimer = new AnimationTimer() {
+                @Override
+                public void handle(long now) {
+                    draw();
+                }
+            };
+            if (running) animationTimer.start();
         }
     }
 
