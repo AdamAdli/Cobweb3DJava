@@ -3,7 +3,6 @@ package cobweb3d.impl.logging.strategies;
 import cobweb3d.impl.logging.DataTable;
 import cobweb3d.impl.logging.SavingStrategy;
 import cobweb3d.plugins.mutators.DataLoggingMutator;
-import org.apache.poi.EmptyFileException;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -22,7 +21,7 @@ public class ExcelXSSFSavingStrategy implements SavingStrategy {
             XSSFWorkbook workbook;
             try {
                 workbook = new XSSFWorkbook(new FileInputStream(file));
-            } catch (EmptyFileException ex2) {
+            } catch (Exception ex2) {
                 workbook = new XSSFWorkbook();
             }
             saveDataToExcelSheets(workbook, coreData, plugins);
@@ -31,6 +30,7 @@ public class ExcelXSSFSavingStrategy implements SavingStrategy {
             workbook.close();
             fileOutputStream.close();
         } catch (Exception ex) {
+            ex.printStackTrace();
             System.err.println("Failed saving log to XLSL.");
         }
         return 1;
@@ -62,7 +62,24 @@ public class ExcelXSSFSavingStrategy implements SavingStrategy {
             if (logRow != null) {
                 XSSFRow row = sheet.createRow(1 + r);
                 for (int c : logRow.cells.keySet()) {
-                    row.createCell(c).setCellValue(logRow.cells.get(c).value);
+                    Object val = logRow.cells.get(c).value;
+                    if (val instanceof Float)
+                        row.createCell(c).setCellValue((Float) val);
+                    else if (val instanceof Integer)
+                        row.createCell(c).setCellValue((Integer) val);
+                    else if (val instanceof String)
+                        row.createCell(c).setCellValue((String) val);
+                    else if (val instanceof Long)
+                        row.createCell(c).setCellValue((Long) val);
+                    else if (val instanceof Double)
+                        row.createCell(c).setCellValue((Double) val);
+                    else if (val instanceof Byte)
+                        row.createCell(c).setCellValue((Byte) val);
+                    else if (val instanceof Short)
+                        row.createCell(c).setCellValue((Short) val);
+                    else if (val instanceof Character)
+                        row.createCell(c).setCellValue((Character) val);
+                    else row.createCell(c).setCellValue(val.toString());
                 }
             }
         }

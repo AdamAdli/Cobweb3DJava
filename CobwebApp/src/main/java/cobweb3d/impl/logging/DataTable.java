@@ -42,7 +42,7 @@ public class DataTable {
             this.columns = columns;
         }
 
-        public void putVal(String column, String value) {
+        public void putVal(String column, Object value) {
             if (!cells.containsKey(column)) cells.put(this.columns.get(column), new Cell(value));
             else {
                 Cell cell = cells.get(column);
@@ -50,19 +50,7 @@ public class DataTable {
             }
         }
 
-        public void putVal(String columnIndex, long value) {
-            putVal(columnIndex, Long.toString(value));
-        }
-
-        public void putVal(String columnIndex, int value) {
-            putVal(columnIndex, Integer.toString(value));
-        }
-
-        public void putVal(String columnIndex, float value) {
-            putVal(columnIndex, Float.toString(value));
-        }
-
-        public void putVal(int columnIndex, String value) {
+        public void putVal(int columnIndex, Object value) {
             if (!cells.containsKey(columnIndex)) cells.put(columnIndex, new Cell(value));
             else {
                 Cell cell = cells.get(columnIndex);
@@ -70,22 +58,10 @@ public class DataTable {
             }
         }
 
-        public void putVal(int columnIndex, long value) {
-            putVal(columnIndex, Long.toString(value));
-        }
-
-        public void putVal(int columnIndex, int value) {
-            putVal(columnIndex, Integer.toString(value));
-        }
-
-        public void putVal(int columnIndex, float value) {
-            putVal(columnIndex, Float.toString(value));
-        }
-
         public class Cell {
-            public String value;
+            public Object value;
 
-            public Cell(String value) {
+            public Cell(Object value) {
                 this.value = value;
             }
         }

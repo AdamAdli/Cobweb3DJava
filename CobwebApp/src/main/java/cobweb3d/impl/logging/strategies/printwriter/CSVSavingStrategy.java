@@ -72,7 +72,7 @@ public class CSVSavingStrategy extends AbstractPrintWritingSavingStrategy {
         for (int i : col) {
             for (int j = 0; j < i - lastCol; j++)
                 printWriter.append(delimiter);
-            printWriter.append(row.cells.get(i).value);
+            printWriter.append(row.cells.get(i).value.toString());
             lastCol = i;
         }
     }

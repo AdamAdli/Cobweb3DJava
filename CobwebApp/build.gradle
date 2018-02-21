@@ -35,7 +35,7 @@ apply plugin: 'application'
 
 /** App Id, Version, Entry point, Java Version */
 group 'ca.cobweb'
-version '1.0-SNAPSHOT'
+version '0.1.2'
 
 mainClassName = 'cobweb3d.CobwebApplicationRunner'
 //applicationDefaultJvmArgs = ["-Dsun.java2d.opengl=True"]
@@ -43,10 +43,6 @@ applicationDefaultJvmArgs = ["-Dprism.verbose=true", "-Dcom.sun.javafx.experimen
                              //"-Dprism.order=es2,es1,sw", "-Dprism.vsync=true",
                              , "-Dprism.forceGPU=true"]
 sourceCompatibility = 1.8
-
-/** Library Dependencies */
-project.ext.joglVersion = "2.3.2"
-project.ext.jomlVersion = "1.9.4"
 
 repositories {
     jcenter()
@@ -124,7 +120,11 @@ task fatJar(type: Jar) {
 }
 
 shadowJar {
-    baseName = 'shadow'
-    classifier = null
-    version = null
+    baseName = project.name
+    classifier = 'SNAPSHOT'
+    version = version
+    exclude "META-INF/*.SF"
+    exclude "META-INF/*.DSA"
+    exclude "META-INF/*.RSA"
+    exclude "META-INF/LICENSE"
 }
