@@ -102,6 +102,7 @@ public class ExchangeParams extends PerAgentParams<ExchangeAgentParams> {
         // start: 1 + 2 + ... + max
         // precision : start + min - 1
         int index = summate(max + 1) + min + 1 - 1;
-        return pairParams[index];
+        if (index >= 0 && index < pairParams.length) return pairParams[index];
+        else return null;
     }
 }

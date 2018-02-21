@@ -12,8 +12,8 @@ import cobweb3d.impl.params.AgentParams;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Hashtable;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 3D environment.
@@ -33,7 +33,7 @@ public class BaseEnvironment implements Updatable {
 
     public BaseEnvironment(SimulationInternals simulation) {
         this.simulation = simulation;
-        this.agentTable = new Hashtable<>();
+        this.agentTable = new ConcurrentHashMap<>();
         flagArray = new byte[0][0][0];
     }
 

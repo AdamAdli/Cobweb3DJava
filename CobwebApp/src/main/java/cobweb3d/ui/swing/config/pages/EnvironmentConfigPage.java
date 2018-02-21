@@ -77,11 +77,10 @@ public class EnvironmentConfigPage implements ConfigPage {
         fieldPane.add(new JLabel(depth.getLabelText()));
         fieldPane.add(depth);
 
-        BoundCheckBox wrap = new BoundCheckBox(params.envParams,
+        /*BoundCheckBox wrap = new BoundCheckBox(params.envParams,
                 new FieldPropertyAccessor(BaseEnvironmentParams.class.getField("wrapMap")));
         fieldPane.add(new JLabel(wrap.getLabelText()));
-        fieldPane.add(wrap);
-
+        fieldPane.add(wrap);*/
 
         BoundJFormattedTextField AgentNum = new BoundJFormattedTextField(params,
                 new SetterPropertyAccessor(SimulationConfig.class.getMethod("setAgentTypes", int.class)),
@@ -99,7 +98,7 @@ public class EnvironmentConfigPage implements ConfigPage {
 
         panel11.add(fieldPane, BorderLayout.CENTER);
 
-        makeOptionsTable(fieldPane, 5);
+        makeOptionsTable(fieldPane, 4);
         return panel11;
     }
 
@@ -149,11 +148,11 @@ public class EnvironmentConfigPage implements ConfigPage {
         Util.makeGroupPanel(panel14, "Random Variables");
         fieldPane = new JPanel(new GridLayout(3, 1));
 
-        BoundJFormattedTextField initialStones = new BoundJFormattedTextField(params.envParams,
+        /*BoundJFormattedTextField initialStones = new BoundJFormattedTextField(params.envParams,
                 new FieldPropertyAccessor(BaseEnvironmentParams.class.getField("initialStones")),
                 NumberFormat.getIntegerInstance());
         fieldPane.add(new JLabel(initialStones.getLabelText()));
-        fieldPane.add(initialStones);
+        fieldPane.add(initialStones);*/
 
         BoundJFormattedTextField randomSeed = new BoundJFormattedTextField(params, new FieldPropertyAccessor(SimulationConfig.class.getField("randomSeed")), NumberFormat.getIntegerInstance());
         JButton makeRandom = new JButton("Generate");
@@ -165,7 +164,7 @@ public class EnvironmentConfigPage implements ConfigPage {
         fieldPane.add(makeRandom);
 
         panel14.add(fieldPane, BorderLayout.EAST);
-        makeOptionsTable(fieldPane, 3);
+        makeOptionsTable(fieldPane, 2);
         return panel14;
     }
 

@@ -100,7 +100,7 @@ public class FXSimulationRenderer implements ISimulationRenderer {
             agentRenderer = new UncachedAgentRenderer(toonRendering, outlineRendering);
             rootGroup.getChildren().add(agentRenderer);
             if (simulation != null && simulation.environment != null)
-                agentRenderer.drawAgents(simulation.getAgents()); // TODO: Check concurrency.
+                agentRenderer.drawAgents(simulation.environment.getAgents()); // TODO: Check concurrency.
         }
     }
 
@@ -111,7 +111,7 @@ public class FXSimulationRenderer implements ISimulationRenderer {
             agentRenderer = new UncachedAgentRenderer(toonRendering, outlineRendering);
             rootGroup.getChildren().add(agentRenderer);
             if (simulation != null && simulation.environment != null)
-                agentRenderer.drawAgents(new ArrayList<>(simulation.getAgents())); // TODO: Check concurrency.
+                agentRenderer.drawAgents(new ArrayList<>(simulation.environment.getAgents())); // TODO: Check concurrency.
         }
     }
 
@@ -206,5 +206,10 @@ public class FXSimulationRenderer implements ISimulationRenderer {
     @Override
     public ISimulationRendererMenuItem getMenuItem() {
         return fxSimulationRendererMenuItem;
+    }
+
+    @Override
+    public boolean isReadyToUpdate() {
+        return true;
     }
 }

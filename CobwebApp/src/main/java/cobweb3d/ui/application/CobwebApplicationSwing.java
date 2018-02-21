@@ -27,7 +27,7 @@ public abstract class CobwebApplicationSwing extends CobwebApplicationSwingBase 
     public ThreadSimulationRunner simRunner;
 
     public CobwebApplicationSwing() {
-        simRunner = new ThreadSimulationRunner(new Simulation());
+        this(new ThreadSimulationRunner(new Simulation()));
     }
 
     public CobwebApplicationSwing(ThreadSimulationRunner simulationRunner) {

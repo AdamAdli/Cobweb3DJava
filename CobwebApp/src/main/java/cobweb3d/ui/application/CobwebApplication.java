@@ -61,7 +61,7 @@ public class CobwebApplication extends CobwebApplicationSwing {
         fileMenu.add(new JMenuItem(openSimulationAct));
         //fileMenu.add(new JSeparator());
         fileMenu.add(new JMenuItem(createNewDataAct));
-        fileMenu.add(new JMenuItem(modifySimulationFileAct));
+        // fileMenu.add(new JMenuItem(modifySimulationFileAct));
         fileMenu.add(new JMenuItem(retrieveDefaultDataAct));
         fileMenu.add(new JMenuItem(modifySimulationAct));
         // fileMenu.add(new JSeparator());

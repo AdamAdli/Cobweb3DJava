@@ -55,8 +55,9 @@ public class UncachedAgentRenderer extends Group {
     public void drawAgents(Collection<BaseAgent> agentList) {
         PyramidMesh pyramidMesh;
         if (agentList != null) {
+            Vector3f temp = new Vector3f();
             for (BaseAgent agent : agentList) {
-                if (!agent.isAlive()) continue;
+                if (agent == null || !agent.isAlive()) continue;
                 pyramidMesh = new PyramidMesh(1, 1);
                 if (agent instanceof Agent) {
                     if (!typeMaterialMap.containsKey(agent.getType())) {
@@ -76,11 +77,11 @@ public class UncachedAgentRenderer extends Group {
                 }
                 pyramidMesh.setMaterial(typeMaterialMap.get(agent.getType()));
                 getChildren().add(pyramidMesh);
-
-                TransformUtil.TransformNode(pyramidMesh, new Vector3f(agent.position), 0.5f, 0.5f, 0.5f,
-                        new Vector3f(agent.position.direction), PyramidMesh.UP);
-                if (doOutlineRendering && outRenderer != null) outRenderer.drawAgent(agent);
-                if (doToonShading && toonRenderer != null) toonRenderer.drawAgent(agent);
+                if (agent.position == null || agent.position.direction == null) continue;
+                TransformUtil.TransformNode(pyramidMesh, agent.position, 0.5f, 0.5f, 0.5f,
+                        agent.position.direction, PyramidMesh.UP, temp);
+                if (doOutlineRendering && outRenderer != null) outRenderer.drawAgent(agent, temp);
+                if (doToonShading && toonRenderer != null) toonRenderer.drawAgent(agent, temp);
             }
         }
         // TODO: To track movement, render a trail and delay the removal of trail meshes.
@@ -98,15 +99,15 @@ public class UncachedAgentRenderer extends Group {
             toonMaterial = new PhongMaterial(MaterialColor.black_1000.asJFXColor());
         }
 
-        public void drawAgent(BaseAgent agent) {
+        public void drawAgent(BaseAgent agent, Vector3f temp) {
             if (!agent.isAlive()) return;
             PyramidMesh toonMesh = new PyramidMesh(1, 0.99f);
 
             toonMesh.setMaterial(toonMaterial);
             toonMesh.setCullFace(CullFace.FRONT);
 
-            TransformUtil.TransformNode(toonMesh, new Vector3f(agent.position), 0.5f, 0.5f, 0.5f,
-                    new Vector3f(agent.position.direction), PyramidMesh.UP);
+            TransformUtil.TransformNode(toonMesh, agent.position, 0.5f, 0.5f, 0.5f,
+                    agent.position.direction, PyramidMesh.UP, temp);
             toonMesh.getTransforms().add(new Scale(1.05, 1.05, 1.05, 0.5, 0.5, 0.5));
             getChildren().add(toonMesh);
         }
@@ -120,15 +121,15 @@ public class UncachedAgentRenderer extends Group {
             outlineMaterial = new PhongMaterial(MaterialColor.black_1000.asJFXColor());
         }
 
-        public void drawAgent(BaseAgent agent) {
+        public void drawAgent(BaseAgent agent, Vector3f temp) {
             if (!agent.isAlive()) return;
             BaselessPyramidMesh outlineMesh = new BaselessPyramidMesh(1, 1);
             outlineMesh.setMaterial(outlineMaterial);
             outlineMesh.setCullFace(CullFace.NONE);
             outlineMesh.setDrawMode(DrawMode.LINE);
 
-            TransformUtil.TransformNode(outlineMesh, new Vector3f(agent.position), 0.5f, 0.5f, 0.5f,
-                    new Vector3f(agent.position.direction), PyramidMesh.UP);
+            TransformUtil.TransformNode(outlineMesh, agent.position, 0.5f, 0.5f, 0.5f,
+                    agent.position.direction, PyramidMesh.UP, temp);
             getChildren().add(outlineMesh);
         }
     }

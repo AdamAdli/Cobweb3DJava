@@ -1,13 +1,14 @@
 package cobweb3d;
 
 import cobweb3d.impl.Simulation;
+import cobweb3d.impl.SimulationConfig;
 import cobweb3d.io.Cobweb3Serializer;
 import cobweb3d.ui.application.CobwebApplication;
-import util.ResourceRetriever;
+import cobweb3d.ui.exceptions.LoggingExceptionHandler;
+import cobweb3d.ui.swing.SwingExceptionHandler;
 
 import javax.swing.*;
 import java.io.File;
-import java.io.IOException;
 
 /**
  * This class contains the main method to drive the application.
@@ -109,8 +110,8 @@ public class CobwebApplicationRunner {
         // Create CobwebApplication and threads; not done earlier so that argument errors will result in quick exits.
         boolean isDebug = BuildConfig.DEBUG;//java.lang.management.ManagementFactory.getRuntimeMXBean().getInputArguments().toString().indexOf("-agentlib:jdwp") > 0;
         if (!isDebug) {
-            //  LoggingExceptionHandler handler = visible ? new SwingExceptionHandler() : new LoggingExceptionHandler();
-            //  Thread.setDefaultUncaughtExceptionHandler(handler);
+            LoggingExceptionHandler handler = visible ? new SwingExceptionHandler() : new LoggingExceptionHandler();
+            Thread.setDefaultUncaughtExceptionHandler(handler);
         }
         //   CobwebApplication cobwebApplication = new CobwebApplication();
 
@@ -144,12 +145,15 @@ public class CobwebApplicationRunner {
 
             }
             CobwebApplication CA = new CobwebApplication();
-            // TODO: CA.openFile(defaultconf);
-            try {
-                CA.openFile(Cobweb3Serializer.loadConfig(ResourceRetriever.getResource("default_config.xml").getFile()), false);
+            /*try {
+             //   CA.openFile(Cobweb3Serializer.loadConfig(Cobweb3Serializer.class.getClassLoader().getResourceAsStream("default_config.xml")), false);
+                CA.openFile(Cobweb3Serializer.loadConfig(Cobweb3Serializer.class.getClassLoader().getResource("default_config.xml").getFile()), false);//ResourceRetriever.getResource("default_config.xml").getFile()), false);
             } catch (IOException ex) {
                 ex.printStackTrace();
-            }
+            }*/
+            SimulationConfig defaultConfig = Cobweb3Serializer.loadConfig(Cobweb3Serializer.class.getClassLoader().getResourceAsStream("default_config.xml"));
+            defaultConfig.fileName = "Default Simulation";
+            CA.openFile(defaultConfig, false);
             simRunner = CA.simRunner;
         } else {
             Simulation simulation;

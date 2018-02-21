@@ -29,6 +29,8 @@ public interface SimulationRunner {
      */
     void stop();
 
+    void reset();
+
     /**
      * Simulation that is being run
      */

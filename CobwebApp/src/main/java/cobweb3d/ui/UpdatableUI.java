@@ -11,7 +11,8 @@ public interface UpdatableUI {
      *
      * @param synchronous whether to wait for component to complete update before returning
      */
-    void update(boolean synchronous);
+    default void update(boolean synchronous) {
+    }
 
     /**
      * Checks if the UI is free to update right now.

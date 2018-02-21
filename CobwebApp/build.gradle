@@ -72,7 +72,7 @@ dependencies {
     implementation "org.jogamp.jogl:jogl-all:${joglVersion}"
 
     // TODO: Check runtime vs runtimeOnly.
-    runtimeOnly "org.jogamp.gluegen:gluegen-rt:${joglVersion}:natives-android-aarch64"
+    /*runtimeOnly "org.jogamp.gluegen:gluegen-rt:${joglVersion}:natives-android-aarch64"
     runtimeOnly "org.jogamp.gluegen:gluegen-rt:${joglVersion}:natives-android-armv6"
     runtimeOnly "org.jogamp.gluegen:gluegen-rt:${joglVersion}:natives-linux-amd64"
     runtimeOnly "org.jogamp.gluegen:gluegen-rt:${joglVersion}:natives-linux-armv6"
@@ -94,7 +94,7 @@ dependencies {
     runtimeOnly "org.jogamp.jogl:jogl-all:${joglVersion}:natives-solaris-amd64"
     runtimeOnly "org.jogamp.jogl:jogl-all:${joglVersion}:natives-solaris-i586"
     runtimeOnly "org.jogamp.jogl:jogl-all:${joglVersion}:natives-windows-amd64"
-    runtimeOnly "org.jogamp.jogl:jogl-all:${joglVersion}:natives-windows-i586"
+    runtimeOnly "org.jogamp.jogl:jogl-all:${joglVersion}:natives-windows-i586"*/
 
     // Math Library
     implementation "org.joml:joml:${jomlVersion}"

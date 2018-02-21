@@ -39,16 +39,9 @@ public class AgentParams implements ResizableParam {
     public MutatableInt stepEnergy = new MutatableInt(1);
 
     /**
-     * Energy lost bumping into a rock/wall.
-     */
-    @ConfDisplayName("Rock bump energy")
-    @ConfXMLTag("StepRockEnergy")
-    public MutatableInt stepRockEnergy = new MutatableInt(2);
-
-    /**
      * Energy lost bumping into another agent.
      */
-    @ConfDisplayName("BaseAgent bump energy")
+    @ConfDisplayName("Agent bump energy")
     @ConfXMLTag("StepAgentEnergy")
     public MutatableInt stepAgentEnergy = new MutatableInt(2);
 

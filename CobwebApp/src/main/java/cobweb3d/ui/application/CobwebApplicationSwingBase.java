@@ -5,6 +5,7 @@ import cobweb3d.ui.AppContext;
 import javafx.application.Platform;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -40,7 +41,8 @@ public abstract class CobwebApplicationSwingBase extends JFrame implements AppCo
                 quitApplication();
             }
         });
-
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("64icon.png")));
+        //ImageIO.read(.getResource("res/icon.png"));
         setSize(580, 650);
         setLocationRelativeTo(null);
     }

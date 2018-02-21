@@ -5,6 +5,7 @@ import cobweb3d.ThreadSimulationRunner;
 import cobweb3d.ui.UpdatableUI;
 import util.swing.SimpleDocumentListener;
 import util.swing.SimpleFocusAdapter;
+import util.swing.layout.WrapLayout;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,6 +18,7 @@ public class SimStatePanel extends JToolBar implements UpdatableUI {
 
     private PauseButton pauseButton;
     private StepButton stepButton;
+    private RestartButton restartButton;
     private SpeedBar speedBar;
     private JTextField tickField;
     private JLabel tickDisplay;
@@ -29,21 +31,30 @@ public class SimStatePanel extends JToolBar implements UpdatableUI {
 
     public SimStatePanel() {
         super();
-        //setLayout(new WrapLayout(FlowLayout.LEFT, 5, 0));
+        setLayout(new WrapLayout(FlowLayout.LEFT, 0, 0));
         setFloatable(false);
         add(pauseButton = new PauseButton());
         add(stepButton = new StepButton());
+        add(restartButton = new RestartButton());
+        addSeparator();
         add(speedBar = new SpeedBar());
         addSeparator();
         add(tickDisplay = new JLabel());
-        add(new JLabel("Stop at: "));
-        add(tickField = new JTextField());
+        //add(new JLabel("Stop at: "));
+        // add(tickField = new JTextField());
+
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        panel.add(new JLabel("Stop at: "));
+        panel.add(tickField = new JTextField());
+        panel.setBackground(getBackground());
+        add(panel);
 
         pauseButton.setPreferredSize(new Dimension(pauseButton.getPreferredSize().width, HEIGHT));
         stepButton.setPreferredSize(new Dimension(stepButton.getPreferredSize().width, HEIGHT));
+        restartButton.setPreferredSize(new Dimension(stepButton.getPreferredSize().width, HEIGHT));
 
-        speedBar.setPreferredSize(new Dimension(192, HEIGHT));
-        speedBar.setMaximumSize(new Dimension(192, HEIGHT));
+        speedBar.setPreferredSize(new Dimension(96, HEIGHT));
+        // speedBar.setMaximumSize(new Dimension(96, HEIGHT));
         speedBar.getPreferredSize().height = HEIGHT;
         speedBar.getMaximumSize().height = HEIGHT;
 
@@ -56,12 +67,14 @@ public class SimStatePanel extends JToolBar implements UpdatableUI {
         tickField.getDocument().addDocumentListener((SimpleDocumentListener)
                 () -> simRunner.setAutoStopTime(Integer.parseInt(tickField.getText())));
         tickField.addFocusListener(new SimpleFocusAdapter(tickField::repaint));
+        panel.setPreferredSize(new Dimension(panel.getPreferredSize().width, HEIGHT));
     }
 
     public void setScheduler(SimulationRunner simulationRunner) {
         this.simRunner = simulationRunner;
         pauseButton.setScheduler(simulationRunner);
         stepButton.setScheduler(simulationRunner);
+        restartButton.setScheduler(simulationRunner);
         if (simulationRunner instanceof ThreadSimulationRunner)
             speedBar.setScheduler((ThreadSimulationRunner) simulationRunner);
         else speedBar.setVisible(false);
@@ -81,5 +94,14 @@ public class SimStatePanel extends JToolBar implements UpdatableUI {
     @Override
     public void onStarted() {
         pauseButton.repaint();
+    }
+
+    @Override
+    public void setBackground(Color bg) {
+        super.setBackground(bg);
+        for (Component component : getComponents()) {
+            if (component instanceof JPanel)
+                component.setBackground(bg);
+        }
     }
 }

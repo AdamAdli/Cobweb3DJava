@@ -12,19 +12,19 @@ public class BaseEnvironmentParams implements ParameterSerializable {
      */
     @ConfDisplayName("Width")
     @ConfXMLTag("Width")
-    public int width = 80;
+    public int width = 10;
     /**
      * Height of the grid.
      */
     @ConfDisplayName("Height")
     @ConfXMLTag("Height")
-    public int height = 80;
+    public int height = 10;
     /**
      * Height of the grid.
      */
     @ConfDisplayName("Depth")
     @ConfXMLTag("Depth")
-    public int depth = 80;
+    public int depth = 10;
     /**
      * Enables the grid to wrap around at the edges.
      */

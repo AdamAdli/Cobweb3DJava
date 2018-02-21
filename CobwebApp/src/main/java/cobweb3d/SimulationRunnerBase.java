@@ -98,18 +98,28 @@ public class SimulationRunnerBase implements SimulationRunner, SimulationRunner.
     @Override
     public void stop() {
         running = false;
-
         notifyStopped();
     }
 
+    @Override
+    public void reset() {
+        stop();
+        simulation.resetTime();
+        clearLogManager();
+        loadSimulation(simulation.simulationConfig);
+        for (UpdatableUI updatableUI : new LinkedList<>(uiComponents)) {
+            updatableUI.update(false);
+        }
+    }
+
     protected void notifyStarted() {
-        for (UpdatableUI updatableUI : new LinkedList<UpdatableUI>(uiComponents)) {
+        for (UpdatableUI updatableUI : new LinkedList<>(uiComponents)) {
             updatableUI.onStarted();
         }
     }
 
     protected void notifyStopped() {
-        for (UpdatableUI updatableUI : new LinkedList<UpdatableUI>(uiComponents)) {
+        for (UpdatableUI updatableUI : new LinkedList<>(uiComponents)) {
             updatableUI.onStopped();
         }
     }

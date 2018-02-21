@@ -103,6 +103,7 @@ public class ExchangeAgentPairConfigPage extends JPanel implements ConfigPage {
         BoundJSpinner incrementSpinner;
 
         public ExchangePanel(ExchangeAgentPairParams pairParams) {
+            if (pairParams == null) pairParams = new ExchangeAgentPairParams(-1, -1);
             this.pairParams = pairParams;
             try {
                 xTransfer = new BoundJFormattedTextField(pairParams,
