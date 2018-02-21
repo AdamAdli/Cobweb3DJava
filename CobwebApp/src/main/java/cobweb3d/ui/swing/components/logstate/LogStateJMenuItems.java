@@ -13,23 +13,23 @@ import java.io.File;
 
 public class LogStateJMenuItems implements UpdatableUI.UpdateableLoggingUI {
 
+    public ThreadSimulationRunner simRunner;
+    public Component parent;
+
     public JCheckBoxMenuItem toggleLogCheckbox;
     public JMenuItem autoSaveLogMenuItem;
     public JMenuItem saveLogMenuItem;
-
-    public ThreadSimulationRunner simRunner;
-    public Component parent;
-    Action setAutoSaveLogAct = new SimpleAction("AutoSave Log", e -> {
+    private Action setAutoSaveLogAct = new SimpleAction("AutoSave Log", e -> {
         pauseUI();
         String path = FileDialogUtil.saveFileJFX(SwingUtilities.getWindowAncestor(parent), "AutoSave Simulation Log", JFXFileExtFilter.LOG_CSV_FASTEST, JFXFileExtFilter.LOG_TEXT_FAST, JFXFileExtFilter.EXCEL_XLSX_SLOWEST);
         if (path != null && !path.isEmpty()) startSimulationLog(path);
     });
-    Action saveLogAct = new SimpleAction("Save Log", e -> {
+    private Action saveLogAct = new SimpleAction("Save Current Log", e -> {
         pauseUI();
         String path = FileDialogUtil.saveFileJFX(SwingUtilities.getWindowAncestor(parent), "Save Simulation Log", JFXFileExtFilter.LOG_CSV_FASTEST, JFXFileExtFilter.LOG_TEXT_FAST, JFXFileExtFilter.EXCEL_XLSX_SLOWEST);
         if (path != null && !path.isEmpty()) saveSimulationLog(path);
     });
-    Action toggleLogAct = new SimpleAction("Log Data", e -> {
+    private Action toggleLogAct = new SimpleAction("Log Data", e -> {
         boolean selected = ((AbstractButton) e.getSource()).isSelected();
         if (simRunner != null) {
             if (selected) simRunner.enableLogging();

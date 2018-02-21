@@ -56,7 +56,8 @@ public class FXSimulationRenderer implements ISimulationRenderer {
         BorderPane layout = (BorderPane) mainLayout;
         layout.widthProperty().addListener(resizeListener);
         layout.heightProperty().addListener(resizeListener);
-        jfxPanel.setScene(new Scene(layout, MaterialColor.grey_100.asJFXColor()));
+        Scene scene = new Scene(layout, MaterialColor.grey_100.asJFXColor());
+        jfxPanel.setScene(scene);
         logger.info("Initialized JavaFX");
 
         animationTimer = new AnimationTimer() {
@@ -77,6 +78,7 @@ public class FXSimulationRenderer implements ISimulationRenderer {
         renderScene = new SubScene(rootGroup, 200, 200, true, SceneAntialiasing.BALANCED);
         renderScene.setFill(Color.WHITE);
         renderScene.setCamera(camera);
+
         return renderScene;
     }
 
@@ -142,7 +144,11 @@ public class FXSimulationRenderer implements ISimulationRenderer {
     @Override
     public void onStopped() {
         running = false;
-        if (animationTimer != null) animationTimer.stop();
+        if (animationTimer != null) {
+            animationTimer.stop();
+            // Fully sync visuals when stopping parallel rendering.
+            if (parallelRendering) Platform.runLater(FXSimulationRenderer.this::draw);
+        }
     }
 
     @Override

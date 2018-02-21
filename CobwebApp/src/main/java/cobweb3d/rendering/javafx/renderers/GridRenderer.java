@@ -95,7 +95,7 @@ public class GridRenderer extends Group {
                 gridDepth).length() / 2;
         float optimalDistanceY = ((float) gridHeight / 2) / (float) Math.tan(camera.fovYr() / 2);
         float optimalDistanceX = ((float) gridWidth / 2) / (float) Math.tan(camera.fovXr() / 2);
-        camera.lookAt(new Vector3f(gridCenter.x, gridCenter.y, -Math.max(optimalDistanceY, optimalDistanceX)),
+        camera.lookAt(new Vector3f(gridCenter.x, gridCenter.y, -(Math.max(optimalDistanceY, optimalDistanceX)) * 1.05f),
                 new Vector3f(gridCenter.x, gridCenter.y, gridCenter.z),
                 new Vector3f(0, 1, 0));
     }

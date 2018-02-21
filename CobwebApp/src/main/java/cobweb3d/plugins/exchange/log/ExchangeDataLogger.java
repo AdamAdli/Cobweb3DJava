@@ -37,7 +37,7 @@ public class ExchangeDataLogger implements DataLoggingMutator {
 
         float totalX = ExchangeStatTracker.getTotalX(statsProvider);
         float totalY = ExchangeStatTracker.getTotalY(statsProvider);
-        float totalU = ExchangeStatTracker.getTotalUtility(statsProvider);
+        float totalU = ExchangeStatTracker.getTotalUtility(statsProvider, params);
 
         row.putVal(1, totAgentCount);
         row.putVal(2, totalX);
@@ -47,7 +47,7 @@ public class ExchangeDataLogger implements DataLoggingMutator {
         int agentCount = params.agentParams.length;
         for (int i = 0; i < agentCount; i++) {
             long typeAgentCount = statsProvider.countAgents(i);
-            float typeU = ExchangeStatTracker.getUtilityForAgent(statsProvider, i);
+            float typeU = ExchangeStatTracker.getUtilityForAgent(statsProvider, params, i);
             row.putVal(i + 6, (typeU / (float) typeAgentCount));
         }
         nextDataRow++;

@@ -12,7 +12,7 @@ public class ExchangeState implements AgentState {
     public float y = 0;
 
     @ConfXMLTag("u")
-    public float util = 0;
+    public Float util = null;
 
     @Deprecated // for reflection use only!
     public ExchangeState() {
