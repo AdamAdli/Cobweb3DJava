@@ -131,7 +131,7 @@ public abstract class CobwebApplicationSwing extends CobwebApplicationSwingBase 
      * created to tell the user the proper way to create new default data.
      */
     protected void openCurrentFile() {
-        if (CURRENT_DATA_FILE_NAME.equals(currentFile)) {
+        if (CURRENT_DATA_FILE_NAME.equals(currentFile) || currentFile == null) {
             throw new UserInputException("File not currently saved, use \"Modify Current Data\" instead");
         }
     }
