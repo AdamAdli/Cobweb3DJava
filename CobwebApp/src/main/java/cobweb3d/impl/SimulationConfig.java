@@ -4,6 +4,7 @@ import cobweb3d.core.params.*;
 import cobweb3d.impl.ai.SimpleController;
 import cobweb3d.impl.ai.SimpleControllerParams;
 import cobweb3d.impl.logging.LogConfig;
+import cobweb3d.plugins.MutatorListenerConfig;
 import cobweb3d.plugins.diminish.DiminishParams;
 import cobweb3d.plugins.exchange.ExchangeParams;
 import cobweb3d.plugins.food.ConsumptionParams;
@@ -76,6 +77,8 @@ public class SimulationConfig implements ParameterSerializable, AgentFoodCountab
 
     @ConfXMLTag("LogConfig")
     public LogConfig logConfig = new LogConfig();
+    @ConfXMLTag("MutatorConfig")
+    public MutatorListenerConfig mutatorConfig = new MutatorListenerConfig();
 
     @ConfXMLTag("Reproduction")
     public ReproductionParams reproductionParams = new ReproductionParams(this);

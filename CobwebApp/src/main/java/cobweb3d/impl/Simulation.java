@@ -10,6 +10,7 @@ import cobweb3d.core.location.Location;
 import cobweb3d.core.location.LocationDirection;
 import cobweb3d.impl.agent.Agent;
 import cobweb3d.plugins.MutatorListener;
+import cobweb3d.plugins.PluginProvider;
 import cobweb3d.plugins.StateParameter;
 import cobweb3d.plugins.StatePlugin;
 import cobweb3d.plugins.diminish.DiminishMutator;
@@ -117,11 +118,13 @@ public class Simulation implements SimulationInternals, SimulationInterface {
             exchangeMutator = null;
             transformationMutator = null;
             diseaseMutator = null;
+            PluginProvider.constructPlugins(this);
         }
 
         // TODO: ? time = 0;
-        mutatorListener.clearMutators(); //TODO: IMPORTANT!
-        if (reproductionMutator == null) {
+        // mutatorListener.clearMutators(); //TODO: IMPORTANT!
+
+        /*if (reproductionMutator == null) {
             reproductionMutator = new ReproductionMutator();
             mutatorListener.addMutator(reproductionMutator);
         }
@@ -151,8 +154,11 @@ public class Simulation implements SimulationInternals, SimulationInterface {
         diminishMutator.setParams(this, simConfig.diminishParams, simConfig.getAgentTypes());
         exchangeMutator.setParams(this, simConfig.exchangeParams, simConfig.getAgentTypes());
         transformationMutator.setParams(this, simConfig.transformationParams, simConfig.getAgentTypes());
-        diseaseMutator.setParams(this, simConfig.diseaseParams, simConfig.getAgentTypes());
+        diseaseMutator.setParams(this, simConfig.diseaseParams, simConfig.getAgentTypes());*/
+        PluginProvider.initializePlugins(this, simulationConfig);
 
+//        simulationConfig.mutatorConfig.load(mutatorListener);
+        mutatorListener.loadConfig(simulationConfig.mutatorConfig);
         simulationConfig.logConfig.load(mutatorListener);
         if (simConfig.spawnNewAgents) loadNewAgents();
     }

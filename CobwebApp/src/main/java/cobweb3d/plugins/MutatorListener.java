@@ -26,6 +26,19 @@ public class MutatorListener implements AgentListener {
     private Set<ControllerInputMutator> controllerMutators = new LinkedHashSet<>();
     private Set<AgentMutator> allMutators = new HashSet<>();
 
+    public void loadConfig(MutatorListenerConfig config) {
+        Set<AgentMutator> mutatorsToRemove = new HashSet<>();
+        for (AgentMutator agentMutator : allMutators) {
+            if (!config.enabled(agentMutator.getClass().getCanonicalName())) {
+                mutatorsToRemove.add(agentMutator);
+            }
+        }
+        for (AgentMutator agentMutator : mutatorsToRemove) {
+            removeMutator(agentMutator);
+            allMutators.add(agentMutator);
+        }
+    }
+
     public void addMutator(AgentMutator mutator) {
         if (mutator instanceof SpawnMutator)
             spawnMutators.add((SpawnMutator) mutator);
@@ -54,7 +67,6 @@ public class MutatorListener implements AgentListener {
 
         allMutators.add(mutator);
     }
-
 
     public void removeMutator(AgentMutator mutator) {
         spawnMutators.remove(mutator);
@@ -170,5 +182,9 @@ public class MutatorListener implements AgentListener {
 
     public Set<DataLoggingMutator> getDataLoggingMutators() {
         return dataLoggingMutators;
+    }
+
+    public Set<AgentMutator> getAllMutators() {
+        return allMutators;
     }
 }

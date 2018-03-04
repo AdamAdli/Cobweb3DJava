@@ -14,7 +14,7 @@ import util.ArrayUtilities;
 /**
  * Simulates various diseases that can affect agents.
  */
-public class DiseaseMutator extends StatefulMutatorBase<DiseaseState> implements ContactMutator, SpawnMutator, UpdateMutator {
+public class DiseaseMutator extends StatefulMutatorBase<DiseaseState, DiseaseParams> implements ContactMutator, SpawnMutator, UpdateMutator {
 
     private DiseaseParams params;
 
@@ -26,9 +26,14 @@ public class DiseaseMutator extends StatefulMutatorBase<DiseaseState> implements
         super(DiseaseState.class);
     }
 
+    @Override
+    public boolean acceptsParam(Class<?> object) {
+        return object.isAssignableFrom(DiseaseParams.class);
+    }
+
     /*
-        TODO: Logging
-     */
+            TODO: Logging
+         */
     private void makeRandomSick(BaseAgent agent, float rate) {
         boolean isSick = false;
         if (simulation.getRandom().nextFloat() < rate)
@@ -79,6 +84,7 @@ public class DiseaseMutator extends StatefulMutatorBase<DiseaseState> implements
             makeRandomSick(agent, 0);
     }
 
+    @Override
     public void setParams(SimulationTimeSpace sim, DiseaseParams diseaseParams, int agentTypes) {
         this.simulation = sim;
         this.params = diseaseParams;

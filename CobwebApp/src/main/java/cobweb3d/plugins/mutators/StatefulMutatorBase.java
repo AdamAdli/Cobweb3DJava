@@ -3,12 +3,13 @@ package cobweb3d.plugins.mutators;
 import cobweb3d.core.agent.BaseAgent;
 import cobweb3d.impl.agent.Agent;
 import cobweb3d.plugins.states.AgentState;
+import io.ParameterSerializable;
 
 /**
  * Helper base class for creating StatefulMutators.
  * Handles storage of state.
  */
-public abstract class StatefulMutatorBase<T extends AgentState> implements StatefulMutator<T> {
+public abstract class StatefulMutatorBase<T extends AgentState, R extends ParameterSerializable> implements StatefulMutator<T>, ConfiguratedMutator<R> {
 
     private final Class<T> stateClass;
 

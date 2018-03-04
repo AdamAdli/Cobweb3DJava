@@ -4,10 +4,11 @@ import cobweb3d.core.SimulationInternals;
 import cobweb3d.core.SimulationTimeSpace;
 import cobweb3d.core.agent.BaseAgent;
 import cobweb3d.impl.agent.Agent;
+import cobweb3d.plugins.mutators.ConfiguratedMutator;
 import cobweb3d.plugins.mutators.ContactMutator;
 import cobweb3d.plugins.states.AgentState;
 
-public class ConsumptionMutator implements ContactMutator {
+public class ConsumptionMutator implements ContactMutator, ConfiguratedMutator<ConsumptionParams> {
 
     ConsumptionParams params;
 
@@ -16,9 +17,15 @@ public class ConsumptionMutator implements ContactMutator {
     public ConsumptionMutator() {
     }
 
+    @Override
     public void setParams(SimulationTimeSpace sim, ConsumptionParams reproductionParams, int agentTypes) {
         this.simulation = sim;
         this.params = reproductionParams;
+    }
+
+    @Override
+    public boolean acceptsParam(Class<?> object) {
+        return object.isAssignableFrom(ConsumptionParams.class);
     }
 
     @Override

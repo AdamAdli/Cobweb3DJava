@@ -8,7 +8,7 @@ import cobweb3d.plugins.exchange.ExchangeState;
 import cobweb3d.plugins.mutators.StatefulMutatorBase;
 import cobweb3d.plugins.mutators.UpdateMutator;
 
-public class TransformationMutator extends StatefulMutatorBase<TransformationState> implements UpdateMutator {
+public class TransformationMutator extends StatefulMutatorBase<TransformationState, TransformationParams> implements UpdateMutator {
     TransformationParams params;
     private SimulationTimeSpace simulation;
 
@@ -16,9 +16,15 @@ public class TransformationMutator extends StatefulMutatorBase<TransformationSta
         super(TransformationState.class);
     }
 
+    @Override
     public void setParams(SimulationTimeSpace sim, TransformationParams transformationParams, int agentTypes) {
         this.simulation = sim;
         this.params = transformationParams;
+    }
+
+    @Override
+    public boolean acceptsParam(Class<?> object) {
+        return object.isAssignableFrom(TransformationParams.class);
     }
 
     @Override

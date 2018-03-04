@@ -10,6 +10,7 @@ import cobweb3d.plugins.reproduction.ui.ReproductionConfigPage;
 import cobweb3d.plugins.transform.ui.TransformationConfigPage;
 import cobweb3d.ui.application.CobwebApplication;
 import cobweb3d.ui.exceptions.UserInputException;
+import cobweb3d.ui.swing.config.mutator.MutatorConfigPage;
 import cobweb3d.ui.swing.config.pages.AgentConfigPage;
 import cobweb3d.ui.swing.config.pages.EnvironmentConfigPage;
 import cobweb3d.ui.util.TypeColorEnumeration;
@@ -176,6 +177,9 @@ public class SimulationConfigEditor implements ConfigRefresher {
         AgentConfigPage agentPage = new AgentConfigPage(simConfig.agentParams.agentParams);
         tabbedPane.addTab("Agents", agentPage.getPanel());
 
+        MutatorConfigPage mutatorConfigPage = new MutatorConfigPage(simConfig.mutatorConfig);
+        tabbedPane.addTab("Plugins", mutatorConfigPage.getPanel());
+
         ReproductionConfigPage reproductionConfigPage = new ReproductionConfigPage(simConfig.reproductionParams,
                 new ChoiceCatalog(),
                 new TypeColorEnumeration(simConfig.agentParams.getPerTypeParams()));
@@ -204,6 +208,8 @@ public class SimulationConfigEditor implements ConfigRefresher {
                 Cobweb3Serializer.getChoiceCatalog(),
                 new TypeColorEnumeration(simConfig.agentParams.getPerTypeParams()));
         tabbedPane.addTab("Disease", diseaseConfigPage.getPanel());
+
+
     }
 
     private void validateSettings() {

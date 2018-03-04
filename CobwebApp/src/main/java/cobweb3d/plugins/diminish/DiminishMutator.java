@@ -3,10 +3,11 @@ package cobweb3d.plugins.diminish;
 import cobweb3d.core.SimulationTimeSpace;
 import cobweb3d.core.agent.BaseAgent;
 import cobweb3d.impl.agent.Agent;
+import cobweb3d.plugins.mutators.ConfiguratedMutator;
 import cobweb3d.plugins.mutators.ContactMutator;
 import cobweb3d.plugins.states.AgentState;
 
-public class DiminishMutator implements ContactMutator {
+public class DiminishMutator implements ContactMutator, ConfiguratedMutator<DiminishParams> {
 
     DiminishParams params;
 
@@ -15,9 +16,15 @@ public class DiminishMutator implements ContactMutator {
     public DiminishMutator() {
     }
 
+    @Override
     public void setParams(SimulationTimeSpace sim, DiminishParams reproductionParams, int agentTypes) {
         this.simulation = sim;
         this.params = reproductionParams;
+    }
+
+    @Override
+    public boolean acceptsParam(Class<?> object) {
+        return object.isAssignableFrom(DiminishParams.class);
     }
 
     @Override

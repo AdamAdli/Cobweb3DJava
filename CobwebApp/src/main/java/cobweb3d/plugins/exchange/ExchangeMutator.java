@@ -12,7 +12,7 @@ import cobweb3d.plugins.mutators.StatefulMutatorBase;
 
 import java.util.Collection;
 
-public class ExchangeMutator extends StatefulMutatorBase<ExchangeState> implements ContactMutator,
+public class ExchangeMutator extends StatefulMutatorBase<ExchangeState, ExchangeParams> implements ContactMutator,
         SpawnMutator, DataLoggingMutator {
     ExchangeParams params;
 
@@ -23,10 +23,16 @@ public class ExchangeMutator extends StatefulMutatorBase<ExchangeState> implemen
         super(ExchangeState.class);
     }
 
+    @Override
     public void setParams(SimulationTimeSpace sim, ExchangeParams exchangeParams, int agentTypes) {
         this.simulation = sim;
         this.params = exchangeParams;
         this.exchangeLogger = new ExchangeDataLogger(params);
+    }
+
+    @Override
+    public boolean acceptsParam(Class<?> object) {
+        return object.isAssignableFrom(ExchangeParams.class);
     }
 
     private void tryExchange(BaseAgent agent, BaseAgent other) {

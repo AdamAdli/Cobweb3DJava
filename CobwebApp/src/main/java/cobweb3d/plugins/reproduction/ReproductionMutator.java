@@ -11,7 +11,7 @@ import cobweb3d.plugins.mutators.StepMutator;
 import cobweb3d.plugins.mutators.UpdateMutator;
 import util.ArrayUtilities;
 
-public class ReproductionMutator extends StatefulMutatorBase<ReproductionState> implements ContactMutator,
+public class ReproductionMutator extends StatefulMutatorBase<ReproductionState, ReproductionParams> implements ContactMutator,
         StepMutator, UpdateMutator {
     ReproductionParams params;
 
@@ -23,10 +23,16 @@ public class ReproductionMutator extends StatefulMutatorBase<ReproductionState> 
         super(ReproductionState.class);
     }
 
+    @Override
     public void setParams(SimulationTimeSpace sim, ReproductionParams reproductionParams, int agentTypes) {
         this.simulation = sim;
         this.params = reproductionParams;
         this.birthCounts = ArrayUtilities.resizeArray(birthCounts, agentTypes);
+    }
+
+    @Override
+    public boolean acceptsParam(Class<?> object) {
+        return object.isAssignableFrom(ReproductionParams.class);
     }
 
     private void tryGiveBirth(BaseAgent agent, Location location) {

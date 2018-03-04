@@ -1,0 +1,92 @@
+package cobweb3d.plugins;
+
+import cobweb3d.impl.Simulation;
+import cobweb3d.impl.SimulationConfig;
+import cobweb3d.plugins.mutators.AgentMutator;
+import cobweb3d.plugins.mutators.ConfiguratedMutator;
+import cobweb3d.plugins.mutators.DataLoggingMutator;
+import org.reflections.Reflections;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.Comparator;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
+
+public class PluginProvider {
+
+    public static Set<Class<? extends AgentMutator>> getAvailablePlugins() {
+        Reflections pluginsPackage = new Reflections("cobweb3d.plugins");
+        SortedSet<Class<? extends AgentMutator>> orderedClasses = new TreeSet<>(new PluginOrderComparator());
+        orderedClasses.addAll(pluginsPackage.getSubTypesOf(AgentMutator.class).stream().filter(p -> !p.isInterface() && !Modifier.isAbstract(p.getModifiers())).collect(Collectors.toList()));
+        return orderedClasses;
+    }
+
+    public static Set<Class<? extends DataLoggingMutator>> getLoggingPlugins() {
+        Reflections pluginsPackage = new Reflections("cobweb3d.plugins");
+        SortedSet<Class<? extends DataLoggingMutator>> orderedClasses = new TreeSet<>(new PluginOrderComparator());
+        orderedClasses.addAll(pluginsPackage.getSubTypesOf(DataLoggingMutator.class).stream().filter(p -> !p.isInterface() && !Modifier.isAbstract(p.getModifiers())).collect(Collectors.toList()));
+        return orderedClasses;
+    }
+
+    public static void initializePlugins(Simulation simulation, SimulationConfig simulationConfig) {
+        /*Set<Class<? extends AgentMutator>> classes = getAvailablePlugins();
+        for (Class<? extends AgentMutator> plugin : classes) {
+            try {
+                if (ConfiguratedMutator.class.isAssignableFrom(plugin)) {
+                    AgentMutator mutator = plugin.newInstance();
+                    simulation.mutatorListener.addMutator(mutator);
+                    Field[] fields = simulationConfig.getClass().getDeclaredFields();
+                    for (Field f : fields) {
+                        if (((ConfiguratedMutator<?>) mutator).acceptsParam(f.getType())) {
+                            ((ConfiguratedMutator) mutator).setParams(simulation, f.get(simulationConfig), simulationConfig.getAgentTypes());
+                            break;
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }*/
+
+        for (AgentMutator agentMutator : simulation.mutatorListener.getAllMutators()) {
+            try {
+                if (ConfiguratedMutator.class.isAssignableFrom(agentMutator.getClass())) {
+                    Field[] fields = simulationConfig.getClass().getDeclaredFields();
+                    for (Field f : fields) {
+                        if (((ConfiguratedMutator<?>) agentMutator).acceptsParam(f.getType())) {
+                            ((ConfiguratedMutator) agentMutator).setParams(simulation, f.get(simulationConfig), simulationConfig.getAgentTypes());
+                            break;
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    public static void constructPlugins(Simulation simulation) {
+        simulation.mutatorListener.clearMutators();
+        Set<Class<? extends AgentMutator>> classes = getAvailablePlugins();
+        for (Class<? extends AgentMutator> plugin : classes) {
+            try {
+                if (ConfiguratedMutator.class.isAssignableFrom(plugin)) {
+                    AgentMutator mutator = plugin.newInstance();
+                    simulation.mutatorListener.addMutator(mutator);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    private static class PluginOrderComparator implements Comparator<Class<?>> {
+        @Override
+        public int compare(Class<?> o1, Class<?> o2) {
+            return o1.getSimpleName().compareTo(o2.getSimpleName());
+        }
+    }
+}

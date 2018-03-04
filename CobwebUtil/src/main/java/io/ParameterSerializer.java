@@ -477,11 +477,11 @@ public class ParameterSerializer {
         }
 
         @SuppressWarnings("unchecked")
-        Map<String, Object> result = (Map<String, Object>) currentMap;
+        Map<Object, Object> result = (Map<Object, Object>) currentMap;
 
-        for (Entry<String, Object> i : result.entrySet()) {
+        for (Entry<Object, Object> i : result.entrySet()) {
             Element itemTag = doc.createElement(mapOptions.entryName());
-            itemTag.setAttribute(mapOptions.keyName(), i.getKey());
+            itemTag.setAttribute(mapOptions.keyName(), i.getKey().toString());
 
             saveObject(mapOptions.valueClass(), mapAnnotations, i.getValue(), itemTag, doc);
 
