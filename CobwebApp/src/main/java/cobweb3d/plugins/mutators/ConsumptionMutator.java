@@ -6,5 +6,6 @@ public interface ConsumptionMutator extends AgentMutator {
 
     void onConsumeAgent(BaseAgent agent, BaseAgent food);
 
-    void onConsumeFood(BaseAgent agent, int foodType);
+    default void onConsumeFood(BaseAgent agent, int foodType) {
+    }
 }

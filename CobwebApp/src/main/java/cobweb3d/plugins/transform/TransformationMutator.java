@@ -5,10 +5,11 @@ import cobweb3d.core.agent.BaseAgent;
 import cobweb3d.impl.Simulation;
 import cobweb3d.impl.agent.Agent;
 import cobweb3d.plugins.exchange.ExchangeState;
+import cobweb3d.plugins.mutators.ConsumptionMutator;
 import cobweb3d.plugins.mutators.StatefulMutatorBase;
 import cobweb3d.plugins.mutators.UpdateMutator;
 
-public class TransformationMutator extends StatefulMutatorBase<TransformationState, TransformationParams> implements UpdateMutator {
+public class TransformationMutator extends StatefulMutatorBase<TransformationState, TransformationParams> implements UpdateMutator, ConsumptionMutator {
     TransformationParams params;
     private SimulationTimeSpace simulation;
 
@@ -34,9 +35,20 @@ public class TransformationMutator extends StatefulMutatorBase<TransformationSta
 
     @Override
     public void onUpdate(BaseAgent agent) {
-        if (params.of(agent).enabled && getX(agent) >= params.of(agent).transformationX.getValue()) {
+        if (params.of(agent).exchangeTransformationAgentParams.enabled && getX(agent) >= params.of(agent).exchangeTransformationAgentParams.transformationX.getValue()) {
             setAgentState(agent, new TransformationState(getAgentState(agent), agent.getType()));
-            agent.transformType(params.of(agent).destType - 1);
+            agent.transformType(params.of(agent).exchangeTransformationAgentParams.destType - 1);
+            if (agent instanceof Agent) {
+                ((Agent) agent).setParams(((Simulation) simulation).environment.agentParams[agent.getType()]);
+            }
+        }
+    }
+
+    @Override
+    public void onConsumeAgent(BaseAgent agent, BaseAgent food) {
+        if (params.of(agent).consumptionTransformationAgentParams.canTransform[food.getType()]) {
+            setAgentState(agent, new TransformationState(getAgentState(agent), agent.getType()));
+            agent.transformType(params.of(agent).consumptionTransformationAgentParams.destType[food.getType()] - 1);
             if (agent instanceof Agent) {
                 ((Agent) agent).setParams(((Simulation) simulation).environment.agentParams[agent.getType()]);
             }

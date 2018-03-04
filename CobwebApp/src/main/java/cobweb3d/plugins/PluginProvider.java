@@ -31,26 +31,7 @@ public class PluginProvider {
         return orderedClasses;
     }
 
-    public static void initializePlugins(Simulation simulation, SimulationConfig simulationConfig) {
-        /*Set<Class<? extends AgentMutator>> classes = getAvailablePlugins();
-        for (Class<? extends AgentMutator> plugin : classes) {
-            try {
-                if (ConfiguratedMutator.class.isAssignableFrom(plugin)) {
-                    AgentMutator mutator = plugin.newInstance();
-                    simulation.mutatorListener.addMutator(mutator);
-                    Field[] fields = simulationConfig.getClass().getDeclaredFields();
-                    for (Field f : fields) {
-                        if (((ConfiguratedMutator<?>) mutator).acceptsParam(f.getType())) {
-                            ((ConfiguratedMutator) mutator).setParams(simulation, f.get(simulationConfig), simulationConfig.getAgentTypes());
-                            break;
-                        }
-                    }
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }*/
-
+    public static void loadPluginConfigs(Simulation simulation, SimulationConfig simulationConfig) {
         for (AgentMutator agentMutator : simulation.mutatorListener.getAllMutators()) {
             try {
                 if (ConfiguratedMutator.class.isAssignableFrom(agentMutator.getClass())) {
