@@ -31,7 +31,7 @@ public class ExcelXSSFSavingStrategy implements SavingStrategy {
             fileOutputStream.close();
         } catch (Exception ex) {
             ex.printStackTrace();
-            System.err.println("Failed saving log to XLSL.");
+            System.err.println("Failed saving log to " + file.getAbsolutePath());
         }
         return 1;
     }
@@ -57,7 +57,7 @@ public class ExcelXSSFSavingStrategy implements SavingStrategy {
             headingRow.createCell(i).setCellValue(table.columnInts.get(i));
         }
 
-        for (int r = 0; r < table.rowMap.size(); r++) {
+        for (int r : table.rowMap.keySet()) { //int r = 0; r < table.rowMap.size(); r++) {
             DataTable.SmartLogRow logRow = table.rowMap.get(r);
             if (logRow != null) {
                 XSSFRow row = sheet.createRow(1 + r);

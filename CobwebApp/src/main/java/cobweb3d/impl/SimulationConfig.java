@@ -3,8 +3,11 @@ package cobweb3d.impl;
 import cobweb3d.core.params.*;
 import cobweb3d.impl.ai.SimpleController;
 import cobweb3d.impl.ai.SimpleControllerParams;
+import cobweb3d.impl.logging.LogConfig;
+import cobweb3d.plugins.diminish.DiminishParams;
 import cobweb3d.plugins.exchange.ExchangeParams;
 import cobweb3d.plugins.food.ConsumptionParams;
+import cobweb3d.plugins.ported.disease.DiseaseParams;
 import cobweb3d.plugins.reproduction.ReproductionParams;
 import cobweb3d.plugins.transform.TransformationParams;
 import io.ConfDisplayName;
@@ -71,14 +74,22 @@ public class SimulationConfig implements ParameterSerializable, AgentFoodCountab
         agentCountChanged();
     }
 
+    @ConfXMLTag("LogConfig")
+    public LogConfig logConfig = new LogConfig();
+
     @ConfXMLTag("Reproduction")
     public ReproductionParams reproductionParams = new ReproductionParams(this);
     @ConfXMLTag("Consumption")
     public ConsumptionParams consumptionParams = new ConsumptionParams(this);
+    @ConfXMLTag("Diminish")
+    public DiminishParams diminishParams = new DiminishParams(this);
     @ConfXMLTag("Exchange")
     public ExchangeParams exchangeParams = new ExchangeParams(this);
     @ConfXMLTag("Transformation")
     public TransformationParams transformationParams = new TransformationParams(this);
+    @ConfXMLTag("Disease")
+    public DiseaseParams diseaseParams = new DiseaseParams(this);
+
 
 
     private String controllerName = SimpleController.class.getName();

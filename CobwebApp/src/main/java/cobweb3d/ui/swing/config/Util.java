@@ -14,7 +14,7 @@ public class Util {
         int count = ft.getColumnCount() - firstCol;
         for (int col = 0; col < count; col++) {
             DefaultTableCellRenderer r = new DefaultTableCellRenderer();
-            r.setBackground(colorMap.getColor(col, count));
+            if (colorMap != null) r.setBackground(colorMap.getColor(col, count));
             ft.getColumnModel().getColumn(col + firstCol).setHeaderRenderer(r);
             LookAndFeel.installBorder(ft.getTableHeader(), "TableHeader.cellBorder");
         }

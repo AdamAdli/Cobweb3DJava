@@ -1,4 +1,4 @@
-package cobweb3d.plugins.food;
+package cobweb3d.plugins.diminish;
 
 import cobweb3d.core.params.AgentFoodCountable;
 import cobweb3d.core.params.ResizableParam;
@@ -9,37 +9,37 @@ import io.ParameterSerializable;
 
 import java.util.Arrays;
 
-public class ConsumptionAgentParams implements ParameterSerializable, ResizableParam {
+public class DiminishAgentParams implements ParameterSerializable, ResizableParam {
     private static final long serialVersionUID = 12L;
 
     /**
      * Agent types this agent can transmit the disease to.
      */
-    @ConfDisplayName("Can eat agent")
+    @ConfDisplayName("Can Diminish Agent")
     @ConfXMLTag("canDiminish")
     @ConfList(indexName = "Agent", startAtOne = true)
-    public boolean[] canEat = new boolean[0];
+    public boolean[] canDiminish = new boolean[0];
 
     /**
      * Agent types this agent can transmit the disease to.
      */
-    @ConfDisplayName("Energy gain multiplier from agent ")
-    @ConfXMLTag("energyMultiplier")
+    @ConfDisplayName("Amount of Energy To Diminish")
+    @ConfXMLTag("energyDiminishedAbs")
     @ConfList(indexName = "Agent", startAtOne = true)
-    public float[] energyMultipler = new float[0];
+    public int[] energyDiminishedAbs = new int[0];
 
     //@Deprecated // for reflection use only!
-    public ConsumptionAgentParams() {
-        for (int i = 0; i < energyMultipler.length; i++) energyMultipler[i] = 1f;
+    public DiminishAgentParams() {
+        for (int i = 0; i < energyDiminishedAbs.length; i++) energyDiminishedAbs[i] = 0;
     }
 
     @Override
     public void resize(AgentFoodCountable size) {
-        this.canEat = Arrays.copyOf(canEat, size.getAgentTypes());
-        int prevSize = energyMultipler.length;
-        this.energyMultipler = Arrays.copyOf(energyMultipler, size.getAgentTypes());
+        this.canDiminish = Arrays.copyOf(canDiminish, size.getAgentTypes());
+        int prevSize = energyDiminishedAbs.length;
+        this.energyDiminishedAbs = Arrays.copyOf(energyDiminishedAbs, size.getAgentTypes());
         for (int i = prevSize; i < size.getAgentTypes(); i++) {
-            energyMultipler[i] = 1.0f;
+            energyDiminishedAbs[i] = 0;
         }
     }
 }

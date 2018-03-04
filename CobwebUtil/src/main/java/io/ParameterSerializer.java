@@ -521,11 +521,13 @@ public class ParameterSerializer {
     protected ParameterChoice loadChoice(Class<? extends ParameterChoice> type, Node node) {
         String identifier = node.getTextContent();
         if (parts != null) {
-            for (ParameterChoice x : parts.getChoices(type)) {
-                if (identifier == null && x.getIdentifier() == null) {
-                    return x;
-                } else if (identifier != null && identifier.equals(x.getIdentifier())) {
-                    return x;
+            if (parts.getChoices(type) != null) {
+                for (ParameterChoice x : parts.getChoices(type)) {
+                    if (identifier == null && x.getIdentifier() == null) {
+                        return x;
+                    } else if (identifier != null && identifier.equals(x.getIdentifier())) {
+                        return x;
+                    }
                 }
             }
         }

@@ -1,6 +1,9 @@
 package cobweb3d.io;
 
+import cobweb3d.core.params.phenotype.Phenotype;
 import cobweb3d.impl.SimulationConfig;
+import cobweb3d.plugins.phenotype.PhenotypeIndex;
+import io.ChoiceCatalog;
 import io.ParameterSerializer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -8,8 +11,15 @@ import org.w3c.dom.Node;
 
 import java.io.*;
 
-
 public class Cobweb3Serializer {
+
+    public static ChoiceCatalog getChoiceCatalog() {
+        ChoiceCatalog choiceCatalog = new ChoiceCatalog();
+        for (Phenotype x : PhenotypeIndex.getPossibleValues()) {
+            choiceCatalog.addChoice(Phenotype.class, x);
+        }
+        return choiceCatalog;
+    }
 
     public static SimulationConfig loadConfig(String filePath) throws IOException {
         try (FileInputStream stream = new FileInputStream(filePath)) {
@@ -50,7 +60,7 @@ public class Cobweb3Serializer {
         if (file == null) return null;
         Node root = CobwebXmlHelper.openDocument(file);
         SimulationConfig simConfig = new SimulationConfig();
-        ParameterSerializer parameterSerializer = new ParameterSerializer(null);
+        ParameterSerializer parameterSerializer = new ParameterSerializer(getChoiceCatalog());
 
         // Load all the @ConfXMLTag params
         parameterSerializer.load(simConfig, root);
@@ -83,7 +93,7 @@ public class Cobweb3Serializer {
         if (file == null) return null;
         Node root = CobwebXmlHelper.openDocument(new FileInputStream(file));
         SimulationConfig simConfig = new SimulationConfig();
-        ParameterSerializer parameterSerializer = new ParameterSerializer(null);
+        ParameterSerializer parameterSerializer = new ParameterSerializer(getChoiceCatalog());
 
         // Load all the @ConfXMLTag params
         parameterSerializer.load(simConfig, root);
@@ -100,7 +110,7 @@ public class Cobweb3Serializer {
     public void saveConfig(SimulationConfig conf, OutputStream stream) {
         Element root = CobwebXmlHelper.createDocument("COBWEB2Config", "config");
         Document d = root.getOwnerDocument();
-        ParameterSerializer parameterSerializer = new ParameterSerializer(null);
+        ParameterSerializer parameterSerializer = new ParameterSerializer(getChoiceCatalog());
         root.setAttribute("config-version", "2018-01-01");
 
         parameterSerializer.save(conf, root, d);

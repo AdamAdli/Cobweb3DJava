@@ -3,6 +3,7 @@ package cobweb3d;
 import cobweb3d.impl.Simulation;
 import cobweb3d.impl.SimulationConfig;
 import cobweb3d.impl.logging.AutoSavingLogManager;
+import cobweb3d.impl.logging.LogConfig;
 import cobweb3d.impl.logging.LogManager;
 import cobweb3d.ui.UpdatableUI;
 
@@ -29,6 +30,7 @@ public class SimulationRunnerBase implements SimulationRunner, SimulationRunner.
     public void loadSimulation(SimulationConfig simulationConfig) {
         simulation.load(simulationConfig);
         initializeLogManager();
+        setLogConfig(simulationConfig.logConfig);
     }
 
     @Override
@@ -122,6 +124,10 @@ public class SimulationRunnerBase implements SimulationRunner, SimulationRunner.
         for (UpdatableUI updatableUI : new LinkedList<>(uiComponents)) {
             updatableUI.onStopped();
         }
+    }
+
+    public void setLogConfig(LogConfig logConfig) {
+        logManager.updateLogConfig(logConfig);
     }
 
     public void clearLogManager() {

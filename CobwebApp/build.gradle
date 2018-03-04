@@ -64,6 +64,9 @@ dependencies {
     implementation project(':CobwebUtil')
     // implementation name: 'material-ui-swing'
 
+    // https://mvnrepository.com/artifact/org.reflections/reflections
+    implementation "org.reflections:reflections:0.9.11"
+
     implementation "org.jogamp.gluegen:gluegen-rt:${joglVersion}"
     implementation "org.jogamp.jogl:jogl-all:${joglVersion}"
 

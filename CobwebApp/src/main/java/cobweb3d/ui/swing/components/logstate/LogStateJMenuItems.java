@@ -3,6 +3,7 @@ package cobweb3d.ui.swing.components.logstate;
 import cobweb3d.SimulationRunner;
 import cobweb3d.ThreadSimulationRunner;
 import cobweb3d.ui.UpdatableUI;
+import cobweb3d.ui.swing.config.logging.LogConfigEditor;
 import cobweb3d.ui.util.FileDialogUtil;
 import util.swing.SimpleAction;
 import util.swing.jfx.JFXFileExtFilter;
@@ -19,6 +20,7 @@ public class LogStateJMenuItems implements UpdatableUI.UpdateableLoggingUI {
     public JCheckBoxMenuItem toggleLogCheckbox;
     public JMenuItem autoSaveLogMenuItem;
     public JMenuItem saveLogMenuItem;
+    public JMenuItem configureLogMenuItem;
     private Action setAutoSaveLogAct = new SimpleAction("AutoSave Log", e -> {
         pauseUI();
         String path = FileDialogUtil.saveFileJFX(SwingUtilities.getWindowAncestor(parent), "AutoSave Simulation Log", JFXFileExtFilter.LOG_CSV_FASTEST, JFXFileExtFilter.LOG_TEXT_FAST, JFXFileExtFilter.EXCEL_XLSX_SLOWEST);
@@ -36,6 +38,10 @@ public class LogStateJMenuItems implements UpdatableUI.UpdateableLoggingUI {
             else simRunner.disableLogging();
         }
     });
+    private Action showLogConfig = new SimpleAction("Configure Log", e -> {
+        LogConfigEditor.show(SwingUtilities.getWindowAncestor(parent), simRunner.getSimulation());
+        simRunner.setLogConfig(simRunner.getSimulation().simulationConfig.logConfig);
+    });
 
     public LogStateJMenuItems(SimulationRunner simulationRunner, Component parent) {
         this.parent = parent;
@@ -43,6 +49,7 @@ public class LogStateJMenuItems implements UpdatableUI.UpdateableLoggingUI {
             this.simRunner = (ThreadSimulationRunner) simulationRunner;
         simulationRunner.addUIComponent(this);
         toggleLogCheckbox = new JCheckBoxMenuItem(toggleLogAct);
+        configureLogMenuItem = new JMenuItem(showLogConfig);
         autoSaveLogMenuItem = new JMenuItem(setAutoSaveLogAct);
         saveLogMenuItem = new JMenuItem(saveLogAct);
         if (simRunner != null) {

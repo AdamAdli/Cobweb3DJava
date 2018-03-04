@@ -12,8 +12,10 @@ import cobweb3d.impl.agent.Agent;
 import cobweb3d.plugins.MutatorListener;
 import cobweb3d.plugins.StateParameter;
 import cobweb3d.plugins.StatePlugin;
+import cobweb3d.plugins.diminish.DiminishMutator;
 import cobweb3d.plugins.exchange.ExchangeMutator;
 import cobweb3d.plugins.food.ConsumptionMutator;
+import cobweb3d.plugins.ported.disease.DiseaseMutator;
 import cobweb3d.plugins.reproduction.ReproductionMutator;
 import cobweb3d.plugins.states.AgentState;
 import cobweb3d.plugins.transform.TransformationMutator;
@@ -40,8 +42,10 @@ public class Simulation implements SimulationInternals, SimulationInterface {
 
     private ReproductionMutator reproductionMutator;
     private ConsumptionMutator consumptionMutator;
+    private DiminishMutator diminishMutator;
     private ExchangeMutator exchangeMutator;
     private TransformationMutator transformationMutator;
+    private DiseaseMutator diseaseMutator;
 
     @Override
     public long getTime() {
@@ -109,8 +113,10 @@ public class Simulation implements SimulationInternals, SimulationInterface {
             mNextAgentId = 0;
             reproductionMutator = null;
             consumptionMutator = null;
+            diminishMutator = null;
             exchangeMutator = null;
             transformationMutator = null;
+            diseaseMutator = null;
         }
 
         // TODO: ? time = 0;
@@ -123,6 +129,10 @@ public class Simulation implements SimulationInternals, SimulationInterface {
             consumptionMutator = new ConsumptionMutator();
             mutatorListener.addMutator(consumptionMutator);
         }
+        if (diminishMutator == null) {
+            diminishMutator = new DiminishMutator();
+            mutatorListener.addMutator(diminishMutator);
+        }
         if (exchangeMutator == null) {
             exchangeMutator = new ExchangeMutator();
             mutatorListener.addMutator(exchangeMutator);
@@ -131,12 +141,19 @@ public class Simulation implements SimulationInternals, SimulationInterface {
             transformationMutator = new TransformationMutator();
             mutatorListener.addMutator(transformationMutator);
         }
+        if (diseaseMutator == null) {
+            diseaseMutator = new DiseaseMutator();
+            mutatorListener.addMutator(diseaseMutator);
+        }
 
         reproductionMutator.setParams(this, simConfig.reproductionParams, simConfig.getAgentTypes());
         consumptionMutator.setParams(this, simConfig.consumptionParams, simConfig.getAgentTypes());
+        diminishMutator.setParams(this, simConfig.diminishParams, simConfig.getAgentTypes());
         exchangeMutator.setParams(this, simConfig.exchangeParams, simConfig.getAgentTypes());
         transformationMutator.setParams(this, simConfig.transformationParams, simConfig.getAgentTypes());
+        diseaseMutator.setParams(this, simConfig.diseaseParams, simConfig.getAgentTypes());
 
+        simulationConfig.logConfig.load(mutatorListener);
         if (simConfig.spawnNewAgents) loadNewAgents();
     }
 

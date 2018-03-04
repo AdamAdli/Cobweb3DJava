@@ -50,7 +50,7 @@ public class TableConfigPage<T extends ParameterSerializable> implements ConfigP
         if (agentColors != null)
             Util.colorHeaders(paramTable, true, agentColors);
 
-        panel.add(sp);
+        panel.add(sp, BorderLayout.CENTER);
     }
 
     @Override

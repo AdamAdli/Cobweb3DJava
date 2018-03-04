@@ -79,8 +79,10 @@ public class CobwebApplication extends CobwebApplicationSwing {
         JMenu dataMenu = new JMenu("Data");
         LogStateJMenuItems logStateJMenuItems = new LogStateJMenuItems(simRunner, this);
         dataMenu.add(logStateJMenuItems.toggleLogCheckbox);
+        dataMenu.add(logStateJMenuItems.configureLogMenuItem);
         dataMenu.add(logStateJMenuItems.autoSaveLogMenuItem);
         dataMenu.add(logStateJMenuItems.saveLogMenuItem);
+
 
      /*   LogDataJMenuItem toggleLogCheckbox = new LogDataJMenuItem(toggleLogAct);
         toggleLogCheckbox.setState(simRunner.isLogging());

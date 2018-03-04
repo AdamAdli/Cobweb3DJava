@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import util.FileUtils;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.Set;
 
 public class LogManager implements UpdatableUI {
@@ -18,21 +19,39 @@ public class LogManager implements UpdatableUI {
     private BaseStatsProvider baseStatsProvider;
     private int nextDataRow = 0;
 
+    private LogConfig logConfig;
+
+    private Set<DataLoggingMutator> dataLoggingMutators;
+    private Set<DataLoggingMutator> enabledMutators;
+
     public LogManager(@NotNull LogManager prev) {
         coreDataTable = prev.coreDataTable;
         baseStatsProvider = prev.baseStatsProvider;
         nextDataRow = prev.nextDataRow;
+        logConfig = prev.logConfig;
         writeHeaders();
     }
 
     public LogManager(@NotNull Simulation simulation) {
         coreDataTable = new DataTable();
         baseStatsProvider = new BaseStatsProvider(simulation);
+        logConfig = simulation.simulationConfig.logConfig;
         writeHeaders();
     }
 
     public Set<DataLoggingMutator> getDataLoggingPlugins() {
         return baseStatsProvider.getDataLoggingPlugins();
+    }
+
+    public Set<DataLoggingMutator> getEnabledMutators() {
+        if (enabledMutators == null || dataLoggingMutators.size() != baseStatsProvider.getDataLoggingPlugins().size()) {
+            dataLoggingMutators = baseStatsProvider.getDataLoggingPlugins();
+            enabledMutators = new HashSet<>();
+            for (DataLoggingMutator plugin : getDataLoggingPlugins()) {
+                if (logConfig.enabled(plugin.getName())) enabledMutators.add(plugin);
+            }
+        }
+        return enabledMutators;
     }
 
     public static SavingStrategy getSavingStrategyForExt(String fileExt) {
@@ -70,9 +89,16 @@ public class LogManager implements UpdatableUI {
 
     @Override
     public void update(boolean synchronous) {
-        writeLogEntry(baseStatsProvider.getTime(), coreDataTable.getRow(nextDataRow));
-        for (DataLoggingMutator plugin : getDataLoggingPlugins()) {
-            plugin.logData(baseStatsProvider);
+        if (logConfig == null) {
+            writeLogEntry(baseStatsProvider.getTime(), coreDataTable.getRow(nextDataRow));
+            for (DataLoggingMutator plugin : getDataLoggingPlugins()) {
+                plugin.logData(baseStatsProvider);
+            }
+        } else {
+            if (logConfig.logCore) writeLogEntry(baseStatsProvider.getTime(), coreDataTable.getRow(nextDataRow));
+            for (DataLoggingMutator plugin : getEnabledMutators()) {
+                plugin.logData(baseStatsProvider);
+            }
         }
         nextDataRow++;
     }
@@ -89,10 +115,11 @@ public class LogManager implements UpdatableUI {
             coreDataTable.addColumn("Total Agent " + (i + 1) + " Energy");
             coreDataTable.addColumn("Average Agent " + (i + 1) + " Energy");
         }
-
+        /* TODO ?
         for (DataLoggingMutator plugin : getDataLoggingPlugins()) {
             plugin.getTableCount();
         }
+        */
     }
 
     public String getLoggingStatus() {
@@ -107,5 +134,10 @@ public class LogManager implements UpdatableUI {
 
     public void saveLog(@NotNull File file) {
         saveLog(file, getSavingStrategyForExt(FileUtils.getFileExtension(file)));
+    }
+
+    public void updateLogConfig(LogConfig newLogConfig) {
+        this.logConfig = newLogConfig;
+        this.enabledMutators = null; // Invalidate;
     }
 }

@@ -30,7 +30,7 @@ public class ExchangeDataLogger implements DataLoggingMutator {
     @Override
     public void logData(BaseStatsProvider statsProvider) {
         if (dataTable == null) return;
-        DataTable.SmartLogRow row = dataTable.getRow(nextDataRow);
+        DataTable.SmartLogRow row = dataTable.getRow((int) statsProvider.getTime()); // TODO: keep/sync nextDataRow somehow?
         row.putVal(0, statsProvider.getTime());
 
         long totAgentCount = statsProvider.getAgentCount();

@@ -28,4 +28,6 @@ public class ChoiceCatalog {
         Set<T> s = (Set<T>) catalog.get(fieldType);
         return s;
     }
+
+    public static ChoiceCatalog DEFAULT = new ChoiceCatalog();
 }

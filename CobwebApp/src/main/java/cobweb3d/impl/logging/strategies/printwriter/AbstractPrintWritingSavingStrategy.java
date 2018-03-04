@@ -25,7 +25,7 @@ public abstract class AbstractPrintWritingSavingStrategy implements SavingStrate
             printWriter.flush();
             printWriter.close();
         } catch (Exception ex) {
-            System.err.println("Failed saving log to CSV.");
+            System.err.println("Failed saving log to " + file.getAbsolutePath());
         }
         lastFile = file;
         return this.lastSavedTick;

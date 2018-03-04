@@ -6,10 +6,7 @@ package cobweb3d.ui.swing.components.table;
 import io.ParameterChoice;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
+import javax.swing.table.*;
 import java.awt.*;
 import java.text.DecimalFormat;
 import java.util.Set;
@@ -17,9 +14,9 @@ import java.util.Set;
 public class MixedValueJTable extends JTable {
 
     private static final long serialVersionUID = -9106510371599896107L;
-    public ConfigTableModel configModel;
+    public TableModel configModel;
 
-    public MixedValueJTable(ConfigTableModel model) {
+    public MixedValueJTable(TableModel model) {
         super();
         this.getTableHeader().setReorderingAllowed(false);
         this.configModel = model;
@@ -30,8 +27,8 @@ public class MixedValueJTable extends JTable {
     public TableCellEditor getCellEditor(int row, int column) {
         TableColumn tableColumn = getColumnModel().getColumn(column);
         TableCellEditor editor = tableColumn.getCellEditor();
-        if (getValueAt(row, column) instanceof ParameterChoice) {
-            editor = new CobwebSelectionEditor(configModel.getRowOptions(row));
+        if (getValueAt(row, column) instanceof ParameterChoice && configModel instanceof ConfigTableModel) {
+            editor = new CobwebSelectionEditor(((ConfigTableModel) configModel).getRowOptions(row));
         } else if (getValueAt(row, column).getClass().isEnum()) {
             editor = new EnumSelectionEditor(getValueAt(row, column).getClass());
         }
@@ -51,7 +48,7 @@ public class MixedValueJTable extends JTable {
         if (renderer == null && getValueAt(row, column) != null) {
             if (getValueAt(row, column) instanceof Double ||
                     getValueAt(row, column) instanceof Float) {
-                renderer = new PerciseDecimalTableCellRenderer();
+                renderer = new PreciseDecimalTableCellRenderer();
             } else {
                 renderer = getDefaultRenderer(getValueAt(row, column).getClass());
             }
@@ -121,13 +118,13 @@ public class MixedValueJTable extends JTable {
 
     }
 
-    private final class PerciseDecimalTableCellRenderer extends DefaultTableCellRenderer {
+    private final class PreciseDecimalTableCellRenderer extends DefaultTableCellRenderer {
 
         private static final long serialVersionUID = -1919381757017436295L;
 
         private DecimalFormat formater = new DecimalFormat();
 
-        PerciseDecimalTableCellRenderer() {
+        PreciseDecimalTableCellRenderer() {
             super.setHorizontalAlignment(RIGHT);
         }
 

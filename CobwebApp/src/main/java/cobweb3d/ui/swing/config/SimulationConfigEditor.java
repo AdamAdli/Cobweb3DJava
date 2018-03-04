@@ -2,8 +2,10 @@ package cobweb3d.ui.swing.config;
 
 import cobweb3d.impl.SimulationConfig;
 import cobweb3d.io.Cobweb3Serializer;
+import cobweb3d.plugins.diminish.ui.DiminishConfigPage;
 import cobweb3d.plugins.exchange.ui.ExchangeConfigPage;
 import cobweb3d.plugins.food.ui.ConsumptionConfigPage;
+import cobweb3d.plugins.ported.disease.ui.DiseaseConfigPage;
 import cobweb3d.plugins.reproduction.ui.ReproductionConfigPage;
 import cobweb3d.plugins.transform.ui.TransformationConfigPage;
 import cobweb3d.ui.application.CobwebApplication;
@@ -37,12 +39,12 @@ public class SimulationConfigEditor implements ConfigRefresher {
     // SimulationConfigEditor Special Constructor
     private SimulationConfigEditor(Window parent, String filename, boolean allowModify) {
         dialog = new JDialog(parent, WINDOW_TITLE, Dialog.DEFAULT_MODALITY_TYPE);
-
         JPanel j = new JPanel();
         j.setLayout(new BoxLayout(j, BoxLayout.Y_AXIS));
 
         filePath = filename;
         tabbedPane = new JTabbedPane();
+        tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         modifyExisting = allowModify;
 
         File f = new File(filePath);
@@ -74,11 +76,14 @@ public class SimulationConfigEditor implements ConfigRefresher {
         // Add the tabbed pane to this panel.
         j.add(tabbedPane, BorderLayout.CENTER);
         j.add(buttons, BorderLayout.SOUTH);
-        j.setPreferredSize(new Dimension(800, 600));
+        j.setPreferredSize(new Dimension(750, 513));
+
 
         dialog.getRootPane().setDefaultButton(okButton);
+        //dialog.setContentPane(j);
         dialog.add(j);
         dialog.pack();
+
         File filePath;
         if (simConfig.fileName == null ||
                 (filePath = new File(simConfig.fileName)).getName() == null)
@@ -163,7 +168,7 @@ public class SimulationConfigEditor implements ConfigRefresher {
 
         try {
             EnvironmentConfigPage environmentConfigPage = new EnvironmentConfigPage(simConfig, modifyExisting, this);
-            tabbedPane.add("Environment", environmentConfigPage.getPanel());
+            tabbedPane.addTab("Environment", environmentConfigPage.getPanel());
         } catch (NoSuchFieldException | NoSuchMethodException ex) {
             throw new RuntimeException(ex);
         }
@@ -174,21 +179,31 @@ public class SimulationConfigEditor implements ConfigRefresher {
         ReproductionConfigPage reproductionConfigPage = new ReproductionConfigPage(simConfig.reproductionParams,
                 new ChoiceCatalog(),
                 new TypeColorEnumeration(simConfig.agentParams.getPerTypeParams()));
-        tabbedPane.add("Reproduction", reproductionConfigPage.getPanel());
+        tabbedPane.addTab("Reproduction", reproductionConfigPage.getPanel());
 
         ConsumptionConfigPage consumptionConfigPage = new ConsumptionConfigPage(simConfig.consumptionParams,
                 new ChoiceCatalog(),
                 new TypeColorEnumeration(simConfig.agentParams.getPerTypeParams()));
-        tabbedPane.add("Consumption", consumptionConfigPage.getPanel());
+        tabbedPane.addTab("Consumption", consumptionConfigPage.getPanel());
+
+        DiminishConfigPage diminishConfigPage = new DiminishConfigPage(simConfig.diminishParams,
+                new ChoiceCatalog(),
+                new TypeColorEnumeration(simConfig.agentParams.getPerTypeParams()));
+        tabbedPane.addTab("Diminish", diminishConfigPage.getPanel());
 
         ExchangeConfigPage exchangeConfigPage = new ExchangeConfigPage(simConfig.exchangeParams,
                 new TypeColorEnumeration(simConfig.agentParams.getPerTypeParams()), this);
-        tabbedPane.add("Exchange", exchangeConfigPage.getPanel());
+        tabbedPane.addTab("Exchange", exchangeConfigPage.getPanel());
 
         TransformationConfigPage transformationConfigPage = new TransformationConfigPage(simConfig.transformationParams,
                 new ChoiceCatalog(),
                 new TypeColorEnumeration(simConfig.agentParams.getPerTypeParams()));
-        tabbedPane.add("Transformation", transformationConfigPage.getPanel());
+        tabbedPane.addTab("Transformation", transformationConfigPage.getPanel());
+
+        DiseaseConfigPage diseaseConfigPage = new DiseaseConfigPage(simConfig.diseaseParams,
+                Cobweb3Serializer.getChoiceCatalog(),
+                new TypeColorEnumeration(simConfig.agentParams.getPerTypeParams()));
+        tabbedPane.addTab("Disease", diseaseConfigPage.getPanel());
     }
 
     private void validateSettings() {
@@ -250,6 +265,4 @@ public class SimulationConfigEditor implements ConfigRefresher {
             }
         }
     }
-
-
 }
