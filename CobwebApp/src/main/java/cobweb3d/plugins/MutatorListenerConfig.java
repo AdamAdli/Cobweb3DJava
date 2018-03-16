@@ -18,7 +18,7 @@ public class MutatorListenerConfig implements ParameterSerializable {
     public Set<String> editableEntries = new HashSet<>();
 
     public MutatorListenerConfig() {
-        load(PluginProvider.getAvailablePlugins());
+        load(PluginProvider.getConfiguratedPlugins());
     }
 
     public void load(Set<Class<? extends AgentMutator>> mutators) {

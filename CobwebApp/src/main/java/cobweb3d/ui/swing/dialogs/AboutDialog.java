@@ -1,6 +1,6 @@
 package cobweb3d.ui.swing.dialogs;
 
-import util.Versionator;
+import cobweb3d.BuildConfig;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,7 +19,7 @@ public class AboutDialog {
         JPanel info = new JPanel();
         info.setAlignmentX(Component.CENTER_ALIGNMENT);
         info.add(new JLabel("<html><center>COBWEB 3D 2018<br/>version: <br/>"
-                + Versionator.getVersion().replace(" ", "<br/>")
+                + BuildConfig.VERSION
                 + "</center></html>"));
 
         JPanel term = new JPanel();

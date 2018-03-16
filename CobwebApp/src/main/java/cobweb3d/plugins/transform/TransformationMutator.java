@@ -13,6 +13,8 @@ public class TransformationMutator extends StatefulMutatorBase<TransformationSta
     TransformationParams params;
     private SimulationTimeSpace simulation;
 
+    //private TransformationDataLogger transformationDataLogger;
+
     public TransformationMutator() {
         super(TransformationState.class);
     }
@@ -21,6 +23,7 @@ public class TransformationMutator extends StatefulMutatorBase<TransformationSta
     public void setParams(SimulationTimeSpace sim, TransformationParams transformationParams, int agentTypes) {
         this.simulation = sim;
         this.params = transformationParams;
+        //this.transformationDataLogger = new TransformationDataLogger(agentTypes);
     }
 
     @Override
@@ -36,7 +39,7 @@ public class TransformationMutator extends StatefulMutatorBase<TransformationSta
     @Override
     public void onUpdate(BaseAgent agent) {
         if (params.of(agent).exchangeTransformationAgentParams.enabled && getX(agent) >= params.of(agent).exchangeTransformationAgentParams.transformationX.getValue()) {
-            setAgentState(agent, new TransformationState(getAgentState(agent), agent.getType()));
+            setAgentState(agent, new TransformationState(getAgentState(agent), agent.getType(), (int) simulation.getTime()));
             agent.transformType(params.of(agent).exchangeTransformationAgentParams.destType - 1);
             if (agent instanceof Agent) {
                 ((Agent) agent).setParams(((Simulation) simulation).environment.agentParams[agent.getType()]);
@@ -47,7 +50,7 @@ public class TransformationMutator extends StatefulMutatorBase<TransformationSta
     @Override
     public void onConsumeAgent(BaseAgent agent, BaseAgent food) {
         if (params.of(agent).consumptionTransformationAgentParams.canTransform[food.getType()]) {
-            setAgentState(agent, new TransformationState(getAgentState(agent), agent.getType()));
+            setAgentState(agent, new TransformationState(getAgentState(agent), agent.getType(), (int) simulation.getTime()));
             agent.transformType(params.of(agent).consumptionTransformationAgentParams.destType[food.getType()] - 1);
             if (agent instanceof Agent) {
                 ((Agent) agent).setParams(((Simulation) simulation).environment.agentParams[agent.getType()]);
@@ -64,4 +67,24 @@ public class TransformationMutator extends StatefulMutatorBase<TransformationSta
         }
         return 0;
     }
+
+    /*@Override
+    public String getName() {
+        return transformationDataLogger.getName();
+    }
+
+    @Override
+    public void logData(BaseStatsProvider statsProvider) {
+        transformationDataLogger.logData(statsProvider);
+    }
+
+    @Override
+    public int getTableCount() {
+        return transformationDataLogger.getTableCount();
+    }
+
+    @Override
+    public Collection<DataTable> getTables() {
+        return transformationDataLogger.getTables();
+    }*/
 }

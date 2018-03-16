@@ -51,5 +51,4 @@ public class DiminishMutator implements ContactMutator, ConfiguratedMutator<Dimi
             return "Diminish Agent";
         }
     }
-
 }

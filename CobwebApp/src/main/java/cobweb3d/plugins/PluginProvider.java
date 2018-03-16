@@ -31,6 +31,14 @@ public class PluginProvider {
         return orderedClasses;
     }
 
+    public static Set<Class<? extends AgentMutator>> getConfiguratedPlugins() {
+        Reflections pluginsPackage = new Reflections("cobweb3d.plugins");
+        SortedSet<Class<? extends AgentMutator>> orderedClasses = new TreeSet<>(new PluginOrderComparator());
+        orderedClasses.addAll(pluginsPackage.getSubTypesOf(AgentMutator.class).stream().filter(p -> !p.isInterface() && ConfiguratedMutator.class.isAssignableFrom(p) && !Modifier.isAbstract(p.getModifiers())).collect(Collectors.toList()));
+        return orderedClasses;
+    }
+
+
     public static void loadPluginConfigs(Simulation simulation, SimulationConfig simulationConfig) {
         for (AgentMutator agentMutator : simulation.mutatorListener.getAllMutators()) {
             try {
@@ -51,13 +59,11 @@ public class PluginProvider {
 
     public static void constructPlugins(Simulation simulation) {
         simulation.mutatorListener.clearMutators();
-        Set<Class<? extends AgentMutator>> classes = getAvailablePlugins();
+        Set<Class<? extends AgentMutator>> classes = getConfiguratedPlugins();
         for (Class<? extends AgentMutator> plugin : classes) {
             try {
-                if (ConfiguratedMutator.class.isAssignableFrom(plugin)) {
-                    AgentMutator mutator = plugin.newInstance();
-                    simulation.mutatorListener.addMutator(mutator);
-                }
+                AgentMutator mutator = plugin.newInstance();
+                simulation.mutatorListener.addMutator(mutator);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

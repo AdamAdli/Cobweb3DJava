@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Collection;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class ExcelXSSFSavingStrategy implements SavingStrategy {
 
@@ -57,7 +59,8 @@ public class ExcelXSSFSavingStrategy implements SavingStrategy {
             headingRow.createCell(i).setCellValue(table.columnInts.get(i));
         }
 
-        for (int r : table.rowMap.keySet()) { //int r = 0; r < table.rowMap.size(); r++) {
+        Set<Integer> keyset = new TreeSet<>(table.rowMap.keySet());
+        for (int r : keyset) { //int r = 0; r < table.rowMap.size(); r++) {
             DataTable.SmartLogRow logRow = table.rowMap.get(r);
             if (logRow != null) {
                 XSSFRow row = sheet.createRow(1 + r);
@@ -83,5 +86,6 @@ public class ExcelXSSFSavingStrategy implements SavingStrategy {
                 }
             }
         }
+        keyset.clear();
     }
 }

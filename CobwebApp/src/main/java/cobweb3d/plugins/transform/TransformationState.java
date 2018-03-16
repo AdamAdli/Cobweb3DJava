@@ -3,27 +3,38 @@ package cobweb3d.plugins.transform;
 import cobweb3d.plugins.states.AgentState;
 import io.ConfList;
 import io.ConfXMLTag;
+import io.ParameterSerializable;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class TransformationState implements AgentState {
-    // pregnancyPeriod is set value while pregPeriod constantly changes
+
     @ConfXMLTag("previousTypes")
     @ConfList(indexName = "PrevTypes", startAtOne = false)
-    protected List<Integer> prevTypes = new LinkedList<>();
+    List<TransformationEvent> transformations = new LinkedList<>();
 
     @Deprecated // for reflection use only!
     public TransformationState() {
     }
 
-    public TransformationState(TransformationState prevState, int curType) {
-        if (prevState != null) prevTypes.addAll(prevState.prevTypes);
-        prevTypes.add(curType);
+    public TransformationState(TransformationState prevState, int curType, int tick) {
+        if (prevState != null) transformations.addAll(prevState.transformations);
+        transformations.add(new TransformationEvent(curType, tick));
     }
 
     @Override
     public boolean isTransient() {
         return false;
+    }
+
+    private static class TransformationEvent implements ParameterSerializable {
+        int lastType;
+        //int tick;
+
+        public TransformationEvent(int lastType, int tick) {
+            this.lastType = lastType;
+            //this.tick = tick;
+        }
     }
 }
