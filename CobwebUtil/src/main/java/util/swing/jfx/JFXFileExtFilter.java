@@ -10,5 +10,5 @@ public class JFXFileExtFilter {
 
     public static final FileChooser.ExtensionFilter LOG_CSV_FASTEST = new FileChooser.ExtensionFilter("CSV (fastest)", "*.csv");
     public static final FileChooser.ExtensionFilter LOG_TEXT_FAST = new FileChooser.ExtensionFilter("Text (fast)", "*.log");
-    public static final FileChooser.ExtensionFilter EXCEL_XLSX_SLOWEST = new FileChooser.ExtensionFilter("Excel (slowest)", "*.xlsx");
+    public static final FileChooser.ExtensionFilter EXCEL_XLSX_SLOWEST = new FileChooser.ExtensionFilter("Excel", "*.xlsx");
 }

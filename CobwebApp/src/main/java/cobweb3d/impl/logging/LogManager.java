@@ -104,7 +104,8 @@ public class LogManager implements UpdatableUI {
     }
 
     public void saveLog(@NotNull File file, @NotNull SavingStrategy savingStrategy) {
-        if (savingStrategy != null) savingStrategy.save(coreDataTable, getDataLoggingPlugins(), file);
+        if (savingStrategy != null)
+            savingStrategy.save(logConfig == null || logConfig.logCore ? coreDataTable : null, logConfig == null ? getDataLoggingPlugins() : getEnabledMutators(), file);
         else System.err.println("Did not save log: null SavingStategy in LogManager.saveLog()!");
     }
 

@@ -30,7 +30,7 @@ public class ExchangeDataLogger implements DataLoggingMutator {
     @Override
     public void logData(BaseStatsProvider statsProvider) {
         if (dataTable == null) return;
-        DataTable.SmartLogRow row = dataTable.getRow((int) statsProvider.getTime()); // TODO: keep/sync nextDataRow somehow?
+        DataTable.SmartLogRow row = dataTable.getRow((int) statsProvider.getTime() - 1); // TODO: keep/sync nextDataRow somehow?
         row.putVal(0, statsProvider.getTime());
 
         long totAgentCount = statsProvider.getAgentCount();
@@ -48,7 +48,10 @@ public class ExchangeDataLogger implements DataLoggingMutator {
         for (int i = 0; i < agentCount; i++) {
             long typeAgentCount = statsProvider.countAgents(i);
             float typeU = ExchangeStatTracker.getUtilityForAgent(statsProvider, params, i);
-            row.putVal(i + 6, (typeU / (float) typeAgentCount));
+            row.putVal((i * 4) + 6, (typeU / (float) typeAgentCount));
+            row.putVal((i * 4) + 7, typeU);
+            row.putVal((i * 4) + 8, ExchangeStatTracker.getXForAgent(statsProvider, params, i));
+            row.putVal((i * 4) + 9, ExchangeStatTracker.getYForAgent(statsProvider, params, i));
         }
         nextDataRow++;
     }
@@ -63,6 +66,9 @@ public class ExchangeDataLogger implements DataLoggingMutator {
         int agentCount = params.agentParams.length;
         for (int i = 1; i <= agentCount; i++) {
             dataTable.addColumn("Agent " + i + " Average Utility");
+            dataTable.addColumn("Agent " + i + " Total Utility");
+            dataTable.addColumn("Agent " + i + " Total X");
+            dataTable.addColumn("Agent " + i + " Total Y");
         }
         nextDataRow = FIRST_DATA_ROW;
     }

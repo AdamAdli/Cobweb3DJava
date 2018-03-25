@@ -71,4 +71,38 @@ public class ExchangeStatTracker {
         }
         return totalU;
     }
+
+    public static float getXForAgent(BaseStatsProvider statsProvider, ExchangeParams exchangeParams, int type) {
+        float totalX = 0;
+        for (BaseAgent a : statsProvider.getAgents()) {
+            if (a.getType() == type && a instanceof Agent) {
+                ExchangeState state = ((Agent) a).getState(ExchangeState.class);
+                if (state != null) {
+                    totalX += state.x;//exchangeParams.getAgentParams(a).calculateU(state);//totalU += exchangeParams.getAgentParams(a).calculateU(state);
+                } else {
+                    state = new ExchangeState(exchangeParams.getAgentParams(a));
+                    totalX += state.x;//exchangeParams.getAgentParams(a).calculateU(state);
+                    ((Agent) a).setState(ExchangeState.class, state);
+                }
+            }
+        }
+        return totalX;
+    }
+
+    public static float getYForAgent(BaseStatsProvider statsProvider, ExchangeParams exchangeParams, int type) {
+        float totalY = 0;
+        for (BaseAgent a : statsProvider.getAgents()) {
+            if (a.getType() == type && a instanceof Agent) {
+                ExchangeState state = ((Agent) a).getState(ExchangeState.class);
+                if (state != null) {
+                    totalY += state.y;//exchangeParams.getAgentParams(a).calculateU(state);//totalU += exchangeParams.getAgentParams(a).calculateU(state);
+                } else {
+                    state = new ExchangeState(exchangeParams.getAgentParams(a));
+                    totalY += state.y;//exchangeParams.getAgentParams(a).calculateU(state);
+                    ((Agent) a).setState(ExchangeState.class, state);
+                }
+            }
+        }
+        return totalY;
+    }
 }

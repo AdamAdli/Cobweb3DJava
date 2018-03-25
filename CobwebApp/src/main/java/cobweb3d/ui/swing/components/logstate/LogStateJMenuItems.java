@@ -23,12 +23,14 @@ public class LogStateJMenuItems implements UpdatableUI.UpdateableLoggingUI {
     public JMenuItem configureLogMenuItem;
     private Action setAutoSaveLogAct = new SimpleAction("AutoSave Log", e -> {
         pauseUI();
-        String path = FileDialogUtil.saveFileJFX(SwingUtilities.getWindowAncestor(parent), "AutoSave Simulation Log", JFXFileExtFilter.LOG_CSV_FASTEST, JFXFileExtFilter.LOG_TEXT_FAST, JFXFileExtFilter.EXCEL_XLSX_SLOWEST);
+        // TODO: Add CSV support with enabled/disabled logs.
+        String path = FileDialogUtil.saveFileJFX(SwingUtilities.getWindowAncestor(parent), "AutoSave Simulation Log", JFXFileExtFilter.EXCEL_XLSX_SLOWEST);
         if (path != null && !path.isEmpty()) startSimulationLog(path);
     });
     private Action saveLogAct = new SimpleAction("Save Current Log", e -> {
         pauseUI();
-        String path = FileDialogUtil.saveFileJFX(SwingUtilities.getWindowAncestor(parent), "Save Simulation Log", JFXFileExtFilter.LOG_CSV_FASTEST, JFXFileExtFilter.LOG_TEXT_FAST, JFXFileExtFilter.EXCEL_XLSX_SLOWEST);
+        // TODO: Add CSV support with enabled/disabled logs.
+        String path = FileDialogUtil.saveFileJFX(SwingUtilities.getWindowAncestor(parent), "Save Simulation Log", JFXFileExtFilter.EXCEL_XLSX_SLOWEST);
         if (path != null && !path.isEmpty()) saveSimulationLog(path);
     });
     private Action toggleLogAct = new SimpleAction("Log Data", e -> {

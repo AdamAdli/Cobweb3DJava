@@ -39,7 +39,7 @@ public class ExcelXSSFSavingStrategy implements SavingStrategy {
     }
 
     public void saveDataToExcelSheets(XSSFWorkbook workbook, DataTable coreData, Collection<DataLoggingMutator> plugins) {
-        saveDataToExcelSheet(workbook, "COBWEB base", coreData);
+        if (coreData != null) saveDataToExcelSheet(workbook, "COBWEB base", coreData);
         for (DataLoggingMutator plugin : plugins) {
             int i = 1;
             for (DataTable dataTable : plugin.getTables()) {
