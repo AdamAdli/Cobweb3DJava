@@ -5,7 +5,7 @@ import cobweb3d.ui.swing.config.ConfigPage;
 import cobweb3d.ui.swing.config.ConfigRefresher;
 import cobweb3d.ui.swing.config.Util;
 import cobweb3d.ui.util.SpringUtilities;
-import util.swing.ColorLookup;
+import cobwebutil.swing.ColorLookup;
 
 import javax.swing.*;
 import java.awt.*;

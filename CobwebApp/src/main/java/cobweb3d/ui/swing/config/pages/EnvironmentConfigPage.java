@@ -13,7 +13,7 @@ import cobweb3d.ui.swing.config.Util;
 import cobweb3d.ui.util.SpringUtilities;
 import cobweb3d.ui.util.binding.BoundCheckBox;
 import cobweb3d.ui.util.binding.BoundJFormattedTextField;
-import util.swing.SeedRandomActionListener;
+import cobwebutil.swing.SeedRandomActionListener;
 
 import javax.swing.*;
 import java.awt.*;

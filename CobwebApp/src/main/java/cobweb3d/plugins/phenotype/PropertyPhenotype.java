@@ -3,8 +3,8 @@ package cobweb3d.plugins.phenotype;
 import cobweb3d.core.agent.BaseAgent;
 import cobweb3d.core.params.phenotype.Phenotype;
 import cobweb3d.ui.config.PropertyAccessor;
-import io.ConfDisplayName;
-import util.MutatableField;
+import cobwebutil.MutatableField;
+import cobwebutil.io.ConfDisplayName;
 
 public abstract class PropertyPhenotype extends Phenotype {
 

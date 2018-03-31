@@ -2,7 +2,7 @@ package cobweb3d.plugins.reproduction;
 
 import cobweb3d.core.agent.BaseAgent;
 import cobweb3d.plugins.states.AgentState;
-import io.ConfXMLTag;
+import cobwebutil.io.ConfXMLTag;
 
 public class ReproductionState implements AgentState {
     // pregnancyPeriod is set value while pregPeriod constantly changes

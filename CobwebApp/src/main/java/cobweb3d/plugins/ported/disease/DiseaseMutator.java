@@ -9,7 +9,7 @@ import cobweb3d.plugins.mutators.ContactMutator;
 import cobweb3d.plugins.mutators.SpawnMutator;
 import cobweb3d.plugins.mutators.StatefulMutatorBase;
 import cobweb3d.plugins.mutators.UpdateMutator;
-import util.ArrayUtilities;
+import cobwebutil.ArrayUtilities;
 
 /**
  * Simulates various diseases that can affect agents.

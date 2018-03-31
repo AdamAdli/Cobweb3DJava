@@ -11,10 +11,10 @@ import cobweb3d.plugins.food.ConsumptionParams;
 import cobweb3d.plugins.ported.disease.DiseaseParams;
 import cobweb3d.plugins.reproduction.ReproductionParams;
 import cobweb3d.plugins.transform.TransformationParams;
-import io.ConfDisplayName;
-import io.ConfSaveInstanceClass;
-import io.ConfXMLTag;
-import io.ParameterSerializable;
+import cobwebutil.io.ConfDisplayName;
+import cobwebutil.io.ConfSaveInstanceClass;
+import cobwebutil.io.ConfXMLTag;
+import cobwebutil.io.ParameterSerializable;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

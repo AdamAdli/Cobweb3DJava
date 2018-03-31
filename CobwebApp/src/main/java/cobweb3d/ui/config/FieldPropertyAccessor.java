@@ -1,6 +1,6 @@
 package cobweb3d.ui.config;
 
-import io.ConfDisplayName;
+import cobwebutil.io.ConfDisplayName;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;

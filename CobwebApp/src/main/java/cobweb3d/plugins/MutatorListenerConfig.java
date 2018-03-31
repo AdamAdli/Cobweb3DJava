@@ -1,9 +1,9 @@
 package cobweb3d.plugins;
 
 import cobweb3d.plugins.mutators.AgentMutator;
-import io.ConfMap;
-import io.ConfXMLTag;
-import io.ParameterSerializable;
+import cobwebutil.io.ConfMap;
+import cobwebutil.io.ConfXMLTag;
+import cobwebutil.io.ParameterSerializable;
 
 import java.util.HashMap;
 import java.util.HashSet;

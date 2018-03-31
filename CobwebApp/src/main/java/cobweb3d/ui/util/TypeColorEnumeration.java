@@ -1,9 +1,9 @@
 package cobweb3d.ui.util;
 
 import cobweb3d.impl.params.AgentParams;
+import cobwebutil.ArrayUtilities;
 import cobwebutil.MaterialColor;
-import util.ArrayUtilities;
-import util.swing.ColorLookup;
+import cobwebutil.swing.ColorLookup;
 
 import java.awt.*;
 

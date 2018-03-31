@@ -2,11 +2,11 @@ package cobweb3d.plugins.transform;
 
 import cobweb3d.core.params.AgentFoodCountable;
 import cobweb3d.core.params.ResizableParam;
-import io.ConfDisplayName;
-import io.ConfList;
-import io.ConfXMLTag;
-import io.ParameterSerializable;
-import util.MutatableInt;
+import cobwebutil.MutatableInt;
+import cobwebutil.io.ConfDisplayName;
+import cobwebutil.io.ConfList;
+import cobwebutil.io.ConfXMLTag;
+import cobwebutil.io.ParameterSerializable;
 
 import java.util.Arrays;
 

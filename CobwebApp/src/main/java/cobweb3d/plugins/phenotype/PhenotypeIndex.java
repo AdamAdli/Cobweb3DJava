@@ -7,11 +7,11 @@ import cobweb3d.plugins.states.AgentState;
 import cobweb3d.ui.config.FieldPropertyAccessor;
 import cobweb3d.ui.config.PropertyAccessor;
 import cobweb3d.ui.config.SetterPropertyAccessor;
-import io.ConfDisplayName;
-import io.ParameterSerializable;
+import cobwebutil.MutatableFloat;
+import cobwebutil.MutatableInt;
+import cobwebutil.io.ConfDisplayName;
+import cobwebutil.io.ParameterSerializable;
 import org.reflections.Reflections;
-import util.MutatableFloat;
-import util.MutatableInt;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

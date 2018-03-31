@@ -1,9 +1,9 @@
 package cobweb3d.plugins.transform;
 
 import cobweb3d.plugins.states.AgentState;
-import io.ConfList;
-import io.ConfXMLTag;
-import io.ParameterSerializable;
+import cobwebutil.io.ConfList;
+import cobwebutil.io.ConfXMLTag;
+import cobwebutil.io.ParameterSerializable;
 
 import java.util.LinkedList;
 import java.util.List;

@@ -1,6 +1,6 @@
 package cobweb3d.core;
 
-import util.RandomNoGenerator;
+import cobwebutil.RandomNoGenerator;
 
 public interface RandomSource {
 

@@ -10,9 +10,9 @@ import cobweb3d.ui.swing.components.logstate.LogStateJMenuItems;
 import cobweb3d.ui.swing.components.logstate.LogStatePanel;
 import cobweb3d.ui.swing.components.simstate.SimStatePanel;
 import cobweb3d.ui.swing.config.SimulationConfigEditor;
+import cobwebutil.ArrayUtilities;
 import cobwebutil.MaterialColor;
-import util.ArrayUtilities;
-import util.swing.layout.BetterBorderLayout;
+import cobwebutil.swing.layout.BetterBorderLayout;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;

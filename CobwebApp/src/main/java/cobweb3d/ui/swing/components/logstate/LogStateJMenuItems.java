@@ -5,8 +5,8 @@ import cobweb3d.ThreadSimulationRunner;
 import cobweb3d.ui.UpdatableUI;
 import cobweb3d.ui.swing.config.logging.LogConfigEditor;
 import cobweb3d.ui.util.FileDialogUtil;
-import util.swing.SimpleAction;
-import util.swing.jfx.JFXFileExtFilter;
+import cobwebutil.swing.SimpleAction;
+import cobwebutil.swing.jfx.JFXFileExtFilter;
 
 import javax.swing.*;
 import java.awt.*;

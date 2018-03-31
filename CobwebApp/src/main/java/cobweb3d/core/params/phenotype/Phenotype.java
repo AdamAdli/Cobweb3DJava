@@ -1,7 +1,7 @@
 package cobweb3d.core.params.phenotype;
 
 import cobweb3d.core.agent.BaseAgent;
-import io.ParameterChoice;
+import cobwebutil.io.ParameterChoice;
 
 /**
  * Property of an agent that can be modified

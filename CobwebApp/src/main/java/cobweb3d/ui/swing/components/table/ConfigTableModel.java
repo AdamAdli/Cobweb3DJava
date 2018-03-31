@@ -4,10 +4,10 @@
 package cobweb3d.ui.swing.components.table;
 
 import cobweb3d.ui.config.*;
-import io.*;
-import util.MutatableFloat;
-import util.MutatableInt;
-import util.ReflectionUtil;
+import cobwebutil.MutatableFloat;
+import cobwebutil.MutatableInt;
+import cobwebutil.ReflectionUtil;
+import cobwebutil.io.*;
 
 import javax.swing.table.AbstractTableModel;
 import java.lang.reflect.Array;

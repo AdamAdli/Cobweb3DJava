@@ -1,6 +1,6 @@
 package cobweb3d.ui.config;
 
-import io.ConfXMLTag;
+import cobwebutil.io.ConfXMLTag;
 
 import java.lang.reflect.AnnotatedElement;
 

@@ -3,9 +3,9 @@ package cobweb3d.ui.swing.components.simstate;
 import cobweb3d.SimulationRunner;
 import cobweb3d.ThreadSimulationRunner;
 import cobweb3d.ui.UpdatableUI;
-import util.swing.SimpleDocumentListener;
-import util.swing.SimpleFocusAdapter;
-import util.swing.layout.WrapLayout;
+import cobwebutil.swing.SimpleDocumentListener;
+import cobwebutil.swing.SimpleFocusAdapter;
+import cobwebutil.swing.layout.WrapLayout;
 
 import javax.swing.*;
 import java.awt.*;

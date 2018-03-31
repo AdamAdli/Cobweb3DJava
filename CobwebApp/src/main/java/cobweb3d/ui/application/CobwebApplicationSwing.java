@@ -10,11 +10,11 @@ import cobweb3d.ui.swing.config.SimulationConfigEditor;
 import cobweb3d.ui.swing.dialogs.AboutDialog;
 import cobweb3d.ui.swing.dialogs.CreditsDialog;
 import cobweb3d.ui.util.FileDialogUtil;
+import cobwebutil.FileUtils;
+import cobwebutil.ResourceRetriever;
+import cobwebutil.swing.SimpleAction;
+import cobwebutil.swing.jfx.JFXFileExtFilter;
 import org.jetbrains.annotations.NotNull;
-import util.FileUtils;
-import util.ResourceRetriever;
-import util.swing.SimpleAction;
-import util.swing.jfx.JFXFileExtFilter;
 
 import javax.swing.*;
 import java.awt.*;

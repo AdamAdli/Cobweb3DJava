@@ -1,7 +1,7 @@
 package cobweb3d.ui.config;
 
-import util.MutatableFloat;
-import util.MutatableInt;
+import cobwebutil.MutatableFloat;
+import cobwebutil.MutatableInt;
 
 
 public class MutatablePropertyAccessor extends PropertyAccessorBase {

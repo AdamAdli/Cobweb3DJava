@@ -3,8 +3,8 @@ package cobweb3d.ui.swing.components.logstate;
 import cobweb3d.SimulationRunner;
 import cobweb3d.ui.MenuItemComponent;
 import cobweb3d.ui.UpdatableUI;
-import util.swing.SimpleAction;
-import util.swing.layout.WrapLayout;
+import cobwebutil.swing.SimpleAction;
+import cobwebutil.swing.layout.WrapLayout;
 
 import javax.swing.*;
 import java.awt.*;

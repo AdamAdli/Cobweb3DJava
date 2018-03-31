@@ -1,10 +1,10 @@
 package cobweb3d.plugins.reproduction;
 
-import io.ConfDisplayName;
-import io.ConfXMLTag;
-import io.ParameterSerializable;
-import util.MutatableFloat;
-import util.MutatableInt;
+import cobwebutil.MutatableFloat;
+import cobwebutil.MutatableInt;
+import cobwebutil.io.ConfDisplayName;
+import cobwebutil.io.ConfXMLTag;
+import cobwebutil.io.ParameterSerializable;
 
 public class ReproductionAgentParams implements ParameterSerializable {
     private static final long serialVersionUID = 12L;

@@ -2,9 +2,9 @@ package cobweb3d.plugins.exchange;
 
 import cobweb3d.core.params.AgentFoodCountable;
 import cobweb3d.core.params.PerAgentParams;
-import io.ConfList;
-import io.ConfXMLTag;
-import util.ArrayUtilities;
+import cobwebutil.ArrayUtilities;
+import cobwebutil.io.ConfList;
+import cobwebutil.io.ConfXMLTag;
 
 public class ExchangeParams extends PerAgentParams<ExchangeAgentParams> {
 

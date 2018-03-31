@@ -4,7 +4,7 @@ import cobweb3d.core.agent.BaseAgent;
 import cobweb3d.core.agent.Controller;
 import cobweb3d.core.agent.ControllerListener;
 import cobweb3d.impl.agent.Agent;
-import util.RandomNoGenerator;
+import cobwebutil.RandomNoGenerator;
 
 public class SimpleController implements Controller {
 

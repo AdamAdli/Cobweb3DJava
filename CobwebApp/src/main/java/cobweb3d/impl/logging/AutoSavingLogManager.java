@@ -1,8 +1,8 @@
 package cobweb3d.impl.logging;
 
 import cobweb3d.impl.Simulation;
+import cobwebutil.FileUtils;
 import org.jetbrains.annotations.NotNull;
-import util.FileUtils;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,7 +1,7 @@
 package cobweb3d.ui.config;
 
-import io.ConfDisplayFormat;
-import io.ConfMap;
+import cobwebutil.io.ConfDisplayFormat;
+import cobwebutil.io.ConfMap;
 
 import java.util.Map;
 

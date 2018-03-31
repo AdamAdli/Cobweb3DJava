@@ -3,7 +3,7 @@
  */
 package cobweb3d.ui.swing.components.table;
 
-import io.ParameterChoice;
+import cobwebutil.io.ParameterChoice;
 
 import javax.swing.*;
 import javax.swing.table.*;

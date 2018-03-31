@@ -6,7 +6,7 @@ import cobweb3d.core.params.AgentFoodCountable;
 import cobweb3d.core.params.ControllerParams;
 import cobweb3d.core.params.PerAgentParams;
 import cobweb3d.impl.SimulationParams;
-import io.ParameterSerializable;
+import cobwebutil.io.ParameterSerializable;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package cobweb3d.core.params;
 
-import io.ParameterSerializable;
+import cobwebutil.io.ParameterSerializable;
 
 public interface ResizableParam extends ParameterSerializable {
 

@@ -7,8 +7,8 @@ import cobweb3d.impl.logging.strategies.printwriter.PlainTextSavingStategy;
 import cobweb3d.impl.stats.BaseStatsProvider;
 import cobweb3d.plugins.mutators.DataLoggingMutator;
 import cobweb3d.ui.UpdatableUI;
+import cobwebutil.FileUtils;
 import org.jetbrains.annotations.NotNull;
-import util.FileUtils;
 
 import java.io.File;
 import java.util.HashSet;
@@ -70,8 +70,8 @@ public class LogManager implements UpdatableUI {
     }
 
     public void writeLogEntry(long tick, DataTable.SmartLogRow logRow) {
-        long agentCount = baseStatsProvider.getAgentCount(),
-                totEnergy = baseStatsProvider.countAgentEnergy();
+        long agentCount = baseStatsProvider.getAgentCount();
+        long totEnergy = baseStatsProvider.countAgentEnergy();
 
         logRow.putVal(0, tick);
         logRow.putVal(1, agentCount);

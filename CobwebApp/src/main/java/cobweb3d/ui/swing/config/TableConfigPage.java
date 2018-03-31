@@ -2,9 +2,9 @@ package cobweb3d.ui.swing.config;
 
 import cobweb3d.ui.swing.components.table.ConfigTableModel;
 import cobweb3d.ui.swing.components.table.MixedValueJTable;
-import io.ChoiceCatalog;
-import io.ParameterSerializable;
-import util.swing.ColorLookup;
+import cobwebutil.io.ChoiceCatalog;
+import cobwebutil.io.ParameterSerializable;
+import cobwebutil.swing.ColorLookup;
 
 import javax.swing.*;
 import javax.swing.event.TableModelListener;

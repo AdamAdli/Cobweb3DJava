@@ -1,9 +1,9 @@
 package cobweb3d.ui.util;
 
+import cobwebutil.swing.FileExtFilter;
+import cobwebutil.swing.jfx.SynchronousJFXFileChooser;
 import javafx.stage.FileChooser;
 import org.jetbrains.annotations.Nullable;
-import util.swing.FileExtFilter;
-import util.swing.jfx.SynchronousJFXFileChooser;
 
 import javax.swing.*;
 import java.awt.*;

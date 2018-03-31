@@ -15,7 +15,7 @@ import cobweb3d.plugins.StateParameter;
 import cobweb3d.plugins.StatePlugin;
 import cobweb3d.plugins.states.AgentState;
 import cobweb3d.ui.SimulationInterface;
-import util.RandomNoGenerator;
+import cobwebutil.RandomNoGenerator;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;

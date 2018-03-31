@@ -1,7 +1,7 @@
 package cobweb3d.plugins.ported.disease;
 
 import cobweb3d.plugins.states.AgentState;
-import io.ConfXMLTag;
+import cobwebutil.io.ConfXMLTag;
 
 public class DiseaseState implements AgentState {
 

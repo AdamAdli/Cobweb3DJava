@@ -1,6 +1,6 @@
 package cobweb3d.ui.config;
 
-import io.ConfDisplayFormat;
+import cobwebutil.io.ConfDisplayFormat;
 
 import java.lang.reflect.Array;
 

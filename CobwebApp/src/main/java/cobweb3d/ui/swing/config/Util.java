@@ -1,6 +1,6 @@
 package cobweb3d.ui.swing.config;
 
-import util.swing.ColorLookup;
+import cobwebutil.swing.ColorLookup;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;

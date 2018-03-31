@@ -3,8 +3,8 @@ package cobweb3d.plugins.diminish.ui;
 import cobweb3d.plugins.diminish.DiminishAgentParams;
 import cobweb3d.plugins.diminish.DiminishParams;
 import cobweb3d.ui.swing.config.TableConfigPage;
-import io.ChoiceCatalog;
-import util.swing.ColorLookup;
+import cobwebutil.io.ChoiceCatalog;
+import cobwebutil.swing.ColorLookup;
 
 public class DiminishConfigPage extends TableConfigPage<DiminishAgentParams> {
 

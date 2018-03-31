@@ -1,7 +1,7 @@
 package cobweb3d.plugins.exchange;
 
 import cobweb3d.plugins.states.AgentState;
-import io.ConfXMLTag;
+import cobwebutil.io.ConfXMLTag;
 
 public class ExchangeState implements AgentState {
 

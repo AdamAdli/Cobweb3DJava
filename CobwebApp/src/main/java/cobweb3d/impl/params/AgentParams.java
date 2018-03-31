@@ -2,10 +2,10 @@ package cobweb3d.impl.params;
 
 import cobweb3d.core.params.AgentFoodCountable;
 import cobweb3d.core.params.ResizableParam;
-import io.CloneHelper;
-import io.ConfDisplayName;
-import io.ConfXMLTag;
-import util.MutatableInt;
+import cobwebutil.MutatableInt;
+import cobwebutil.io.CloneHelper;
+import cobwebutil.io.ConfDisplayName;
+import cobwebutil.io.ConfXMLTag;
 
 public class AgentParams implements ResizableParam {
     private static final long serialVersionUID = -7852361484228627542L;

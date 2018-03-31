@@ -2,10 +2,10 @@ package cobweb3d.impl.logging;
 
 import cobweb3d.plugins.MutatorListener;
 import cobweb3d.plugins.mutators.DataLoggingMutator;
-import io.ConfDisplayName;
-import io.ConfMap;
-import io.ConfXMLTag;
-import io.ParameterSerializable;
+import cobwebutil.io.ConfDisplayName;
+import cobwebutil.io.ConfMap;
+import cobwebutil.io.ConfXMLTag;
+import cobwebutil.io.ParameterSerializable;
 
 import java.util.HashMap;
 import java.util.HashSet;

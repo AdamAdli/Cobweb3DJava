@@ -2,9 +2,9 @@ package cobweb3d.plugins.exchange;
 
 import cobweb3d.core.params.AgentFoodCountable;
 import cobweb3d.core.params.ResizableParam;
-import io.ConfDisplayName;
-import io.ConfXMLTag;
-import io.ParameterSerializable;
+import cobwebutil.io.ConfDisplayName;
+import cobwebutil.io.ConfXMLTag;
+import cobwebutil.io.ParameterSerializable;
 
 public class ExchangeAgentPairDynamicParams implements ParameterSerializable, ResizableParam {
     private static final long serialVersionUID = 12L;

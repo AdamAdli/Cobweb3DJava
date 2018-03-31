@@ -14,7 +14,7 @@ import cobweb3d.ui.swing.config.mutator.MutatorConfigPage;
 import cobweb3d.ui.swing.config.pages.AgentConfigPage;
 import cobweb3d.ui.swing.config.pages.EnvironmentConfigPage;
 import cobweb3d.ui.util.TypeColorEnumeration;
-import io.ChoiceCatalog;
+import cobwebutil.io.ChoiceCatalog;
 
 import javax.swing.*;
 import java.awt.*;

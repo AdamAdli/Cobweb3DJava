@@ -2,7 +2,7 @@ package cobweb3d.rendering.javafx.ui;
 
 import cobweb3d.rendering.ISimulationRendererMenuItem;
 import cobweb3d.rendering.javafx.FXSimulationRenderer;
-import util.swing.SimpleAction;
+import cobwebutil.swing.SimpleAction;
 
 import javax.swing.*;
 import java.awt.*;

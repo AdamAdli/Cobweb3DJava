@@ -9,7 +9,7 @@ import cobweb3d.plugins.mutators.ContactMutator;
 import cobweb3d.plugins.mutators.StatefulMutatorBase;
 import cobweb3d.plugins.mutators.StepMutator;
 import cobweb3d.plugins.mutators.UpdateMutator;
-import util.ArrayUtilities;
+import cobwebutil.ArrayUtilities;
 
 public class ReproductionMutator extends StatefulMutatorBase<ReproductionState, ReproductionParams> implements ContactMutator,
         StepMutator, UpdateMutator {

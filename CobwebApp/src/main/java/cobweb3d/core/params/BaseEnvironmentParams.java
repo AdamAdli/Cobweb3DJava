@@ -1,8 +1,8 @@
 package cobweb3d.core.params;
 
-import io.ConfDisplayName;
-import io.ConfXMLTag;
-import io.ParameterSerializable;
+import cobwebutil.io.ConfDisplayName;
+import cobwebutil.io.ConfXMLTag;
+import cobwebutil.io.ParameterSerializable;
 
 public class BaseEnvironmentParams implements ParameterSerializable {
 

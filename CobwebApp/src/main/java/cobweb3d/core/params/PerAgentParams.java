@@ -1,9 +1,9 @@
 package cobweb3d.core.params;
 
 import cobweb3d.core.agent.BaseAgent;
-import io.ConfList;
-import io.ConfXMLTag;
-import io.ParameterSerializable;
+import cobwebutil.io.ConfList;
+import cobwebutil.io.ConfXMLTag;
+import cobwebutil.io.ParameterSerializable;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;

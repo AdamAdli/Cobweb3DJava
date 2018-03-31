@@ -4,8 +4,8 @@ import cobweb3d.plugins.exchange.ExchangeParams;
 import cobweb3d.ui.swing.config.ConfigPage;
 import cobweb3d.ui.util.FileDialogUtil;
 import cobweb3d.ui.util.SpringUtilities;
-import util.swing.FileExtFilter;
-import util.swing.SimpleAction;
+import cobwebutil.swing.FileExtFilter;
+import cobwebutil.swing.SimpleAction;
 
 import javax.swing.*;
 

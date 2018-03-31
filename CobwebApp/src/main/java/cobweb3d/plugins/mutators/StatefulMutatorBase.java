@@ -3,7 +3,7 @@ package cobweb3d.plugins.mutators;
 import cobweb3d.core.agent.BaseAgent;
 import cobweb3d.impl.agent.Agent;
 import cobweb3d.plugins.states.AgentState;
-import io.ParameterSerializable;
+import cobwebutil.io.ParameterSerializable;
 
 /**
  * Helper base class for creating StatefulMutators.

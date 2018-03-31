@@ -9,8 +9,8 @@ import cobweb3d.ui.util.SpringUtilities;
 import cobweb3d.ui.util.binding.BoundCheckBox;
 import cobweb3d.ui.util.binding.BoundJFormattedTextField;
 import cobweb3d.ui.util.binding.BoundJSpinner;
-import util.swing.ColorLookup;
-import util.swing.SimpleAction;
+import cobwebutil.swing.ColorLookup;
+import cobwebutil.swing.SimpleAction;
 
 import javax.swing.*;
 import java.awt.*;

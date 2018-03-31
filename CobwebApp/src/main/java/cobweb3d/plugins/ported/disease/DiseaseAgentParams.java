@@ -4,9 +4,9 @@ import cobweb3d.core.params.AgentFoodCountable;
 import cobweb3d.core.params.ResizableParam;
 import cobweb3d.core.params.phenotype.NullPhenotype;
 import cobweb3d.core.params.phenotype.Phenotype;
-import io.ConfDisplayName;
-import io.ConfList;
-import io.ConfXMLTag;
+import cobwebutil.io.ConfDisplayName;
+import cobwebutil.io.ConfList;
+import cobwebutil.io.ConfXMLTag;
 
 import java.util.Arrays;
 

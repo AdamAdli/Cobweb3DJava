@@ -1,7 +1,7 @@
 package cobweb3d.ui.config;
 
-import io.ConfDisplayFormat;
-import io.ConfListType;
+import cobwebutil.io.ConfDisplayFormat;
+import cobwebutil.io.ConfListType;
 
 import java.util.List;
 
