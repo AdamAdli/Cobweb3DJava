@@ -2,28 +2,26 @@ package cobweb3d.impl;
 
 import cobweb3d.core.SimulationInternals;
 import cobweb3d.core.agent.AgentListener;
-import cobweb3d.core.agent.AgentSimilarityCalculator;
 import cobweb3d.core.agent.BaseAgent;
-import cobweb3d.core.environment.BaseEnvironment;
 import cobweb3d.core.environment.Topology;
 import cobweb3d.core.location.Location;
 import cobweb3d.core.location.LocationDirection;
 import cobweb3d.impl.agent.Agent;
+import cobweb3d.impl.environment.Environment;
 import cobweb3d.plugins.MutatorListener;
 import cobweb3d.plugins.PluginProvider;
-import cobweb3d.plugins.StateParameter;
-import cobweb3d.plugins.StatePlugin;
 import cobweb3d.plugins.states.AgentState;
 import cobweb3d.ui.SimulationInterface;
 import cobwebutil.RandomNoGenerator;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class Simulation implements SimulationInternals, SimulationInterface {
 
     public SimulationConfig simulationConfig;
-    public BaseEnvironment environment;
+    public Environment environment;
     private RandomNoGenerator random;
     private long time = 0;
     private int mNextAgentId = 0;
@@ -31,7 +29,7 @@ public class Simulation implements SimulationInternals, SimulationInterface {
     private volatile List<BaseAgent> mAgents;
 
     public Simulation() {
-        environment = new BaseEnvironment(this);
+        environment = new Environment(this);
         mAgents = new LinkedList<>();
     }
 
@@ -54,14 +52,10 @@ public class Simulation implements SimulationInternals, SimulationInterface {
         return environment != null ? environment.topology : null;
     }
 
-    private Map<String, StateParameter> aiStateMap = new LinkedHashMap<String, StateParameter>();
-
     public synchronized Agent addAgent(Location location, int agentType) {
         if (environment.isOccupied(location)) return null;
         else return spawnAgent(location, agentType);
     }
-
-    private List<StatePlugin> aiStatePlugins = new LinkedList<StatePlugin>();
 
     @Override
     public void registerAgent(BaseAgent agent) {
@@ -95,7 +89,6 @@ public class Simulation implements SimulationInternals, SimulationInterface {
         environment.setParams(simConfig.envParams, simConfig.agentParams, simulationConfig.keepOldAgents);
 
         if (!simConfig.isContinuation()) {
-            aiStatePlugins.clear();
             mAgents.clear();
             mNextAgentId = 0;
             PluginProvider.constructPlugins(this);
@@ -113,6 +106,7 @@ public class Simulation implements SimulationInternals, SimulationInterface {
     public int getAgentTypeCount() {
         return simulationConfig != null ? simulationConfig.getAgentTypes() : 0;
     }
+
     @Override
     public void step() {
         environment.update();
@@ -132,30 +126,6 @@ public class Simulation implements SimulationInternals, SimulationInterface {
         agent.init(environment, new LocationDirection(location, getTopology().getRandomDirection()),
                 environment.agentParams[agentType], simulationConfig.controllerParams.createController(this, agentType));
         return agent;
-    }
-
-    @Override
-    public StateParameter getStateParameter(String name) {
-        return aiStateMap.get(name);
-    }
-
-    private void setupAIStatePlugins() {
-        aiStateMap.clear();
-        for (StatePlugin plugin : aiStatePlugins) {
-            for (StateParameter param : plugin.getParameters()) {
-                aiStateMap.put(param.getName(), param);
-            }
-        }
-    }
-
-    @Override
-    public AgentSimilarityCalculator getSimilarityCalculator() {
-        return null;
-    }
-
-    @Override
-    public Set<String> getStatePluginKeys() {
-        return aiStateMap.keySet();
     }
 
     @Override

@@ -69,9 +69,9 @@ public class AgentParams implements ResizableParam {
     }
 
     @Override
-    public cobweb3d.core.params.BaseAgentParams clone() {
+    public BaseAgentParams clone() {
         try {
-            cobweb3d.core.params.BaseAgentParams copy = (cobweb3d.core.params.BaseAgentParams) super.clone();
+            BaseAgentParams copy = (BaseAgentParams) super.clone();
             CloneHelper.resetMutatable(copy);
             return copy;
         } catch (CloneNotSupportedException ex) {

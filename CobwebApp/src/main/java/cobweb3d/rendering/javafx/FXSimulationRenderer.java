@@ -2,8 +2,8 @@ package cobweb3d.rendering.javafx;
 
 import cobweb3d.SimulationRunnerBase;
 import cobweb3d.impl.Simulation;
-import cobweb3d.rendering.ISimulationRenderer;
-import cobweb3d.rendering.ISimulationRendererMenuItem;
+import cobweb3d.rendering.SimulationRenderer;
+import cobweb3d.rendering.SimulationRendererMenuItem;
 import cobweb3d.rendering.javafx.renderers.GridRenderer;
 import cobweb3d.rendering.javafx.renderers.UncachedAgentRenderer;
 import cobweb3d.rendering.javafx.ui.FXSimulationRendererMenuItem;
@@ -20,7 +20,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-public class FXSimulationRenderer implements ISimulationRenderer {
+public class FXSimulationRenderer implements SimulationRenderer {
     private JFXPanel jfxPanel;
     private FXSimulationRendererMenuItem fxSimulationRendererMenuItem;
 
@@ -204,7 +204,7 @@ public class FXSimulationRenderer implements ISimulationRenderer {
     }
 
     @Override
-    public ISimulationRendererMenuItem getMenuItem() {
+    public SimulationRendererMenuItem getMenuItem() {
         return fxSimulationRendererMenuItem;
     }
 

@@ -1,6 +1,7 @@
-package cobweb3d.core.params;
+package cobweb3d.impl.params;
 
-import cobweb3d.impl.params.AgentParams;
+import cobweb3d.core.params.AgentFoodCountable;
+import cobweb3d.core.params.PerAgentParams;
 
 public class BaseAgentParams extends PerAgentParams<AgentParams> {
 

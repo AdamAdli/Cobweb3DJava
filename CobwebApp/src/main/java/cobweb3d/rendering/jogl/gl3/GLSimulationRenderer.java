@@ -3,7 +3,7 @@ package cobweb3d.rendering.jogl.gl3;
 import cobweb3d.BuildConfig;
 import cobweb3d.SimulationRunnerBase;
 import cobweb3d.impl.Simulation;
-import cobweb3d.rendering.ISimulationRenderer;
+import cobweb3d.rendering.SimulationRenderer;
 import com.jogamp.opengl.*;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.glu.GLU;
@@ -18,7 +18,7 @@ import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_SMOOTH;
 import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
 import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 
-public class GLSimulationRenderer implements ISimulationRenderer, GLEventListener {
+public class GLSimulationRenderer implements SimulationRenderer, GLEventListener {
 
     private Simulation simulation;
     private FPSAnimator fpsAnimator;

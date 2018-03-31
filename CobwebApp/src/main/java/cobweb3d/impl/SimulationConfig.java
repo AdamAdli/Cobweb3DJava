@@ -1,9 +1,13 @@
 package cobweb3d.impl;
 
-import cobweb3d.core.params.*;
+import cobweb3d.core.params.AgentFoodCountable;
+import cobweb3d.core.params.BaseEnvironmentParams;
+import cobweb3d.core.params.ControllerParams;
+import cobweb3d.core.params.ResizableParam;
 import cobweb3d.impl.ai.SimpleController;
 import cobweb3d.impl.ai.SimpleControllerParams;
 import cobweb3d.impl.logging.LogConfig;
+import cobweb3d.impl.params.BaseAgentParams;
 import cobweb3d.plugins.MutatorListenerConfig;
 import cobweb3d.plugins.diminish.DiminishParams;
 import cobweb3d.plugins.exchange.ExchangeParams;

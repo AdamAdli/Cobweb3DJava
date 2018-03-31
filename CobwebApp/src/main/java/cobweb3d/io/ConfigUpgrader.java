@@ -33,7 +33,7 @@ class ConfigUpgrader {
 
         String version;
 
-        if (root.getNodeName().equals("COBWEB2Config"))
+        if (root.getNodeName().equals("COBWEB3Config"))
             // new root element includes version number
             version = root.getAttribute("config-version");
 

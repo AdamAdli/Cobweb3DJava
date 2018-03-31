@@ -4,10 +4,10 @@ import cobweb3d.core.SimulationInternals;
 import cobweb3d.core.agent.BaseAgent;
 import cobweb3d.core.agent.Controller;
 import cobweb3d.core.entity.Cause;
-import cobweb3d.core.environment.BaseEnvironment;
 import cobweb3d.core.location.Direction;
 import cobweb3d.core.location.Location;
 import cobweb3d.core.location.LocationDirection;
+import cobweb3d.impl.environment.Environment;
 import cobweb3d.impl.params.AgentParams;
 import cobweb3d.plugins.states.AgentState;
 
@@ -19,7 +19,7 @@ public class Agent extends BaseAgent {
     public Map<Class<? extends AgentState>, AgentState> extraState = new HashMap<>();
 
     protected transient SimulationInternals simulation;
-    protected transient BaseEnvironment environment;
+    protected transient Environment environment;
 
     private Controller controller;
 
@@ -103,7 +103,7 @@ public class Agent extends BaseAgent {
      * @param pos         spawn position
      * @param agentParams agent parameters
      */
-    public void init(BaseEnvironment env, LocationDirection pos, AgentParams agentParams, Controller controller) {
+    public void init(Environment env, LocationDirection pos, AgentParams agentParams, Controller controller) {
         environment = env;
         setParams(agentParams);
         this.controller = controller;
@@ -120,7 +120,7 @@ public class Agent extends BaseAgent {
      * @param pos    spawn position
      * @param parent parent
      */
-    protected void init(BaseEnvironment env, LocationDirection pos, Agent parent) {
+    protected void init(Environment env, LocationDirection pos, Agent parent) {
         environment = (env);
         copyParams(parent);
         controller = parent.controller.createChildAsexual();
@@ -139,7 +139,7 @@ public class Agent extends BaseAgent {
      * @param parent1 first parent
      * @param parent2 second parent
      */
-    protected void init(BaseEnvironment env, LocationDirection pos, Agent parent1, BaseAgent parent2) {
+    protected void init(Environment env, LocationDirection pos, Agent parent1, BaseAgent parent2) {
         environment = env;
         copyParams(parent1);
         if (parent2 instanceof Agent) {

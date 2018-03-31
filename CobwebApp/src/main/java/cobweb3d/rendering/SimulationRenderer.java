@@ -5,13 +5,13 @@ import cobweb3d.ui.UpdatableUI;
 
 import java.awt.*;
 
-public interface ISimulationRenderer extends UpdatableUI {
+public interface SimulationRenderer extends UpdatableUI {
 
     void refreshSimulation();
     void bindSimulation(Simulation simulation);
     Component getBackbuffer();
 
-    default ISimulationRendererMenuItem getMenuItem() {
+    default SimulationRendererMenuItem getMenuItem() {
         return null;
     }
 }

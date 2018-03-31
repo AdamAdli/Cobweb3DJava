@@ -4,7 +4,7 @@ package cobweb3d.ui.application;
 import cobweb3d.ThreadSimulationRunner;
 import cobweb3d.impl.Simulation;
 import cobweb3d.impl.SimulationConfig;
-import cobweb3d.rendering.ISimulationRenderer;
+import cobweb3d.rendering.SimulationRenderer;
 import cobweb3d.rendering.javafx.FXSimulationRenderer;
 import cobweb3d.ui.swing.components.logstate.LogStateJMenuItems;
 import cobweb3d.ui.swing.components.logstate.LogStatePanel;
@@ -28,7 +28,7 @@ public class CobwebApplication extends CobwebApplicationSwing {
 
     private SimStatePanel simStatePanel;
     private LogStatePanel logStatePanel;
-    private ISimulationRenderer simulationRenderer;
+    private SimulationRenderer simulationRenderer;
 
     public CobwebApplication() {
         super(new ThreadSimulationRunner(new Simulation()));

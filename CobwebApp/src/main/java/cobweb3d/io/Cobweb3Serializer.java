@@ -108,7 +108,7 @@ public class Cobweb3Serializer {
      * Writes the information stored in this tree to an XML file, conforming to the rules of our spec.
      */
     public void saveConfig(SimulationConfig conf, OutputStream stream) {
-        Element root = CobwebXmlHelper.createDocument("COBWEB2Config", "config");
+        Element root = CobwebXmlHelper.createDocument("COBWEB3Config", "config");
         Document d = root.getOwnerDocument();
         ParameterSerializer parameterSerializer = new ParameterSerializer(getChoiceCatalog());
         root.setAttribute("config-version", "2018-01-01");

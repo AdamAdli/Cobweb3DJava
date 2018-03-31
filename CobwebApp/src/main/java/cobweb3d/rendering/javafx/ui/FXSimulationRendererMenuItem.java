@@ -1,6 +1,6 @@
 package cobweb3d.rendering.javafx.ui;
 
-import cobweb3d.rendering.ISimulationRendererMenuItem;
+import cobweb3d.rendering.SimulationRendererMenuItem;
 import cobweb3d.rendering.javafx.FXSimulationRenderer;
 import cobwebutil.swing.SimpleAction;
 
@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-public class FXSimulationRendererMenuItem implements ISimulationRendererMenuItem {
+public class FXSimulationRendererMenuItem implements SimulationRendererMenuItem {
 
     private FXSimulationRenderer fxSimulationRenderer;
     private List<Component> menuItemList;
